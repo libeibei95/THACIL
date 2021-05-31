@@ -43,7 +43,7 @@ class Model(object):
             with tf.variable_scope('THACIL'):
                 self.train_inference()
                 tf.get_variable_scope().reuse_variables()
-                #self.test_inference()
+                self.test_inference()
 
     def train_inference(self):
         item_vec = self.get_train_cover_image_feature(self.item_ids_ph)

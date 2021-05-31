@@ -29,11 +29,11 @@ class DataLoader(object):
         if params.phase == 'train':
             self.read_train_data(train_data_path)
             self.epoch_train_data = self.generate_train_data()
-            self.train_queue = Queue(maxsize=self.sampler_workers * 5)
+            self.train_queue = Queue(maxsize=self.sampler_workers * 10)
             self.initTrainProcess()
         self.read_test_data(test_csv_path)
-        self.test_queue = Queue(maxsize=self.sampler_workers * 5)
-        self.initTestProcess()
+        self.test_queue = Queue(maxsize=self.sampler_workers * 10)
+#        self.initTestProcess()
 
     def initTrainProcess(self):
         self.train_processors = []
@@ -94,7 +94,7 @@ class DataLoader(object):
                 self.n_test_batch += (last - first + 1) // self.batch_size
                 if (last - first + 1) % self.batch_size != 0:
                     self.n_test_batch += 1
-                self.test_processors.append(Process(target=self.processTestBatch(), args=(first, last)))
+                self.test_processors.append(Process(target=self.processTestBatch, args=(first, last)))
                 self.test_processors[-1].daemon = True
                 self.test_processors[-1].start()
 
@@ -204,7 +204,7 @@ class DataLoader(object):
         self.test_visual_feature = np.load(test_feature_path)
 
         user_click_ids_path = os.path.join(self.data_dir, 'user_click_ids.npy')
-        self.user_click_ids = np.load(user_click_ids_path)
+        self.user_click_ids = np.load(user_click_ids_path, allow_pickle=True)
 
     def del_temp(self):
         del self.train_visual_feature

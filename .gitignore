@@ -1,4 +1,7 @@
 .idea
+data/*
 src/*.pyc
 src/__pycache__/
-data/input
+data/input/
+data/
+

@@ -13,7 +13,7 @@ from multiprocessing import Process, Queue
 
 
 class DataLoader(object):
-    def __init__(self, params, sampler_workers=8):
+    def __init__(self, params, sampler_workers=2):
         self.data_dir = params.data_dir
         self.batch_size = params.batch_size
         self.n_block = params.n_block
@@ -30,11 +30,12 @@ class DataLoader(object):
         if params.phase == 'train':
             self.read_train_data(train_data_path)
             self.epoch_train_data = self.generate_train_data()
-            self.train_queue = Queue(maxsize=self.sampler_workers * 10)
+            self.train_queue = Queue(maxsize=self.sampler_workers * 2)
             self.initTrainProcess()
         self.read_test_data(test_csv_path)
-        self.test_queue = Queue(maxsize=self.sampler_workers * 10)
-#        self.initTestProcess()
+        self.test_queue = Queue(maxsize=self.sampler_workers * 2)
+
+    #        self.initTestProcess()
 
     def initTrainProcess(self):
         self.train_processors = []
@@ -71,8 +72,9 @@ class DataLoader(object):
                     batch_data = self.epoch_train_data[i * self.batch_size: (i + 1) * self.batch_size]
                 user_ids, item_ids, cate_ids, labels = zip(*batch_data)
                 att_iids, att_cids, intra_mask, inter_mask = self.get_att_ids(user_ids)
+                cl_negs = self.get_neg_ids(user_ids)
                 self.train_queue.put(
-                    (user_ids, item_ids, cate_ids, att_iids, att_cids, intra_mask, inter_mask, labels)
+                    (user_ids, item_ids, cate_ids, att_iids, att_cids, intra_mask, inter_mask, labels, cl_negs)
                 )
 
     def get_train_batch(self):
@@ -188,7 +190,6 @@ class DataLoader(object):
             result.append(negs)
         return result
 
-
     def sample_vid(self, tuples):
         item_ids, cate_ids, timestamps = list(zip(*tuples))
         length = len(item_ids)
@@ -234,7 +235,6 @@ class DataLoader(object):
 
         user_unclick_ids_path = os.path.join(self.data_dir, 'user_unclick_ids.npy')
         self.user_unclick_ids = np.load(user_unclick_ids_path, allow_pickle=True)
-
 
     def del_temp(self):
         del self.train_visual_feature

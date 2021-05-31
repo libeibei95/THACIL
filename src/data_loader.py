@@ -181,7 +181,7 @@ class DataLoader(object):
             if len(neg) >= self.n_cl_neg:
                 result.append(list(random.sample(neg, self.n_cl_neg)))
             else:
-                result.append(list(neg) + list(random.sample(self.neg_buffer[uid], self.n_cl_neg - len(neg))))
+                result.append(list(neg) + list(random.sample(self.neg_buffers[uid], self.n_cl_neg - len(neg))))
         return result
 
     def sample_vid(self, tuples):
@@ -242,6 +242,8 @@ class DataLoader(object):
             processors[-1].daemon = True
             processors[-1].start()
 
+        for proc in processors:
+            proc.join()
     def preload_feat_into_memory(self):
         train_feature_path = os.path.join(self.data_dir, 'train_cover_image_feature.npy')
         test_feature_path = os.path.join(self.data_dir, 'test_cover_image_feature.npy')

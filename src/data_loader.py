@@ -221,12 +221,13 @@ class DataLoader(object):
         return true_negs
 
     def sample_neg_worker(self, user_ids):
-        for user_id in self.true_negs:
+        for user_id in user_ids:
             pos_items = list(map(lambda x: x[0], self.user_click_ids[user_id]))
             candidates = set(range(984983)) - set(self.true_negs[user_id]) - set(pos_items)
             self.neg_buffers[user_id] = random.sample(candidates, 5000)
 
     def pre_sample_negs(self):
+        print('enter pre_sample_negs function')
         self.neg_buffers = {}
         users = [uid for uid in self.true_negs if self.true_negs[uid] < self.n_cl_neg]
         users_per_worker = users // self.sampler_workers
@@ -238,7 +239,6 @@ class DataLoader(object):
             else:
                 tar_users = users[i * users_per_worker:(i + 1) * users_per_worker]
                 processors.append(Process(target=self.sample_neg_worker, args=(tar_users,)))
-
             processors[-1].daemon = True
             processors[-1].start()
 

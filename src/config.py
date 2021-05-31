@@ -31,3 +31,4 @@ class Config:
     DISPLAY = 1000
     NUM_HEADS = 8
     N_BLOCK = 8
+    N_CL_NEG = 256

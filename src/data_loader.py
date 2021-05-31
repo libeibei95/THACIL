@@ -9,14 +9,16 @@ from __future__ import print_function
 
 import numpy as np
 import random, logging, os
+from multiprocessing import Process, Queue
 
 
 class DataLoader(object):
-    def __init__(self, params):
+    def __init__(self, params, sampler_workers=8):
         self.data_dir = params.data_dir
         self.batch_size = params.batch_size
         self.n_block = params.n_block
         self.max_length = params.max_length
+        self.sampler_workers = sampler_workers
 
         self.block_size = self.max_length // self.n_block
 
@@ -26,20 +28,102 @@ class DataLoader(object):
         self.preload_feat_into_memory()
         if params.phase == 'train':
             self.read_train_data(train_data_path)
+            self.epoch_train_data = self.generate_train_data()
+            self.train_queue = Queue(maxsize=self.sampler_workers * 5)
+            self.initTrainProcess()
         self.read_test_data(test_csv_path)
+        self.test_queue = Queue(maxsize=self.sampler_workers * 5)
+        self.initTestProcess()
 
-    def get_train_batch(self, idx):
-        batch_data = self.epoch_train_data[idx * self.batch_size: (idx + 1) * self.batch_size]
-        user_ids, item_ids, cate_ids, labels = zip(*batch_data)
-        att_iids, att_cids, intra_mask, inter_mask = self.get_att_ids(user_ids)
-        return user_ids, item_ids, cate_ids, att_iids, att_cids, intra_mask, inter_mask, labels
+    def initTrainProcess(self):
+        self.train_processors = []
+        self.n_train_batch = 0
+        samples_per_worker = self.epoch_train_length // self.sampler_workers
 
-    def get_test_batch(self, idx):
-        batch_data = self.test_data[idx * self.batch_size: (idx + 1) * self.batch_size]
-        user_ids, item_ids, cate_ids, labels = zip(*batch_data)
-        item_vecs = self.get_test_cover_img_feature(item_ids)
-        att_iids, att_cids, intra_mask, inter_mask = self.get_att_ids(user_ids)
-        return user_ids, item_vecs, cate_ids, att_iids, att_cids, intra_mask, inter_mask, labels, item_ids
+        for i in range(self.sampler_workers):
+            if i == self.sampler_workers - 1:
+                first = i * samples_per_worker
+                last = self.epoch_train_length
+            else:
+                first = i * samples_per_worker
+                last = (i + 1) * samples_per_worker
+
+            if last >= first:
+                self.n_train_batch += (last - first + 1) // self.batch_size
+                if (last - first + 1) % self.batch_size != 0:
+                    self.n_train_batch += 1
+
+                self.train_processors.append(Process(target=self.processTrainBatch, args=(first, last)))
+                self.train_processors[-1].daemon = True
+                self.train_processors[-1].start()
+
+    def processTrainBatch(self, first, last):
+        data = self.epoch_train_data[first:last]
+        random.shuffle(data)
+
+        while True:
+            n_batch = len(data) // self.batch_size
+            for i in range(n_batch):
+                if i == n_batch - 1:
+                    batch_data = self.epoch_train_data[i * self.batch_size:]
+                else:
+                    batch_data = self.epoch_train_data[i * self.batch_size: (i + 1) * self.batch_size]
+                user_ids, item_ids, cate_ids, labels = zip(*batch_data)
+                att_iids, att_cids, intra_mask, inter_mask = self.get_att_ids(user_ids)
+                self.train_queue.put(
+                    (user_ids, item_ids, cate_ids, att_iids, att_cids, intra_mask, inter_mask, labels)
+                )
+
+    def get_train_batch(self):
+        return self.train_queue.get()
+
+    def initTestProcess(self):
+        self.test_processors = []
+        self.n_test_batch = 0
+        samples_per_worker = self.epoch_test_length // self.sampler_workers
+
+        for i in range(self.sampler_workers):
+            if i == self.sampler_workers - 1:
+                first = i * samples_per_worker
+                last = self.epoch_train_length
+            else:
+                first = i * samples_per_worker
+                last = (i + 1) * samples_per_worker
+
+            if last >= first:
+                self.n_test_batch += (last - first + 1) // self.batch_size
+                if (last - first + 1) % self.batch_size != 0:
+                    self.n_test_batch += 1
+                self.test_processors.append(Process(target=self.processTestBatch(), args=(first, last)))
+                self.test_processors[-1].daemon = True
+                self.test_processors[-1].start()
+
+    def processTestBatch(self, first, last):
+        data = self.test_data[first:last]
+        n_batch = len(data) // self.batch_size
+        for i in range(n_batch):
+            if i == n_batch - 1:
+                batch_data = self.test_data[i * self.batch_size:]
+            else:
+                batch_data = self.test_data[i * self.batch_size: (i + 1) * self.batch_size]
+            user_ids, item_ids, cate_ids, labels = zip(*batch_data)
+            item_vecs = self.get_test_cover_img_feature(item_ids)
+            att_iids, att_cids, intra_mask, inter_mask = self.get_att_ids(user_ids)
+            self.test_queue.put(
+                (user_ids, item_vecs, cate_ids, att_iids, att_cids, intra_mask, inter_mask, labels, item_ids)
+            )
+
+    def get_test_batch(self):
+        return self.test_queue.get()
+
+    def close(self):
+        for p in self.train_processors:
+            p.terminate()
+            p.join()
+
+        for p in self.test_processors:
+            p.terminate()
+            p.join()
 
     def generate_train_data(self, neg_ratio=3):
         logging.info('generate samples for training')
@@ -51,10 +135,9 @@ class DataLoader(object):
                 epoch_train_data.extend(item[1])
             else:
                 epoch_train_data.extend(random.sample(item[1], int(pos_num * neg_ratio)))
-
         random.shuffle(epoch_train_data)
-        self.epoch_train_data = epoch_train_data
         self.epoch_train_length = len(epoch_train_data)
+        return epoch_train_data
 
     def read_train_data(self, data_list_path):
         logging.info('start read data list from disk')

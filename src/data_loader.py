@@ -13,7 +13,7 @@ from multiprocessing import Process, Queue
 
 
 class DataLoader(object):
-    def __init__(self, params, sampler_workers=2):
+    def __init__(self, params, sampler_workers=8):
         self.data_dir = params.data_dir
         self.batch_size = params.batch_size
         self.n_block = params.n_block
@@ -30,7 +30,7 @@ class DataLoader(object):
         if params.phase == 'train':
             self.read_train_data(train_data_path)
             self.epoch_train_data = self.generate_train_data()
-            self.train_queue = Queue(maxsize=self.sampler_workers * 2)
+            self.train_queue = Queue(maxsize=self.sampler_workers * 4)
             self.initTrainProcess()
         self.read_test_data(test_csv_path)
         self.test_queue = Queue(maxsize=self.sampler_workers * 2)
@@ -177,17 +177,11 @@ class DataLoader(object):
         '''
         result = []
         for uid in user_ids:
-            true_negs = self.user_unclick_ids[uid][:]
-            if len(negs) > self.n_cl_neg:
-                negs = random.sample(negs, self.n_cl_neg)
+            neg = self.true_negs[uid]
+            if len(neg) >= self.n_cl_neg:
+                result.append(list(random.sample(neg, self.n_cl_neg)))
             else:
-                neg_set = set(negs)
-                pos_set = set(self.user_click_ids[uid])
-                while len(negs) < self.n_cl_neg:
-                    tmp_neg = random.choice(list(range(984982)))
-                    if (tmp_neg not in neg_set) and (tmp_neg not in pos_set):
-                        negs.append(tmp_neg)
-            result.append(negs)
+                result.append(list(neg) + list(random.sample(self.neg_buffer[user_ids], self.n_cl_neg-len(neg))))
         return result
 
     def sample_vid(self, tuples):

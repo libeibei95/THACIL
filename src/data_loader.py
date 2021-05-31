@@ -30,10 +30,10 @@ class DataLoader(object):
         if params.phase == 'train':
             self.read_train_data(train_data_path)
             self.epoch_train_data = self.generate_train_data()
-            self.train_queue = Queue(maxsize=self.sampler_workers * 4)
+            self.train_queue = Queue(maxsize=4)
             self.initTrainProcess()
         self.read_test_data(test_csv_path)
-        self.test_queue = Queue(maxsize=self.sampler_workers * 2)
+        self.test_queue = Queue(maxsize=4)
 
     #        self.initTestProcess()
 

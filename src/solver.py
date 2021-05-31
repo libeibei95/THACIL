@@ -80,17 +80,18 @@ class Solver(object):
 
             for epoch in range(self.max_epoch):
                 logging.info('start train phase')
-                logging.info('train iterations: {}'.format(self.data.n_train_batch))
+                n_batch = 1000
+                logging.info('train iterations: {}'.format(n_batch))
                 avg_loss, avg_acc = 0.0, 0.0
                 load_times, run_times = 0.0, 0.0
                 epoch_avg_loss = 0.0
-                for i in range(self.data.n_train_batch):
+                for i in range(n_batch):
                     start = time.time()
                     batch_data = self.data.get_train_batch()
                     load_time = time.time() - start
                     loss, acc, summaries = self.model.train(sess, batch_data, lr)
                     run_time = time.time() - start - load_time
-                    self.train_writer.add_summary(summaries, i + 1 + epoch * self.data.n_train_batch)
+                    self.train_writer.add_summary(summaries, i + 1 + epoch * n_batch)
 
                     load_times += load_time
                     run_times += run_time
@@ -106,7 +107,7 @@ class Solver(object):
                         # break
                 avg_loss, avg_acc = 0.0, 0.0
                 load_times, run_times = 0.0, 0.0
-                epoch_avg_loss /= self.data.n_train_batch
+                epoch_avg_loss /= n_batch
                 logging.info('lr: {}, min loss: {}'.format(lr, min_loss))
                 if epoch_avg_loss < min_loss:
                     if min_loss - epoch_avg_loss < 0.005:

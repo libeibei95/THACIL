@@ -215,7 +215,7 @@ class DataLoader(object):
 
     def gen_true_negs(self):
         true_negs = {}
-        for user_id in range(self.user_unclick_ids):
+        for user_id in range(len(self.user_unclick_ids)):
             item_ids, cate_ids, timestamps = list(zip(*self.user_unclick_ids[user_id]))
             true_negs[user_id] = item_ids
         return true_negs

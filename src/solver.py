@@ -79,21 +79,18 @@ class Solver(object):
             lr = self.initial_lr
 
             for epoch in range(self.max_epoch):
-                self.data.generate_train_data(self.neg_ratio)
-                epoch_train_length = self.data.epoch_train_length
-                loop_num = int(epoch_train_length // self.batch_size)
                 logging.info('start train phase')
-                logging.info('train iterations: {}'.format(loop_num))
+                logging.info('train iterations: {}'.format(self.data.n_train_batch))
                 avg_loss, avg_acc = 0.0, 0.0
                 load_times, run_times = 0.0, 0.0
                 epoch_avg_loss = 0.0
-                for i in range(loop_num):
+                for i in range(self.data.n_train_batch):
                     start = time.time()
-                    batch_data = self.data.get_train_batch(i)
+                    batch_data = self.data.get_train_batch()
                     load_time = time.time() - start
                     loss, acc, summaries = self.model.train(sess, batch_data, lr)
                     run_time = time.time() - start - load_time
-                    self.train_writer.add_summary(summaries, i + 1 + epoch * loop_num)
+                    self.train_writer.add_summary(summaries, i + 1 + epoch * self.data.n_train_batch)
 
                     load_times += load_time
                     run_times += run_time
@@ -109,7 +106,7 @@ class Solver(object):
                         # break
                 avg_loss, avg_acc = 0.0, 0.0
                 load_times, run_times = 0.0, 0.0
-                epoch_avg_loss /= loop_num
+                epoch_avg_loss /= self.data.n_train_batch
                 logging.info('lr: {}, min loss: {}'.format(lr, min_loss))
                 if epoch_avg_loss < min_loss:
                     if min_loss - epoch_avg_loss < 0.005:
@@ -126,17 +123,15 @@ class Solver(object):
 
                 if stop_training_counter > 5:
                     logging.info('start test phase')
-                    epoch_test_length = self.data.epoch_test_length
-                    loop_num = int(epoch_test_length // self.batch_size)
-                    logging.info('test iterations: {}'.format(loop_num))
+                    logging.info('test iterations: {}'.format(self.data.n_test_batch))
                     pred_dict = {}
-                    for step in range(loop_num):
+                    for step in range(self.data.n_test_batch):
                         start = time.time()
-                        batch_data = self.data.get_test_batch(step)
+                        batch_data = self.data.get_test_batch()
                         load_time = time.time() - start
                         loss, logits, acc, summaries = self.model.test(sess, batch_data)
                         run_time = time.time() - start - load_time
-                        self.test_writer.add_summary(summaries, step + 1 + epoch * loop_num)
+                        self.test_writer.add_summary(summaries, step + 1 + epoch * self.data.n_test_batch)
 
                         avg_loss += loss
                         load_times += load_time
@@ -171,13 +166,11 @@ class Solver(object):
         with tf.Session(config=config) as sess:
             self.create_model(sess)
             logging.info('start test phase')
-            test_epoch_length = self.data.epoch_test_length
-            loop_num = int(test_epoch_length // self.batch_size)
-            logging.info('test iterations: {}'.format(loop_num))
+            logging.info('test iterations: {}'.format(self.data.n_test_batch))
             pred_dict = {}
-            for step in range(loop_num):
+            for step in range(self.data.n_test_batch):
                 start = time.time()
-                batch_data = self.data.get_test_batch(step)
+                batch_data = self.data.get_test_batch()
                 load_time = time.time() - start
                 _, logits, _, _ = self.model.test(sess, batch_data)
                 run_time = time.time() - start - load_time

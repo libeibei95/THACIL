@@ -13,7 +13,7 @@ from multiprocessing import Process, Queue
 
 
 class DataLoader(object):
-    def __init__(self, params, sampler_workers=8):
+    def __init__(self, params, sampler_workers=2):
         self.data_dir = params.data_dir
         self.batch_size = params.batch_size
         self.n_block = params.n_block
@@ -29,10 +29,10 @@ class DataLoader(object):
         if params.phase == 'train':
             self.read_train_data(train_data_path)
             self.epoch_train_data = self.generate_train_data()
-            self.train_queue = Queue(maxsize=self.sampler_workers * 10)
+            self.train_queue = Queue(maxsize=self.sampler_workers * 2)
             self.initTrainProcess()
         self.read_test_data(test_csv_path)
-        self.test_queue = Queue(maxsize=self.sampler_workers * 10)
+        self.test_queue = Queue(maxsize=self.sampler_workers * 2)
 #        self.initTestProcess()
 
     def initTrainProcess(self):

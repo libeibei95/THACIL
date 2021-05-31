@@ -87,7 +87,7 @@ class DataLoader(object):
         for i in range(self.sampler_workers):
             if i == self.sampler_workers - 1:
                 first = i * samples_per_worker
-                last = self.epoch_train_length
+                last = self.epoch_test_length
             else:
                 first = i * samples_per_worker
                 last = (i + 1) * samples_per_worker

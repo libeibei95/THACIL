@@ -205,7 +205,7 @@ class Model(object):
             self.intra_mask_ph: data[5],
             self.inter_mask_ph: data[6],
             self.labels_ph: data[7],
-            self.cl_neg_ph: data[8]
+            self.cl_neg_ph: data[-1]
         }
         test_run_op = [self.test_loss, self.test_logits, self.test_acc, self.test_summuries]
         loss, logits, acc, summaries = sess.run(test_run_op, feed_dicts)

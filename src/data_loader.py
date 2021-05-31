@@ -34,8 +34,7 @@ class DataLoader(object):
             self.initTrainProcess()
         self.read_test_data(test_csv_path)
         self.test_queue = Queue(maxsize=4)
-
-    #        self.initTestProcess()
+        self.initTestProcess()
 
     def initTrainProcess(self):
         self.train_processors = []
@@ -112,8 +111,9 @@ class DataLoader(object):
             user_ids, item_ids, cate_ids, labels = zip(*batch_data)
             item_vecs = self.get_test_cover_img_feature(item_ids)
             att_iids, att_cids, intra_mask, inter_mask = self.get_att_ids(user_ids)
+            cl_negs = self.get_neg_ids(user_ids)
             self.test_queue.put(
-                (user_ids, item_vecs, cate_ids, att_iids, att_cids, intra_mask, inter_mask, labels, item_ids)
+                (user_ids, item_vecs, cate_ids, att_iids, att_cids, intra_mask, inter_mask, labels, item_ids, cl_negs)
             )
 
     def get_test_batch(self):

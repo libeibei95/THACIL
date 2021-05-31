@@ -122,6 +122,9 @@ class Solver(object):
                     stop_training_counter += 1
                     lr *= 0.5
 
+                #regenerate negative buffers
+                self.data.neg_buffers = self.data.pre_sample_negs()
+
                 if stop_training_counter > 5:
                     logging.info('start test phase')
                     logging.info('test iterations: {}'.format(self.data.n_test_batch))

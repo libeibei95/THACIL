@@ -18,6 +18,7 @@ class DataLoader(object):
         self.batch_size = params.batch_size
         self.n_block = params.n_block
         self.max_length = params.max_length
+        self.n_cl_neg = params.n_cl_neg
         self.sampler_workers = sampler_workers
 
         self.block_size = self.max_length // self.n_block
@@ -163,6 +164,31 @@ class DataLoader(object):
         self.epoch_test_length = len(self.test_data)
         logging.info('{} test samples'.format(self.epoch_test_length))
 
+    def get_neg_ids(self, user_ids):
+        '''
+        sample neg samples for cl loss
+        Args:
+            user_ids:
+
+        Returns:
+
+        '''
+        result = []
+        for uid in user_ids:
+            negs = self.user_unclick_ids[uid][:]
+            if len(negs) > self.n_cl_neg:
+                negs = random.sample(negs, self.n_cl_neg)
+            else:
+                neg_set = set(negs)
+                pos_set = set(self.user_click_ids[uid])
+                while len(negs) < self.n_cl_neg:
+                    tmp_neg = random.choice(list(range(984982)))
+                    if (tmp_neg not in neg_set) and (tmp_neg not in pos_set):
+                        negs.append(tmp_neg)
+            result.append(negs)
+        return result
+
+
     def sample_vid(self, tuples):
         item_ids, cate_ids, timestamps = list(zip(*tuples))
         length = len(item_ids)
@@ -205,6 +231,10 @@ class DataLoader(object):
 
         user_click_ids_path = os.path.join(self.data_dir, 'user_click_ids.npy')
         self.user_click_ids = np.load(user_click_ids_path, allow_pickle=True)
+
+        user_unclick_ids_path = os.path.join(self.data_dir, 'user_unclick_ids.npy')
+        self.user_unclick_ids = np.load(user_unclick_ids_path, allow_pickle=True)
+
 
     def del_temp(self):
         del self.train_visual_feature

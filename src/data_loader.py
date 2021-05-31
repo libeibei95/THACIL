@@ -9,7 +9,7 @@ from __future__ import print_function
 
 import numpy as np
 import random, logging, os
-from multiprocessing import Process, Queue
+from multiprocessing import Process, Queue, Manager
 
 
 class DataLoader(object):
@@ -220,30 +220,34 @@ class DataLoader(object):
             true_negs[user_id] = item_ids
         return true_negs
 
-    def sample_neg_worker(self, user_ids):
+    def sample_neg_worker(self, user_ids, neg_buffers):
         for user_id in user_ids:
             pos_items = list(map(lambda x: x[0], self.user_click_ids[user_id]))
             candidates = set(range(984983)) - set(self.true_negs[user_id]) - set(pos_items)
-            self.neg_buffers[user_id] = random.sample(candidates, 5000)
+            neg_buffers[user_id] = random.sample(candidates, 5000)
+
 
     def pre_sample_negs(self):
         print('enter pre_sample_negs function')
-        self.neg_buffers = {}
+        neg_buffers = Manager().dict()
         users = [uid for uid in self.true_negs if len(self.true_negs[uid]) < self.n_cl_neg]
-        users_per_worker = len(users) // self.sampler_workers
+        print(len(users))
+        n_workers = self.sampler_workers * 2
+        users_per_worker = len(users) // n_workers
         processors = []
-        for i in range(self.sampler_workers):
-            if i == self.sampler_workers - 1:
+        for i in range(n_workers):
+            if i == n_workers - 1:
                 tar_users = users[i * users_per_worker:]
-                processors.append(Process(target=self.sample_neg_worker, args=(tar_users,)))
+                processors.append(Process(target=self.sample_neg_worker, args=(tar_users, neg_buffers)))
             else:
                 tar_users = users[i * users_per_worker:(i + 1) * users_per_worker]
-                processors.append(Process(target=self.sample_neg_worker, args=(tar_users,)))
+                processors.append(Process(target=self.sample_neg_worker, args=(tar_users, neg_buffers)))
             processors[-1].daemon = True
             processors[-1].start()
 
         for proc in processors:
             proc.join()
+        return neg_buffers
     def preload_feat_into_memory(self):
         train_feature_path = os.path.join(self.data_dir, 'train_cover_image_feature.npy')
         test_feature_path = os.path.join(self.data_dir, 'test_cover_image_feature.npy')
@@ -262,7 +266,7 @@ class DataLoader(object):
         self.user_unclick_ids = np.load(user_unclick_ids_path, allow_pickle=True)
 
         self.true_negs = self.gen_true_negs()
-        self.pre_sample_negs()
+        self.neg_buffers = self.pre_sample_negs()
 
     def del_temp(self):
         del self.train_visual_feature

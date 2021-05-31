@@ -43,7 +43,7 @@ class Model(object):
             with tf.variable_scope('THACIL'):
                 self.train_inference()
                 tf.get_variable_scope().reuse_variables()
-                self.test_inference()
+                #self.test_inference()
 
     def train_inference(self):
         item_vec = self.get_train_cover_image_feature(self.item_ids_ph)
@@ -109,15 +109,18 @@ class Model(object):
         pos_item_emb = tf.nn.l2_normalize(pos_item_emb, -1)
         neg_item_emb = tf.nn.l2_normalize(neg_item_emb, -1)
 
-        pos_item_emb2 = tf.concat([pos_item_emb[:, 1:, :], pos_item_emb[:, -2, :]], axis=1)
+        pos_item_emb2 = tf.concat([pos_item_emb[:, 1:, :], pos_item_emb[:, -2:-1, :]], axis=1)
         # batch_size * seq_len
         pos_scores = tf.exp(tf.reduce_sum(tf.multiply(pos_item_emb, pos_item_emb2), axis=-1) / t)
         # batch_size * seq_len * n_cl_neg
-        neg_scores = tf.exp(tf.batch_matmul(pos_item_emb, tf.transpose(neg_item_emb, [0, 2, 1])) / t)
+        neg_scores = tf.exp(tf.matmul(pos_item_emb, tf.transpose(neg_item_emb, [0, 2, 1])) / t)
         all_scores = tf.concat([tf.expand_dims(pos_scores, axis=-1), neg_scores], axis=-1)
-        all_scores = tf.sum(all_scores, axis=-1)
+        all_scores = tf.reduce_sum(all_scores, axis=-1)
         ssl_loss = - tf.log(pos_scores / all_scores) # batch_size * seq_len
-        ssl_loss = tf.reduce_sum(tf.multiply(ssl_loss, intra_mask), axis=1) / tf.reduce_sum(intra_mask, axis=1)
+        
+        avg_mask = tf.reduce_sum(tf.cast(intra_mask, dtype=tf.float32), axis=1)
+        ssl_loss = tf.reduce_sum(tf.multiply(ssl_loss, tf.cast(intra_mask, dtype=tf.float32)), axis=1) 
+        ssl_loss = tf.reduce_mean(ssl_loss/avg_mask)
         return ssl_loss
 
 
@@ -225,7 +228,7 @@ class Model(object):
         self.intra_mask_ph = tf.placeholder(tf.bool, shape=(self.batch_size, self.max_length))
         self.inter_mask_ph = tf.placeholder(tf.bool, shape=(self.batch_size, self.n_block))
         self.item_vec_ph = tf.placeholder(tf.float32, shape=(self.batch_size, 512))
-        self.labels_ph = tf.placeholder(tf.float32, shape=(self.batch_size, self.n_cl_neg))
+        self.labels_ph = tf.placeholder(tf.float32, shape=(self.batch_size))
         self.lr_ph = tf.placeholder(tf.float32, shape=())
         self.cl_neg_ph = tf.placeholder(tf.int32, shape=(self.batch_size, self.n_cl_neg))
 

@@ -54,7 +54,7 @@ def process_args(args, defaults):
                         default=defaults.FUSION_LAYERS)
     parser.add_argument('--num-heads', dest='num_heads', type=int, default=defaults.NUM_HEADS)
     parser.add_argument('--max-length', dest='max_length', type=int, default=defaults.MAX_LENGTH)
-    parser.add_argument('--n-cl-neg', dest='number of cl negatives', type=int, default=defaults.N_CL_NEG)
+    parser.add_argument('--n-cl-neg', dest='n_cl_neg', type=int, default=defaults.N_CL_NEG)
 
     parameters = parser.parse_args(args)
     return parameters
@@ -98,6 +98,7 @@ def init_logging(params):
 
 def main(args, defaults):
     param = process_args(args, defaults)
+    print(param)
     directory = '{}'.format("THACIL")
     param.out_dir = os.path.join(param.out_dir, directory)
     if not os.path.exists(param.out_dir):

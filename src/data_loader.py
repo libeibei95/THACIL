@@ -177,7 +177,7 @@ class DataLoader(object):
         '''
         result = []
         for uid in user_ids:
-            negs = self.user_unclick_ids[uid][:]
+            true_negs = self.user_unclick_ids[uid][:]
             if len(negs) > self.n_cl_neg:
                 negs = random.sample(negs, self.n_cl_neg)
             else:
@@ -219,6 +219,22 @@ class DataLoader(object):
         head_vec = [self.test_visual_feature[i] for i in vids]
         return head_vec
 
+    def gen_true_negs(self):
+        true_negs = {}
+        for user_id in self.user_unclick_ids:
+            item_ids, cate_ids, timestamps = list(zip(*self.user_unclick_ids[user_id]))
+            true_negs[user_id] = item_ids
+        return true_negs
+
+    def pre_sample_negs(self):
+        neg_buffers = {}
+        for user_id in self.true_negs:
+            if len(self.true_negs[user_id]) < self.n_cl_neg:
+                pos_items = list(map(lambda x: x[0], self.user_click_ids[user_id]))
+                candidates = set(range(984983)) - set(self.true_negs[user_id]) - set(pos_items)
+                neg_buffers[user_id] = random.sample(candidates, 5000)
+        return neg_buffers
+
     def preload_feat_into_memory(self):
         train_feature_path = os.path.join(self.data_dir, 'train_cover_image_feature.npy')
         test_feature_path = os.path.join(self.data_dir, 'test_cover_image_feature.npy')
@@ -235,6 +251,9 @@ class DataLoader(object):
 
         user_unclick_ids_path = os.path.join(self.data_dir, 'user_unclick_ids.npy')
         self.user_unclick_ids = np.load(user_unclick_ids_path, allow_pickle=True)
+
+        self.true_negs = self.gen_true_negs()
+        self.neg_buffer = self.pre_sample_negs()
 
     def del_temp(self):
         del self.train_visual_feature

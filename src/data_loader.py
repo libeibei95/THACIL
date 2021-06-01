@@ -125,6 +125,8 @@ class DataLoader(object):
             for p in self.train_processors:
                 p.terminate()
                 p.join()
+                while not self.train_queue.empty():
+                    self.train_queue.get()
         except:
             raise ValueError('Error when close train processes')
 
@@ -133,6 +135,8 @@ class DataLoader(object):
             for p in self.test_processors:
                 p.terminate()
                 p.join()
+                while not self.test_queue.empty():
+                    self.test_queue.get()
         except:
             raise ValueError('Error when close test processes')
 

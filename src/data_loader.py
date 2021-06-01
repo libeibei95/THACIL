@@ -39,10 +39,6 @@ class DataLoader(object):
         if params.phase == 'test':
             self.initTestProcess()
 
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of 3e2fa7c... change neg sampling
     def initTrainProcess(self):
         self.train_processors = []
         self.n_train_batch = 0
@@ -185,19 +181,10 @@ class DataLoader(object):
         result = []
         for uid in user_ids:
             neg = self.true_negs[uid]
-<<<<<<< HEAD
-            # 真负样本是随机抽样样本概率的10倍
-            result.append(random.sample(list(neg) * 10 + list(self.all_item_set - set(pos_items)), self.n_cl_neg))
-            # if len(neg) >= self.n_cl_neg:
-            #     result.append(list(random.sample(neg, self.n_cl_neg)))
-            # else:
-            #     result.append(list(neg) + list(random.sample(self.neg_buffers[uid], self.n_cl_neg - len(neg))))
-=======
             if len(neg) >= self.n_cl_neg:
                 result.append(list(random.sample(neg, self.n_cl_neg)))
             else:
                 result.append(list(neg) + list(random.sample(self.neg_buffers[uid], self.n_cl_neg - len(neg))))
->>>>>>> parent of 3e2fa7c... change neg sampling
         return result
 
     def sample_vid(self, tuples):

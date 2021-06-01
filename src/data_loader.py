@@ -233,8 +233,8 @@ class DataLoader(object):
     def pre_sample_negs(self):
         print('enter pre_sample_negs function')
         neg_buffers = Manager().dict()
-        users = list(self.true_negs.keys())
-        #users = [uid for uid in self.true_negs if len(self.true_negs[uid]) < self.n_cl_neg]
+        # users = list(self.true_negs.keys())
+        users = [uid for uid in self.true_negs if len(self.true_negs[uid]) < self.n_cl_neg]
         print(len(users))
         n_workers = min(30, self.sampler_workers * 4)
         users_per_worker = len(users) // n_workers

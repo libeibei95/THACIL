@@ -10,6 +10,7 @@ from __future__ import print_function
 import numpy as np
 import random, logging, os
 from multiprocessing import Process, Queue, Manager
+import Queue
 
 
 class DataLoader(object):
@@ -120,27 +121,40 @@ class DataLoader(object):
     def get_test_batch(self):
         return self.test_queue.get()
 
+    def clear(q):
+        try:
+            while True:
+                q.get_nowait()
+        except Empty:
+            pass
     def close_train_processes(self):
         try:
             for p in self.train_processors:
                 p.terminate()
                 p.join()
-            while not self.train_queue.empty():
-                self.train_queue.get()
-            self.train_processors = []
         except:
             raise ValueError('Error when close train processes')
+
+        try:
+            while True:
+                self.train_queue.get_nowait()
+        except Queue.Empty:
+            pass
+
 
     def close_test_processes(self):
         try:
             for p in self.test_processors:
                 p.terminate()
                 p.join()
-            while not self.test_queue.empty():
-                self.test_queue.get()
-            self.test_processors = []
         except:
             raise ValueError('Error when close test processes')
+
+        try:
+            while True:
+                self.test_queue.get_nowait()
+        except Queue.Empty:
+            pass
 
     def generate_train_data(self, neg_ratio=3):
         logging.info('generate samples for training')

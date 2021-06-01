@@ -80,20 +80,15 @@ class Solver(object):
 
             for epoch in range(self.max_epoch):
                 logging.info('start train phase')
-                # n_batch = self.data.n_train_batch
-                n_batch = 200
+                #n_batch = self.data.n_train_batch
+                n_batch = 10000
                 logging.info('train iterations: {}'.format(n_batch))
                 avg_loss, avg_acc = 0.0, 0.0
                 load_times, run_times = 0.0, 0.0
                 epoch_avg_loss = 0.0
                 for i in range(n_batch):
                     start = time.time()
-                    if epoch!= 0:
-                        assert not self.data.train_queue.empty()
-                        print('begin to get training batch')
                     batch_data = self.data.get_train_batch()
-                    if epoch!= 0:
-                        print('finish getting training batch')
                     load_time = time.time() - start
                     loss, acc, summaries = self.model.train(sess, batch_data, lr)
                     run_time = time.time() - start - load_time
@@ -130,9 +125,9 @@ class Solver(object):
 
                 # regenerate negative buffers
 
-                self.data.close_train_processes()
-                self.data.neg_buffers = self.data.pre_sample_negs()
-                self.data.initTrainProcess()
+                #self.data.close_train_processes()
+                #self.data.neg_buffers = self.data.pre_sample_negs()
+                #self.data.initTrainProcess()
 
                 if stop_training_counter > 5:
                     self.data.close_train_processes()
@@ -182,9 +177,11 @@ class Solver(object):
         with tf.Session(config=config) as sess:
             self.create_model(sess)
             logging.info('start test phase')
-            logging.info('test iterations: {}'.format(self.data.n_test_batch))
+            n_batch = self.data.n_test_batch
+            #n_batch = 2000
+            logging.info('test iterations: {}'.format(n_batch))
             pred_dict = {}
-            for step in range(self.data.n_test_batch):
+            for step in range(n_batch):
                 start = time.time()
                 batch_data = self.data.get_test_batch()
                 load_time = time.time() - start
@@ -193,7 +190,7 @@ class Solver(object):
 
                 load_times += load_time
                 run_times += run_time
-                if (step + 1) % (self.display * 100) == 0:
+                if (step + 1) % (self.display * 1) == 0:
                     logging.info('test step {}: in {:.3f}s, load {:.3f}s'.format(
                         step + 1, run_times, load_times))
                     load_times, run_times, avg_acc, avg_loss = 0.0, 0.0, 0.0, 0.0
@@ -204,6 +201,7 @@ class Solver(object):
                     pred_dict[batch_data[0][i]].append([logits[i], int(batch_data[-3][i]), int(batch_data[-2][i])])
 
             self.data.close_test_processes()
+            print('close test preprocesses')
             pres, recalls, ndcgs = [], [], []
             for k in range(1, 11):
                 top_k = k * 10

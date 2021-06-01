@@ -11,7 +11,7 @@ class Config:
     PHASE = 'train'
 
     BATCH_SIZE = 256
-    MAX_EPOCH = 20
+    MAX_EPOCH = 40
     INITIAL_LEARNING_RATE = 0.001
     REG = 0.00005
     DROPOUT = 0.8
@@ -28,7 +28,7 @@ class Config:
     ITEM_DIM = 64
     CATE_DIM = 64
     USER_DIM = 128
-    DISPLAY = 100
+    DISPLAY = 1000
     NUM_HEADS = 8
     N_BLOCK = 8
     N_CL_NEG = 256

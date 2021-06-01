@@ -10,11 +10,12 @@ from __future__ import print_function
 import numpy as np
 import random, logging, os
 from multiprocessing import Process, Queue, Manager
-import Queue
+import sys
+import queue
 
 
 class DataLoader(object):
-    def __init__(self, params, sampler_workers=8):
+    def __init__(self, params, sampler_workers=4):
         self.data_dir = params.data_dir
         self.batch_size = params.batch_size
         self.n_block = params.n_block
@@ -31,10 +32,10 @@ class DataLoader(object):
         if params.phase == 'train':
             self.read_train_data(train_data_path)
             self.epoch_train_data = self.generate_train_data()
-            self.train_queue = Queue(maxsize=4)
+            self.train_queue = Queue(maxsize=16)
             self.initTrainProcess()
         self.read_test_data(test_csv_path)
-        self.test_queue = Queue(maxsize=2)
+        self.test_queue = Queue(maxsize=4)
         if params.phase == 'test':
             self.initTestProcess()
 
@@ -74,6 +75,7 @@ class DataLoader(object):
                 user_ids, item_ids, cate_ids, labels = zip(*batch_data)
                 att_iids, att_cids, intra_mask, inter_mask = self.get_att_ids(user_ids)
                 cl_negs = self.get_neg_ids(user_ids)
+                #print(sys.getsizeof(user_ids) + sys.getsizeof(item_ids) + sys.getsizeof(cate_ids) + sys.getsizeof(att_iids)+sys.getsizeof(att_cids)+sys.getsizeof(intra_mask)+ sys.getsizeof(inter_mask)+sys.getsizeof(labels)+sys.getsizeof(cl_negs))
                 self.train_queue.put(
                     (user_ids, item_ids, cate_ids, att_iids, att_cids, intra_mask, inter_mask, labels, cl_negs)
                 )
@@ -132,14 +134,9 @@ class DataLoader(object):
             for p in self.train_processors:
                 p.terminate()
                 p.join()
+            del self.train_queue
         except:
             raise ValueError('Error when close train processes')
-
-        try:
-            while True:
-                self.train_queue.get_nowait()
-        except Queue.Empty:
-            pass
 
 
     def close_test_processes(self):
@@ -147,14 +144,9 @@ class DataLoader(object):
             for p in self.test_processors:
                 p.terminate()
                 p.join()
+            del self.test_queue
         except:
             raise ValueError('Error when close test processes')
-
-        try:
-            while True:
-                self.test_queue.get_nowait()
-        except Queue.Empty:
-            pass
 
     def generate_train_data(self, neg_ratio=3):
         logging.info('generate samples for training')

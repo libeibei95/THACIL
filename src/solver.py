@@ -111,7 +111,8 @@ class Solver(object):
                 epoch_avg_loss /= n_batch
                 logging.info('lr: {}, min loss: {}'.format(lr, min_loss))
                 if epoch_avg_loss < min_loss:
-                    if min_loss - epoch_avg_loss < 0.005:
+                    # if min_loss - epoch_avg_loss < 0.005:
+                    if min_loss - epoch_avg_loss < 0.0:
                         stop_training_counter += 1
                         lr *= 0.5
                     else:
@@ -131,7 +132,7 @@ class Solver(object):
 
                 if stop_training_counter > 5:
                     self.data.close_train_processes()
-                    self.initTestProcess()
+                    self.data.initTestProcess()
                     logging.info('start test phase')
                     logging.info('test iterations: {}'.format(self.data.n_test_batch))
                     pred_dict = {}

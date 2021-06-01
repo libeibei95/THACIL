@@ -80,6 +80,7 @@ class Solver(object):
 
             for epoch in range(self.max_epoch):
                 logging.info('start train phase')
+                # n_batch = self.data.n_train_batch
                 n_batch = 1000
                 logging.info('train iterations: {}'.format(n_batch))
                 avg_loss, avg_acc = 0.0, 0.0
@@ -122,10 +123,12 @@ class Solver(object):
                     stop_training_counter += 1
                     lr *= 0.5
 
-                #regenerate negative buffers
+                # regenerate negative buffers
                 self.data.neg_buffers = self.data.pre_sample_negs()
 
                 if stop_training_counter > 5:
+                    self.data.close_train_processes()
+                    self.initTestProcess()
                     logging.info('start test phase')
                     logging.info('test iterations: {}'.format(self.data.n_test_batch))
                     pred_dict = {}
@@ -154,6 +157,7 @@ class Solver(object):
                             pred_dict[batch_data[0][i]].append(
                                 [logits[i], int(batch_data[-2][i]), int(batch_data[-1][i])])
 
+                    self.data.close_test_processes()
                     precision, recall, ndcg, auc = evaluation(pred_dict, 0)
                     logging.info('test auc: {:.4f}, ndcg: {:.4f}, precision: {:.4f}, recall: {:.4f}'.format(
                         auc, ndcg, precision, recall))
@@ -191,6 +195,7 @@ class Solver(object):
                         pred_dict[batch_data[0][i]] = []
                     pred_dict[batch_data[0][i]].append([logits[i], int(batch_data[-3][i]), int(batch_data[-2][i])])
 
+            self.data.close_test_processes()
             pres, recalls, ndcgs = [], [], []
             for k in range(1, 11):
                 top_k = k * 10

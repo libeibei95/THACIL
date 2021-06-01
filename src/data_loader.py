@@ -33,8 +33,9 @@ class DataLoader(object):
             self.train_queue = Queue(maxsize=4)
             self.initTrainProcess()
         self.read_test_data(test_csv_path)
-        self.test_queue = Queue(maxsize=4)
-        self.initTestProcess()
+        self.test_queue = Queue(maxsize=2)
+        if params.phase == 'test':
+            self.initTestProcess()
 
     def initTrainProcess(self):
         self.train_processors = []
@@ -119,14 +120,21 @@ class DataLoader(object):
     def get_test_batch(self):
         return self.test_queue.get()
 
-    def close(self):
-        for p in self.train_processors:
-            p.terminate()
-            p.join()
+    def close_train_processes(self):
+        try:
+            for p in self.train_processors:
+                p.terminate()
+                p.join()
+        except:
+            raise ValueError('Error when close train processes')
 
-        for p in self.test_processors:
-            p.terminate()
-            p.join()
+    def close_test_processes(self):
+        try:
+            for p in self.test_processors:
+                p.terminate()
+                p.join()
+        except:
+            raise ValueError('Error when close test processes')
 
     def generate_train_data(self, neg_ratio=3):
         logging.info('generate samples for training')
@@ -226,7 +234,6 @@ class DataLoader(object):
             candidates = set(range(984983)) - set(self.true_negs[user_id]) - set(pos_items)
             neg_buffers[user_id] = random.sample(candidates, 5000)
 
-
     def pre_sample_negs(self):
         print('enter pre_sample_negs function')
         neg_buffers = Manager().dict()
@@ -248,6 +255,7 @@ class DataLoader(object):
         for proc in processors:
             proc.join()
         return neg_buffers
+
     def preload_feat_into_memory(self):
         train_feature_path = os.path.join(self.data_dir, 'train_cover_image_feature.npy')
         test_feature_path = os.path.join(self.data_dir, 'test_cover_image_feature.npy')

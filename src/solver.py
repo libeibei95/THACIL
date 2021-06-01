@@ -125,9 +125,9 @@ class Solver(object):
 
                 # regenerate negative buffers
 
-                # self.data.close_train_processes()
-                # self.data.neg_buffers = self.data.pre_sample_negs()
-                # self.data.initTrainProcess()
+                self.data.close_train_processes()
+                self.data.neg_buffers = self.data.pre_sample_negs()
+                self.data.initTrainProcess()
 
                 if stop_training_counter > 5:
                     self.data.close_train_processes()

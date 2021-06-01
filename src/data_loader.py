@@ -180,13 +180,12 @@ class DataLoader(object):
         result = []
         for uid in user_ids:
             neg = self.true_negs[uid]
-            result.append(list(random.sample(list(neg)*10+list(self.neg_buffers[uid]), self.n_cl_neg)))
-            '''
+            # result.append(list(random.sample(list(neg)*10+list(self.neg_buffers[uid]), self.n_cl_neg)))
+
             if len(neg) >= self.n_cl_neg:
                 result.append(list(random.sample(neg, self.n_cl_neg)))
             else:
                 result.append(list(neg) + list(random.sample(self.neg_buffers[uid], self.n_cl_neg - len(neg))))
-            '''
         return result
 
     def sample_vid(self, tuples):
@@ -237,7 +236,7 @@ class DataLoader(object):
         users = list(self.true_negs.keys())
         #users = [uid for uid in self.true_negs if len(self.true_negs[uid]) < self.n_cl_neg]
         print(len(users))
-        n_workers = self.sampler_workers * 4
+        n_workers = min(30, self.sampler_workers * 4)
         users_per_worker = len(users) // n_workers
         processors = []
         for i in range(n_workers):

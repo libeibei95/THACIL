@@ -55,8 +55,6 @@ class DataLoader(object):
 
             if last >= first:
                 self.n_train_batch += (last - first + 1) // self.batch_size
-                if (last - first + 1) % self.batch_size != 0:
-                    self.n_train_batch += 1
 
                 self.train_processors.append(Process(target=self.processTrainBatch, args=(first, last)))
                 self.train_processors[-1].daemon = True
@@ -95,8 +93,6 @@ class DataLoader(object):
 
             if last >= first:
                 self.n_test_batch += (last - first + 1) // self.batch_size
-                if (last - first + 1) % self.batch_size != 0:
-                    self.n_test_batch += 1
                 self.test_processors.append(Process(target=self.processTestBatch, args=(first, last)))
                 self.test_processors[-1].daemon = True
                 self.test_processors[-1].start()

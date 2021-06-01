@@ -224,6 +224,7 @@ def evaluation(pred_dict, top_k=0):
         flag = True
     else:
         flag = False
+        print('begin to evaluate')
     precisions, recalls, ndcgs, auc_lst = [], [], [], []
     for key in pred_dict:
         preds = pred_dict[key]

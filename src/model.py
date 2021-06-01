@@ -117,13 +117,12 @@ class Model(object):
         neg_scores = tf.exp(tf.matmul(pos_item_emb, tf.transpose(neg_item_emb, [0, 2, 1])) / t)
         all_scores = tf.concat([tf.expand_dims(pos_scores, axis=-1), neg_scores], axis=-1)
         all_scores = tf.reduce_sum(all_scores, axis=-1)
-        ssl_loss = - tf.log(pos_scores / all_scores) # batch_size * seq_len
-        
-        avg_mask = tf.reduce_sum(tf.cast(intra_mask, dtype=tf.float32), axis=1)
-        ssl_loss = tf.reduce_sum(tf.multiply(ssl_loss, tf.cast(intra_mask, dtype=tf.float32)), axis=1) 
-        ssl_loss = tf.reduce_mean(ssl_loss/avg_mask)
-        return ssl_loss
+        ssl_loss = - tf.log(pos_scores / all_scores)  # batch_size * seq_len
 
+        avg_mask = tf.reduce_sum(tf.cast(intra_mask, dtype=tf.float32), axis=1)
+        ssl_loss = tf.reduce_sum(tf.multiply(ssl_loss, tf.cast(intra_mask, dtype=tf.float32)), axis=1)
+        ssl_loss = tf.reduce_mean(ssl_loss / avg_mask)
+        return ssl_loss
 
     def build_model(self,
                     item_vec,
@@ -140,20 +139,19 @@ class Model(object):
             att_item_vec = self.get_train_cover_image_feature(att_iids)
             att_cate_emb = self.get_cate_emb(att_cids)
             neg_item_vec = self.get_train_cover_image_feature(neg_iids)
-            neg_cate_emb = self.get_cate_emb(neg_iids)
+            # neg_cate_emb = self.get_cate_emb(neg_iids)
 
             item_vec = dense(item_vec, self.item_dim, ['w1'], 1.0)
             att_item_vec = dense(att_item_vec, self.item_dim, ['w1'], 1.0, reuse=True)
-            neg_item_vec = dense(neg_item_vec, self.item_dim, ['w1'], 1.0, reuse=True)
+            # neg_item_vec = dense(neg_item_vec, self.item_dim, ['w1'], 1.0, reuse=True)
 
             cate_emb = self.get_cate_emb(cate_ids)
             item_emb = tf.concat([item_vec, cate_emb], axis=-1)
 
         with tf.variable_scope('cl_loss'):
-            att_item_emb = tf.concat([att_item_vec, att_cate_emb], axis=-1)
-            neg_item_emb = tf.concat([neg_item_vec, neg_cate_emb], axis=-1)
-            seq_cl_loss = self.seq_cl_loss(att_item_emb, neg_item_emb, intra_mask)
-
+            # att_item_emb = tf.concat([att_item_vec, att_cate_emb], axis=-1)
+            # neg_item_emb = tf.concat([neg_item_vec, neg_cate_emb], axis=-1)
+            seq_cl_loss = self.seq_cl_loss(att_item_vec, neg_item_vec, intra_mask)
 
         with tf.variable_scope('temporal_hierarchical_attention'):
             user_profiles = temporal_hierarchical_attention(att_cate_emb,

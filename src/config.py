@@ -10,7 +10,7 @@ from __future__ import print_function
 class Config:
     PHASE = 'train'
 
-    BATCH_SIZE = 256
+    BATCH_SIZE = 512
     MAX_EPOCH = 40
     INITIAL_LEARNING_RATE = 0.001
     REG = 0.00005

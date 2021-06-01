@@ -15,7 +15,7 @@ import queue
 
 
 class DataLoader(object):
-    def __init__(self, params, sampler_workers=8):
+    def __init__(self, params, sampler_workers=16):
         self.data_dir = params.data_dir
         self.batch_size = params.batch_size
         self.n_block = params.n_block

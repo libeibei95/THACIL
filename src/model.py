@@ -143,7 +143,7 @@ class Model(object):
 
             item_vec = dense(item_vec, self.item_dim, ['w1'], 1.0)
             att_item_vec = dense(att_item_vec, self.item_dim, ['w1'], 1.0, reuse=True)
-            # neg_item_vec = dense(neg_item_vec, self.item_dim, ['w1'], 1.0, reuse=True)
+            neg_item_vec = dense(neg_item_vec, self.item_dim, ['w1'], 1.0, reuse=True)
 
             cate_emb = self.get_cate_emb(cate_ids)
             item_emb = tf.concat([item_vec, cate_emb], axis=-1)

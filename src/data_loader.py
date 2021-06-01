@@ -29,7 +29,6 @@ class DataLoader(object):
         test_csv_path = os.path.join(params.data_dir, 'test_data.csv')
 
         self.preload_feat_into_memory()
-        self.all_item_set = set(range(self.n_item))
         if params.phase == 'train':
             self.read_train_data(train_data_path)
             self.epoch_train_data = self.generate_train_data()

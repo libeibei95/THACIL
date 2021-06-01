@@ -31,6 +31,7 @@ class DataLoader(object):
         test_csv_path = os.path.join(params.data_dir, 'test_data.csv')
 
         self.preload_feat_into_memory()
+        self.all_item_set = set(range(self.n_item))
         if params.phase == 'train':
             self.read_train_data(train_data_path)
             self.epoch_train_data = self.generate_train_data()
@@ -40,7 +41,6 @@ class DataLoader(object):
         if params.phase == 'test':
             self.initTestProcess()
 
-        self.all_item_set = set(range(self.n_item))
 
     def initTrainProcess(self):
         self.train_processors = []
@@ -186,7 +186,7 @@ class DataLoader(object):
             pos_items = list(map(lambda x: x[0], self.user_click_ids[uid]))
             neg = self.true_negs[uid]
             # 真负样本是随机抽样样本概率的10倍
-            result.append(list(neg) * 10 + list(self.all_item_set - set(pos_items)), self.n_cl_neg)
+            result.append(random.sample(list(neg) * 10 + list(self.all_item_set - set(pos_items)), self.n_cl_neg))
             # if len(neg) >= self.n_cl_neg:
             #     result.append(list(random.sample(neg, self.n_cl_neg)))
             # else:

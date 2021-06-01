@@ -15,7 +15,7 @@ import queue
 
 
 class DataLoader(object):
-    def __init__(self, params, sampler_workers=8):
+    def __init__(self, params, sampler_workers=4):
         self.data_dir = params.data_dir
         self.batch_size = params.batch_size
         self.n_block = params.n_block
@@ -32,16 +32,17 @@ class DataLoader(object):
         if params.phase == 'train':
             self.read_train_data(train_data_path)
             self.epoch_train_data = self.generate_train_data()
-            self.train_queue = Queue(maxsize=16)
             self.initTrainProcess()
         self.read_test_data(test_csv_path)
-        self.test_queue = Queue(maxsize=4)
+        self.test_queue = Queue(maxsize=self.sampler_workers * 10)
         if params.phase == 'test':
             self.initTestProcess()
 
     def initTrainProcess(self):
         self.train_processors = []
         self.n_train_batch = 0
+        self.train_queue = Queue(maxsize=self.sampler_workers * 10)
+        random.shuffle(self.epoch_train_data)
         samples_per_worker = self.epoch_train_length // self.sampler_workers
 
         for i in range(self.sampler_workers):
@@ -68,13 +69,7 @@ class DataLoader(object):
             random.shuffle(data)
             n_batch = len(data) // self.batch_size
             for i in range(n_batch):
-                if i == n_batch - 1:
-                    if len(data) % self.batch_size != 0:
-                        batch_data = data[i * self.batch_size:]
-                    else:
-                        continue
-                else:
-                    batch_data = data[i * self.batch_size: (i + 1) * self.batch_size]
+                batch_data = data[i * self.batch_size: (i + 1) * self.batch_size]
                 user_ids, item_ids, cate_ids, labels = zip(*batch_data)
                 att_iids, att_cids, intra_mask, inter_mask = self.get_att_ids(user_ids)
                 cl_negs = self.get_neg_ids(user_ids)
@@ -110,13 +105,7 @@ class DataLoader(object):
         data = self.test_data[first:last]
         n_batch = len(data) // self.batch_size
         for i in range(n_batch):
-            if i == n_batch - 1:
-                if len(data) % self.batch_size != 0:
-                    batch_data = data[i * self.batch_size:]
-                else:
-                    continue
-            else:
-                batch_data = data[i * self.batch_size: (i + 1) * self.batch_size]
+            batch_data = data[i * self.batch_size: (i + 1) * self.batch_size]
             user_ids, item_ids, cate_ids, labels = zip(*batch_data)
             item_vecs = self.get_test_cover_img_feature(item_ids)
             att_iids, att_cids, intra_mask, inter_mask = self.get_att_ids(user_ids)
@@ -142,7 +131,6 @@ class DataLoader(object):
             for p in self.test_processors:
                 p.terminate()
                 p.join()
-            del self.test_queue
         except:
             raise ValueError('Error when close test processes')
 

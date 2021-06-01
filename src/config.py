@@ -17,7 +17,7 @@ class Config:
     DROPOUT = 0.8
 
     DATA_DIR = '../data/input'
-    OUT_DIR = '../data/output'
+    OUT_DIR = '../data/output2'
     RESTORE_MODEL_DIR = '../data/input'
     OPTIMIZER = 'adam'
 

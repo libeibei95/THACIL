@@ -15,7 +15,7 @@ import queue
 
 
 class DataLoader(object):
-    def __init__(self, params, sampler_workers=4):
+    def __init__(self, params, sampler_workers=8):
         self.data_dir = params.data_dir
         self.batch_size = params.batch_size
         self.n_block = params.n_block
@@ -180,10 +180,13 @@ class DataLoader(object):
         result = []
         for uid in user_ids:
             neg = self.true_negs[uid]
+            result.append(list(random.sample(list(neg)*10+list(self.neg_buffers[uid]), self.n_cl_neg)))
+            '''
             if len(neg) >= self.n_cl_neg:
                 result.append(list(random.sample(neg, self.n_cl_neg)))
             else:
                 result.append(list(neg) + list(random.sample(self.neg_buffers[uid], self.n_cl_neg - len(neg))))
+            '''
         return result
 
     def sample_vid(self, tuples):
@@ -226,14 +229,15 @@ class DataLoader(object):
         for user_id in user_ids:
             pos_items = list(map(lambda x: x[0], self.user_click_ids[user_id]))
             candidates = set(range(984983)) - set(self.true_negs[user_id]) - set(pos_items)
-            neg_buffers[user_id] = random.sample(candidates, 5000)
+            neg_buffers[user_id] = random.sample(candidates, 10000)
 
     def pre_sample_negs(self):
         print('enter pre_sample_negs function')
         neg_buffers = Manager().dict()
-        users = [uid for uid in self.true_negs if len(self.true_negs[uid]) < self.n_cl_neg]
+        users = list(self.true_negs.keys())
+        #users = [uid for uid in self.true_negs if len(self.true_negs[uid]) < self.n_cl_neg]
         print(len(users))
-        n_workers = self.sampler_workers * 2
+        n_workers = self.sampler_workers * 4
         users_per_worker = len(users) // n_workers
         processors = []
         for i in range(n_workers):

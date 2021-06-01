@@ -109,7 +109,6 @@ class Solver(object):
                 avg_loss, avg_acc = 0.0, 0.0
                 load_times, run_times = 0.0, 0.0
                 epoch_avg_loss /= n_batch
-                logging.info('lr: {}, min loss: {}'.format(lr, min_loss))
                 if epoch_avg_loss < min_loss:
                     if min_loss - epoch_avg_loss < 0.0001:
                         stop_training_counter += 1
@@ -123,6 +122,7 @@ class Solver(object):
                     stop_training_counter += 1
                     lr *= 0.5
 
+                logging.info('lr: {}, min loss: {}'.format(lr, min_loss))
                 # regenerate negative buffers
 
                 self.data.close_train_processes()

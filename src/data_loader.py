@@ -22,6 +22,8 @@ class DataLoader(object):
         self.max_length = params.max_length
         self.n_cl_neg = params.n_cl_neg
         self.sampler_workers = sampler_workers
+        self.n_user = 10986
+        self.n_item = 984983
 
         self.block_size = self.max_length // self.n_block
 
@@ -37,6 +39,8 @@ class DataLoader(object):
         self.test_queue = Queue(maxsize=self.sampler_workers * 10)
         if params.phase == 'test':
             self.initTestProcess()
+
+        self.all_item_set = set(range(self.n_item))
 
     def initTrainProcess(self):
         self.train_processors = []
@@ -179,11 +183,14 @@ class DataLoader(object):
         '''
         result = []
         for uid in user_ids:
+            pos_items = list(map(lambda x: x[0], self.user_click_ids[uid]))
             neg = self.true_negs[uid]
-            if len(neg) >= self.n_cl_neg:
-                result.append(list(random.sample(neg, self.n_cl_neg)))
-            else:
-                result.append(list(neg) + list(random.sample(self.neg_buffers[uid], self.n_cl_neg - len(neg))))
+            # 真负样本是随机抽样样本概率的10倍
+            result.append(list(neg) * 10 + list(self.all_item_set - set(pos_items)), self.n_cl_neg)
+            # if len(neg) >= self.n_cl_neg:
+            #     result.append(list(random.sample(neg, self.n_cl_neg)))
+            # else:
+            #     result.append(list(neg) + list(random.sample(self.neg_buffers[uid], self.n_cl_neg - len(neg))))
         return result
 
     def sample_vid(self, tuples):
@@ -222,33 +229,33 @@ class DataLoader(object):
             true_negs[user_id] = item_ids
         return true_negs
 
-    def sample_neg_worker(self, user_ids, neg_buffers):
-        for user_id in user_ids:
-            pos_items = list(map(lambda x: x[0], self.user_click_ids[user_id]))
-            candidates = set(range(984983)) - set(self.true_negs[user_id]) - set(pos_items)
-            neg_buffers[user_id] = random.sample(candidates, 5000)
-
-    def pre_sample_negs(self):
-        print('enter pre_sample_negs function')
-        neg_buffers = Manager().dict()
-        users = [uid for uid in self.true_negs if len(self.true_negs[uid]) < self.n_cl_neg]
-        print(len(users))
-        n_workers = self.sampler_workers * 2
-        users_per_worker = len(users) // n_workers
-        processors = []
-        for i in range(n_workers):
-            if i == n_workers - 1:
-                tar_users = users[i * users_per_worker:]
-                processors.append(Process(target=self.sample_neg_worker, args=(tar_users, neg_buffers)))
-            else:
-                tar_users = users[i * users_per_worker:(i + 1) * users_per_worker]
-                processors.append(Process(target=self.sample_neg_worker, args=(tar_users, neg_buffers)))
-            processors[-1].daemon = True
-            processors[-1].start()
-
-        for proc in processors:
-            proc.join()
-        return neg_buffers
+    # def sample_neg_worker(self, user_ids, neg_buffers):
+    #     for user_id in user_ids:
+    #         pos_items = list(map(lambda x: x[0], self.user_click_ids[user_id]))
+    #         candidates = set(range(984983)) - set(self.true_negs[user_id]) - set(pos_items)
+    #         neg_buffers[user_id] = random.sample(candidates, 5000)
+    #
+    # def pre_sample_negs(self):
+    #     print('enter pre_sample_negs function')
+    #     neg_buffers = Manager().dict()
+    #     users = [uid for uid in self.true_negs if len(self.true_negs[uid]) < self.n_cl_neg]
+    #     print(len(users))
+    #     n_workers = self.sampler_workers * 2
+    #     users_per_worker = len(users) // n_workers
+    #     processors = []
+    #     for i in range(n_workers):
+    #         if i == n_workers - 1:
+    #             tar_users = users[i * users_per_worker:]
+    #             processors.append(Process(target=self.sample_neg_worker, args=(tar_users, neg_buffers)))
+    #         else:
+    #             tar_users = users[i * users_per_worker:(i + 1) * users_per_worker]
+    #             processors.append(Process(target=self.sample_neg_worker, args=(tar_users, neg_buffers)))
+    #         processors[-1].daemon = True
+    #         processors[-1].start()
+    #
+    #     for proc in processors:
+    #         proc.join()
+    #     return neg_buffers
 
     def preload_feat_into_memory(self):
         train_feature_path = os.path.join(self.data_dir, 'train_cover_image_feature.npy')
@@ -268,7 +275,7 @@ class DataLoader(object):
         self.user_unclick_ids = np.load(user_unclick_ids_path, allow_pickle=True)
 
         self.true_negs = self.gen_true_negs()
-        self.neg_buffers = self.pre_sample_negs()
+        # self.neg_buffers = self.pre_sample_negs()
 
     def del_temp(self):
         del self.train_visual_feature

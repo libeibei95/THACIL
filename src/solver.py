@@ -81,14 +81,19 @@ class Solver(object):
             for epoch in range(self.max_epoch):
                 logging.info('start train phase')
                 # n_batch = self.data.n_train_batch
-                n_batch = 1000
+                n_batch = 200
                 logging.info('train iterations: {}'.format(n_batch))
                 avg_loss, avg_acc = 0.0, 0.0
                 load_times, run_times = 0.0, 0.0
                 epoch_avg_loss = 0.0
                 for i in range(n_batch):
                     start = time.time()
+                    if epoch!= 0:
+                        assert not self.data.train_queue.empty()
+                        print('begin to get training batch')
                     batch_data = self.data.get_train_batch()
+                    if epoch!= 0:
+                        print('finish getting training batch')
                     load_time = time.time() - start
                     loss, acc, summaries = self.model.train(sess, batch_data, lr)
                     run_time = time.time() - start - load_time

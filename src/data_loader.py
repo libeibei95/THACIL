@@ -228,7 +228,7 @@ class DataLoader(object):
         for user_id in user_ids:
             pos_items = list(map(lambda x: x[0], self.user_click_ids[user_id]))
             candidates = set(range(984983)) - set(self.true_negs[user_id]) - set(pos_items)
-            neg_buffers[user_id] = random.sample(candidates, 10000)
+            neg_buffers[user_id] = random.sample(candidates, 5000)
 
     def pre_sample_negs(self):
         print('enter pre_sample_negs function')

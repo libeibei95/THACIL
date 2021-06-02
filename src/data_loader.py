@@ -69,10 +69,16 @@ class DataLoader(object):
             for i in range(n_batch):
                 batch_data = data[i * self.batch_size: (i + 1) * self.batch_size]
                 user_ids, item_ids, cate_ids, labels = zip(*batch_data)
-                att_iids, att_cids, intra_mask, inter_mask = self.get_att_ids(user_ids)
-                cl_negs = self.get_neg_ids(user_ids)
+                att_iids1, att_cids1, intra_mask1, inter_mask1 = self.get_att_ids(user_ids)
+                att_iids2, att_cids2, intra_mask2, inter_mask2 = self.get_att_ids(user_ids)
+                # cl_negs = self.get_neg_ids(user_ids)
+                # self.train_queue.put(
+                #     (user_ids, item_ids, cate_ids, att_iids1, att_cids1, intra_mask1, inter_mask1, labels, cl_negs,
+                #      att_iids2, att_cids2, intra_mask2, inter_mask2)
+                # )
                 self.train_queue.put(
-                    (user_ids, item_ids, cate_ids, att_iids, att_cids, intra_mask, inter_mask, labels, cl_negs)
+                    (user_ids, item_ids, cate_ids, att_iids1, att_cids1, intra_mask1, inter_mask1, labels,
+                     att_iids2, att_cids2, intra_mask2, inter_mask2)
                 )
 
     def get_train_batch(self):
@@ -105,9 +111,12 @@ class DataLoader(object):
             user_ids, item_ids, cate_ids, labels = zip(*batch_data)
             item_vecs = self.get_test_cover_img_feature(item_ids)
             att_iids, att_cids, intra_mask, inter_mask = self.get_att_ids(user_ids)
-            cl_negs = self.get_neg_ids(user_ids)
+            # cl_negs = self.get_neg_ids(user_ids)
+            # self.test_queue.put(
+            #     (user_ids, item_vecs, cate_ids, att_iids, att_cids, intra_mask, inter_mask, labels, item_ids, cl_negs)
+            # )
             self.test_queue.put(
-                (user_ids, item_vecs, cate_ids, att_iids, att_cids, intra_mask, inter_mask, labels, item_ids, cl_negs)
+                (user_ids, item_vecs, cate_ids, att_iids, att_cids, intra_mask, inter_mask, labels, item_ids)
             )
 
     def get_test_batch(self):
@@ -194,8 +203,11 @@ class DataLoader(object):
         length = len(item_ids)
         padding_num = self.max_length - length
         if padding_num > 0:
-            item_ids = list(item_ids) + [984983] * padding_num
-            cate_ids = list(cate_ids) + [512] * padding_num
+            indices = random.sample(list(range(length)), int(len(item_ids) * 0.9))
+            length = len(indices)
+            padding_num = self.max_length - length
+            item_ids = [item_ids[ind] for ind in indices] + [984983] * padding_num
+            cate_ids = [cate_ids[ind] for ind in indices] + [512] * padding_num
             intra_mask = [1] * length + [0] * padding_num
             pad_n_block = padding_num // self.block_size
             inter_mask = [1] * (self.n_block - pad_n_block) + [0] * pad_n_block
@@ -218,6 +230,7 @@ class DataLoader(object):
         head_vec = [self.test_visual_feature[i] for i in vids]
         return head_vec
 
+    '''
     def gen_true_negs(self):
         true_negs = {}
         for user_id in range(len(self.user_unclick_ids)):
@@ -253,6 +266,7 @@ class DataLoader(object):
         for proc in processors:
             proc.join()
         return neg_buffers
+    '''
 
     def preload_feat_into_memory(self):
         train_feature_path = os.path.join(self.data_dir, 'train_cover_image_feature.npy')
@@ -271,8 +285,8 @@ class DataLoader(object):
         user_unclick_ids_path = os.path.join(self.data_dir, 'user_unclick_ids.npy')
         self.user_unclick_ids = np.load(user_unclick_ids_path, allow_pickle=True)
 
-        self.true_negs = self.gen_true_negs()
-        self.neg_buffers = self.pre_sample_negs()
+        # self.true_negs = self.gen_true_negs()
+        # self.neg_buffers = self.pre_sample_negs()
 
     def del_temp(self):
         del self.train_visual_feature

@@ -198,7 +198,7 @@ class Solver(object):
                 for i in range(self.batch_size):
                     if pred_dict.get(batch_data[0][i]) is None:
                         pred_dict[batch_data[0][i]] = []
-                    pred_dict[batch_data[0][i]].append([logits[i], int(batch_data[-3][i]), int(batch_data[-2][i])])
+                    pred_dict[batch_data[0][i]].append([logits[i], int(batch_data[-2][i]), int(batch_data[-1][i])])
 
             self.data.close_test_processes()
             print('close test preprocesses')

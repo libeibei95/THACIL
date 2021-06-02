@@ -182,8 +182,9 @@ class DataLoader(object):
             neg = self.true_negs[uid]
             # result.append(list(random.sample(list(neg)*10+list(self.neg_buffers[uid]), self.n_cl_neg)))
 
-            if len(neg) >= self.n_cl_neg:
-                result.append(list(random.sample(neg, self.n_cl_neg)))
+            if len(neg) >= self.n_cl_neg // 2:
+                result.append(list(random.sample(neg, self.n_cl_neg // 2)) + list(
+                    random.sample(self.neg_buffers[uid], self.n_cl_neg - self.n_cl_neg // 2)))
             else:
                 result.append(list(neg) + list(random.sample(self.neg_buffers[uid], self.n_cl_neg - len(neg))))
         return result
@@ -233,8 +234,8 @@ class DataLoader(object):
     def pre_sample_negs(self):
         print('enter pre_sample_negs function')
         neg_buffers = Manager().dict()
-        # users = list(self.true_negs.keys())
-        users = [uid for uid in self.true_negs if len(self.true_negs[uid]) < self.n_cl_neg]
+        users = list(self.true_negs.keys())
+        # users = [uid for uid in self.true_negs if len(self.true_negs[uid]) < self.n_cl_neg]
         print(len(users))
         n_workers = min(30, self.sampler_workers * 4)
         users_per_worker = len(users) // n_workers

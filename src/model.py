@@ -165,8 +165,6 @@ class Model(object):
         with tf.variable_scope('item_embedding'):
             att_item_vec = self.get_train_cover_image_feature(att_iids)
             att_cate_emb = self.get_cate_emb(att_cids)
-
-
             att_item_vec2 = self.get_train_cover_image_feature(att_iids2)
             att_cate_emb2 = self.get_cate_emb(att_cids2)
             # neg_item_vec = self.get_train_cover_image_feature(neg_iids)
@@ -174,7 +172,6 @@ class Model(object):
 
             item_vec = dense(item_vec, self.item_dim, ['w1'], 1.0)
             att_item_vec = dense(att_item_vec, self.item_dim, ['w1'], 1.0, reuse=True)
-
             att_item_vec2 = dense(att_item_vec2, self.item_dim, ['w1'], 1.0, reuse=True)
             # neg_item_vec = dense(neg_item_vec, self.item_dim, ['w1'], 1.0, reuse=True)
 
@@ -186,7 +183,7 @@ class Model(object):
         #     # neg_item_emb = tf.concat([neg_item_vec, neg_cate_emb], axis=-1)
         #     seq_cl_loss = self.seq_cl_loss(att_item_vec, neg_item_vec, intra_mask)
 
-        with tf.variable_scope('temporal_hierarchical_attention'):
+        with tf.variable_scope('temporal_hierarchical_attention', tf.AUTO_REUSE):
             user_profiles = temporal_hierarchical_attention(att_cate_emb,
                                                             att_item_vec,
                                                             intra_mask,
@@ -205,6 +202,7 @@ class Model(object):
         with tf.variable_scope('micro_video_click_through_prediction'):
             user_profile = vanilla_attention(user_profiles, item_emb, inter_mask, keep_prob)
             y = dnn(tf.concat([user_profile, item_emb], axis=-1), self.fusion_layers, keep_prob)
+
         logits = y
 
         # regularization

@@ -172,6 +172,9 @@ class Model(object):
         Returns:
 
         '''
+        tar_item_vec = tf.nn.l2_normalize(tar_item_vec, -1)
+        pos_item_vec = tf.nn.l2_normalize(pos_item_vec, -1)
+        neg_item_vec = tf.nn.l2_normalize(neg_item_vec, -1)
         # (batch_size, )
         pos_scores = tf.exp(tf.reduce_sum(tf.multiply(tar_item_vec, pos_item_vec), axis=-1) / t)
         # (batch_size, n_neg)

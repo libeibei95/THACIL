@@ -135,8 +135,9 @@ class Model(object):
         Calculating SSL loss
         '''
         # batch_users, _ = tf.unique(self.users)
-        normalize_user_emb1 = tf.nn.l2_normalize(user_emb1, 1)
-        normalize_user_emb2 = tf.nn.l2_normalize(user_emb2, 1)
+        print(user_emb1.shape, user_emb2.shape)
+        normalize_user_emb1 = tf.nn.l2_normalize(user_emb1, axis=-1)
+        normalize_user_emb2 = tf.nn.l2_normalize(user_emb2, axis=-1)
         normalize_user_emb2_neg = normalize_user_emb2
 
         pos_score_user = tf.reduce_sum(tf.multiply(normalize_user_emb1, normalize_user_emb2), axis=-1)
@@ -198,10 +199,11 @@ class Model(object):
                                                              inter_mask2,
                                                              self.num_heads,
                                                              keep_prob)
-            user_cl_loss = self.user_cl_loss(user_profiles, user_profiles2)
 
-        with tf.variable_scope('micro_video_click_through_prediction'):
+        with tf.variable_scope('micro_video_click_through_prediction', reuse=tf.AUTO_REUSE):
             user_profile = vanilla_attention(user_profiles, item_emb, inter_mask, keep_prob)
+            user_profile2 = vanilla_attention(user_profiles2, item_emb, inter_mask, keep_prob)
+            user_cl_loss = self.user_cl_loss(user_profiles, user_profiles2)
             y = dnn(tf.concat([user_profile, item_emb], axis=-1), self.fusion_layers, keep_prob)
 
         logits = y
@@ -211,13 +213,15 @@ class Model(object):
         w_l2_loss = tf.add_n([tf.nn.l2_loss(v) for v in tf.trainable_variables() if 'w' in v.name])
         l2_norm = emb_l2_loss + w_l2_loss
 
+        
         loss = tf.reduce_mean(
             tf.nn.sigmoid_cross_entropy_with_logits(
                 logits=logits,
                 labels=labels)
         ) + l2_norm * self.reg
-
-        full_loss = loss + 0.1 * user_cl_loss
+        
+        loss = l2_norm * self.reg
+        full_loss = loss + 0 * user_cl_loss
         acc = self.compute_acc(logits, self.labels_ph)
         return full_loss, loss, acc, logits
 

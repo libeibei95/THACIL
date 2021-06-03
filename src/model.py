@@ -203,7 +203,7 @@ class Model(object):
         with tf.variable_scope('micro_video_click_through_prediction', reuse=tf.AUTO_REUSE):
             user_profile = vanilla_attention(user_profiles, item_emb, inter_mask, keep_prob)
             user_profile2 = vanilla_attention(user_profiles2, item_emb, inter_mask, keep_prob)
-            user_cl_loss = self.user_cl_loss(user_profiles, user_profiles2)
+            user_cl_loss = self.user_cl_loss(user_profile, user_profile2)
             y = dnn(tf.concat([user_profile, item_emb], axis=-1), self.fusion_layers, keep_prob)
 
         logits = y

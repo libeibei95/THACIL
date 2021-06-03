@@ -175,7 +175,7 @@ class Model(object):
         # (batch_size, )
         pos_scores = tf.exp(tf.reduce_sum(tf.multiply(tar_item_vec, pos_item_vec), axis=-1) / t)
         # (batch_size, n_neg)
-        neg_scores = tf.squeeze(tf.matmul(tf.expand_dims(tar_item_vec, axis=1), tf.transpose(neg_item_vec, [0, 2, 1])))
+        neg_scores = tf.squeeze(tf.matmul(tar_item_vec, tf.transpose(neg_item_vec, [1, 0])))
         # (batch_size, )
         neg_scores = tf.reduce_sum(tf.exp(neg_scores / t), axis=-1)
         # (1, )

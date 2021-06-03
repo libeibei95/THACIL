@@ -54,7 +54,6 @@ class Model(object):
                                                 self.intra_mask_ph,
                                                 self.inter_mask_ph,
                                                 self.labels_ph,
-                                                self.cl_neg_ph,
                                                 self.dropout,
                                                 self.att_iids_ph2,
                                                 self.att_cids_ph2,
@@ -85,8 +84,11 @@ class Model(object):
                                                 self.intra_mask_ph,
                                                 self.inter_mask_ph,
                                                 self.labels_ph,
-                                                self.cl_neg_ph,
-                                                1.0)
+                                                1.0,
+                                                self.att_iids_ph2,
+                                                self.att_cids_ph2,
+                                                self.intra_mask_ph2,
+                                                self.inter_mask_ph2)
 
         self.test_loss = loss
         self.test_acc = acc
@@ -155,7 +157,6 @@ class Model(object):
                     intra_mask,
                     inter_mask,
                     labels,
-                    neg_iids,
                     keep_prob,
                     att_iids2,
                     att_cids2,
@@ -251,10 +252,10 @@ class Model(object):
             self.att_cids_ph: data[4],
             self.intra_mask_ph: data[5],
             self.inter_mask_ph: data[6],
-            self.att_iids_ph: data[7],
-            self.att_cids_ph: data[8],
-            self.intra_mask_ph: data[9],
-            self.inter_mask_ph: data[10],
+            self.att_iids_ph2: data[7],
+            self.att_cids_ph2: data[8],
+            self.intra_mask_ph2: data[9],
+            self.inter_mask_ph2: data[10],
             self.labels_ph: data[11]
         }
         test_run_op = [self.test_loss, self.test_logits, self.test_acc, self.test_summuries]

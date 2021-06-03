@@ -220,8 +220,7 @@ class Model(object):
                 labels=labels)
         ) + l2_norm * self.reg
         
-        loss = l2_norm * self.reg
-        full_loss = loss + 0 * user_cl_loss
+        full_loss = loss + 1 * user_cl_loss
         acc = self.compute_acc(logits, self.labels_ph)
         return full_loss, loss, acc, logits
 

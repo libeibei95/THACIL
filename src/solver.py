@@ -81,7 +81,7 @@ class Solver(object):
             for epoch in range(self.max_epoch):
                 logging.info('start train phase')
                 #n_batch = self.data.n_train_batch
-                n_batch = 1000
+                n_batch = 500
                 logging.info('train iterations: {}'.format(n_batch))
                 avg_loss, avg_acc = 0.0, 0.0
                 load_times, run_times = 0.0, 0.0

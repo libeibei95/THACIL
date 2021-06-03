@@ -54,6 +54,8 @@ class Model(object):
                                         self.intra_mask_ph,
                                         self.inter_mask_ph,
                                         self.labels_ph,
+                                        self.cl_tar_ph,
+                                        self.cl_pos_ph,
                                         self.cl_neg_ph,
                                         self.dropout)
         # train op
@@ -81,6 +83,8 @@ class Model(object):
                                              self.intra_mask_ph,
                                              self.inter_mask_ph,
                                              self.labels_ph,
+                                             self.cl_tar_ph,
+                                             self.cl_pos_ph,
                                              self.cl_neg_ph,
                                              1.0)
 
@@ -92,36 +96,90 @@ class Model(object):
         self.test_summuries = tf.summary.merge([tf.summary.scalar('test/acc', acc),
                                                 tf.summary.scalar('test/loss', loss)])
 
+    # def seq_cl_loss(self,
+    #                 pos_item_emb,
+    #                 neg_item_emb,
+    #                 intra_mask,
+    #                 t=1):
+    #     '''
+    #
+    #     Args:
+    #       pos_item_emb: batch_size * seq_len * embed_size
+    #       neg_item_emb: batch_size * n_cl_neg * embed_size
+    #       intra_mask: batch_size * seq_len
+    #       t: scalar
+    #     Returns:
+    #     '''
+    #
+    #     pos_item_emb = tf.nn.l2_normalize(pos_item_emb, -1)
+    #     neg_item_emb = tf.nn.l2_normalize(neg_item_emb, -1)
+    #
+    #     pos_item_emb2 = tf.concat([pos_item_emb[:, 1:, :], pos_item_emb[:, -2:-1, :]], axis=1)
+    #     # batch_size * seq_len
+    #     pos_scores = tf.exp(tf.reduce_sum(tf.multiply(pos_item_emb, pos_item_emb2), axis=-1) / t)
+    #     # batch_size * seq_len * n_cl_neg
+    #     neg_scores = tf.exp(tf.matmul(pos_item_emb, tf.transpose(neg_item_emb, [0, 2, 1])) / t)
+    #     all_scores = tf.concat([tf.expand_dims(pos_scores, axis=-1), neg_scores], axis=-1)
+    #     all_scores = tf.reduce_sum(all_scores, axis=-1)
+    #     ssl_loss = - tf.log(pos_scores / all_scores)  # batch_size * seq_len
+    #
+    #     avg_mask = tf.reduce_sum(tf.cast(intra_mask, dtype=tf.float32), axis=1)
+    #     ssl_loss = tf.reduce_sum(tf.multiply(ssl_loss, tf.cast(intra_mask, dtype=tf.float32)), axis=1)
+    #     ssl_loss = tf.reduce_mean(ssl_loss / avg_mask)
+    #     return ssl_loss
+
+    """
     def seq_cl_loss(self,
-                    pos_item_emb,
-                    neg_item_emb,
-                    intra_mask,
+                    tar_item_vec,
+                    pos_item_vec,
+                    neg_item_vec,
+                    t=1):
+        '''
+        
+        Args:
+            tar_item_vec: batch_size * embed_size
+            pos_item_vec: batch_size * embed_size
+            neg_item_vec: batch_size * n_neg * embed_size
+            t: 
+
+        Returns:
+
+        '''                    
+            
+        all_item_vec = tf.concat([tf.expand_dims(pos_item_vec, axis=1), neg_item_vec], axis=1)
+        tar_item_vec = tf.nn.l2_normalize(tar_item_vec, -1)
+        all_item_vec = tf.nn.l2_normalize(all_item_vec, -1)
+        all_scores = tf.reduce_sum(tf.multiply(tf.expand_dims(tar_item_vec, axis=1), all_item_vec), axis=-1)
+        pos_scores = tf.exp(all_scores[:, 0, :] / t)
+        all_scores = tf.reduce_sum(tf.exp(all_scores / t), axis=-1)
+        ssl_loss = - tf.reduce_mean(tf.log(pos_scores / all_scores))
+        return ssl_loss
+    """
+
+    def seq_cl_loss(self,
+                    tar_item_vec,
+                    pos_item_vec,
+                    neg_item_vec,
                     t=1):
         '''
 
         Args:
-          pos_item_emb: batch_size * seq_len * embed_size
-          neg_item_emb: batch_size * n_cl_neg * embed_size
-          intra_mask: batch_size * seq_len
-          t: scalar
+            tar_item_vec: batch_size * embed_size
+            pos_item_vec: batch_size * embed_size
+            neg_item_vec: n_neg * embed_size
+            t:
+
         Returns:
+
         '''
-
-        pos_item_emb = tf.nn.l2_normalize(pos_item_emb, -1)
-        neg_item_emb = tf.nn.l2_normalize(neg_item_emb, -1)
-
-        pos_item_emb2 = tf.concat([pos_item_emb[:, 1:, :], pos_item_emb[:, -2:-1, :]], axis=1)
-        # batch_size * seq_len
-        pos_scores = tf.exp(tf.reduce_sum(tf.multiply(pos_item_emb, pos_item_emb2), axis=-1) / t)
-        # batch_size * seq_len * n_cl_neg
-        neg_scores = tf.exp(tf.matmul(pos_item_emb, tf.transpose(neg_item_emb, [0, 2, 1])) / t)
-        all_scores = tf.concat([tf.expand_dims(pos_scores, axis=-1), neg_scores], axis=-1)
-        all_scores = tf.reduce_sum(all_scores, axis=-1)
-        ssl_loss = - tf.log(pos_scores / all_scores)  # batch_size * seq_len
-
-        avg_mask = tf.reduce_sum(tf.cast(intra_mask, dtype=tf.float32), axis=1)
-        ssl_loss = tf.reduce_sum(tf.multiply(ssl_loss, tf.cast(intra_mask, dtype=tf.float32)), axis=1)
-        ssl_loss = tf.reduce_mean(ssl_loss / avg_mask)
+        # (batch_size, )
+        pos_scores = tf.exp(tf.reduce_sum(tf.multiply(tar_item_vec, pos_item_vec), axis=-1) / t)
+        # (batch_size, n_neg)
+        neg_scores = tf.squeeze(tf.matmul(tf.expand_dims(tar_item_vec, axis=1), tf.transpose(neg_item_vec, [0, 2, 1])))
+        # (batch_size, )
+        neg_scores = tf.reduce_sum(tf.exp(neg_scores / t), axis=-1)
+        # (1, )
+        ssl_loss = -tf.reduce_mean(tf.log(pos_scores / (pos_scores + neg_scores)))
         return ssl_loss
 
     def build_model(self,
@@ -132,17 +190,23 @@ class Model(object):
                     intra_mask,
                     inter_mask,
                     labels,
-                    neg_iids,
+                    cl_tar_iids,
+                    cl_pos_iids,
+                    cl_neg_iids,
                     keep_prob):
 
         with tf.variable_scope('item_embedding'):
             att_item_vec = self.get_train_cover_image_feature(att_iids)
             att_cate_emb = self.get_cate_emb(att_cids)
-            neg_item_vec = self.get_train_cover_image_feature(neg_iids)
-            # neg_cate_emb = self.get_cate_emb(neg_iids)
+
+            tar_item_vec = self.get_train_cover_image_feature(cl_tar_iids)
+            pos_item_vec = self.get_train_cover_image_feature(cl_pos_iids)
+            neg_item_vec = self.get_train_cover_image_feature(cl_neg_iids)
 
             item_vec = dense(item_vec, self.item_dim, ['w1'], 1.0)
             att_item_vec = dense(att_item_vec, self.item_dim, ['w1'], 1.0, reuse=True)
+            tar_item_vec = dense(tar_item_vec, self.item_dim, ['w1'], 1.0, reuse=True)
+            pos_item_vec = dense(pos_item_vec, self.item_dim, ['w1'], 1.0, reuse=True)
             neg_item_vec = dense(neg_item_vec, self.item_dim, ['w1'], 1.0, reuse=True)
 
             cate_emb = self.get_cate_emb(cate_ids)
@@ -151,7 +215,7 @@ class Model(object):
         with tf.variable_scope('cl_loss'):
             # att_item_emb = tf.concat([att_item_vec, att_cate_emb], axis=-1)
             # neg_item_emb = tf.concat([neg_item_vec, neg_cate_emb], axis=-1)
-            seq_cl_loss = self.seq_cl_loss(att_item_vec, neg_item_vec, intra_mask)
+            seq_cl_loss = self.seq_cl_loss(tar_item_vec, pos_item_vec, neg_item_vec)
 
         with tf.variable_scope('temporal_hierarchical_attention'):
             user_profiles = temporal_hierarchical_attention(att_cate_emb,
@@ -190,7 +254,9 @@ class Model(object):
             self.inter_mask_ph: data[6],
             self.labels_ph: data[7],
             self.lr_ph: lr,
-            self.cl_neg_ph: data[8]
+            self.cl_tar_ph: data[8],
+            self.cl_pos_ph: data[9],
+            self.cl_neg_ph: data[10]
         }
         train_run_op = [self.train_loss, self.train_acc, self.train_summuries, self.train_op]
         loss, acc, summaries, _ = sess.run(train_run_op, feed_dicts)
@@ -207,7 +273,9 @@ class Model(object):
             self.intra_mask_ph: data[5],
             self.inter_mask_ph: data[6],
             self.labels_ph: data[7],
-            self.cl_neg_ph: data[-1]
+            self.cl_tar_ph: data[8],
+            self.cl_pos_ph: data[9],
+            self.cl_neg_ph: data[10]
         }
         test_run_op = [self.test_loss, self.test_logits, self.test_acc, self.test_summuries]
         loss, logits, acc, summaries = sess.run(test_run_op, feed_dicts)
@@ -234,7 +302,9 @@ class Model(object):
         self.item_vec_ph = tf.placeholder(tf.float32, shape=(self.batch_size, 512))
         self.labels_ph = tf.placeholder(tf.float32, shape=(self.batch_size))
         self.lr_ph = tf.placeholder(tf.float32, shape=())
-        self.cl_neg_ph = tf.placeholder(tf.int32, shape=(self.batch_size, self.n_cl_neg))
+        self.cl_tar_ph = tf.placeholder(tf.int32, shape=(self.batch_size,))
+        self.cl_pos_ph = tf.placeholder(tf.int32, shape=(self.batch_size,))
+        self.cl_neg_ph = tf.placeholder(tf.int32, shape=(self.batch_size,))
 
     def init_embedding(self):
         category_embedding = var_init('category_embedding', [512, self.cate_dim], tf.random_normal_initializer())

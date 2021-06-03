@@ -70,9 +70,10 @@ class DataLoader(object):
                 batch_data = data[i * self.batch_size: (i + 1) * self.batch_size]
                 user_ids, item_ids, cate_ids, labels = zip(*batch_data)
                 att_iids, att_cids, intra_mask, inter_mask = self.get_att_ids(user_ids)
-                cl_negs = self.get_neg_ids(user_ids)
+                cl_tar_items, cl_pos_items, cl_neg_items = self.gen_cl_item_batch()
                 self.train_queue.put(
-                    (user_ids, item_ids, cate_ids, att_iids, att_cids, intra_mask, inter_mask, labels, cl_negs)
+                    (user_ids, item_ids, cate_ids, att_iids, att_cids, intra_mask, inter_mask, labels,
+                     cl_tar_items, cl_pos_items, cl_neg_items)
                 )
 
     def get_train_batch(self):
@@ -96,6 +97,31 @@ class DataLoader(object):
                 self.test_processors.append(Process(target=self.processTestBatch, args=(first, last)))
                 self.test_processors[-1].daemon = True
                 self.test_processors[-1].start()
+    '''
+    def gen_cl_item_batch(self):
+        # random generate a item batch
+        indices = random.choice(list(range(len(self.pos_item_pairs))), self.batch_size * 4)
+        tar_items = list(map(lambda idx: self.pos_item_pairs[idx][0], indices))
+        pos_items = list(map(lambda idx: self.pos_item_pairs[idx][1], indices))
+        neg_items = []
+        for item in tar_items:
+            strong_negs = self.item_strong_negs[item]
+            if len(strong_negs) >= self.n_cl_neg // 2:
+                neg_items.append(list(random.choice(strong_negs, self.n_cl_neg // 2)) +
+                                 list(random.choice(self.neg_buffers[item]), self.n_cl_neg - self.n_cl_neg // 2))
+            else:
+                neg_items.append(list(strong_negs) + list(random.choice(
+                    self.neg_buffers[item], self.n_cl_neg - len(strong_negs))))
+        return tar_items, pos_items, neg_items
+    '''
+
+    def gen_cl_item_batch(self):
+        # random generate a item batch
+        indices = random.choice(list(range(len(self.pos_item_pairs))), self.batch_size * 4)
+        tar_items = list(map(lambda idx: self.pos_item_pairs[idx][0], indices))
+        pos_items = list(map(lambda idx: self.pos_item_pairs[idx][1], indices))
+        neg_items = list(random.choice(set(range(984983)) - self.hot_items, self.n_cl_neg))
+        return tar_items, pos_items, neg_items
 
     def processTestBatch(self, first, last):
         data = self.test_data[first:last]
@@ -105,9 +131,10 @@ class DataLoader(object):
             user_ids, item_ids, cate_ids, labels = zip(*batch_data)
             item_vecs = self.get_test_cover_img_feature(item_ids)
             att_iids, att_cids, intra_mask, inter_mask = self.get_att_ids(user_ids)
-            cl_negs = self.get_neg_ids(user_ids)
+            cl_tar_items, cl_pos_items, cl_neg_items = self.gen_cl_item_batch()
             self.test_queue.put(
-                (user_ids, item_vecs, cate_ids, att_iids, att_cids, intra_mask, inter_mask, labels, item_ids, cl_negs)
+                (user_ids, item_vecs, cate_ids, att_iids, att_cids, intra_mask, inter_mask, cl_tar_items, cl_pos_items,
+                 cl_neg_items, labels, item_ids)
             )
 
     def get_test_batch(self):
@@ -168,26 +195,26 @@ class DataLoader(object):
         self.epoch_test_length = len(self.test_data)
         logging.info('{} test samples'.format(self.epoch_test_length))
 
-    def get_neg_ids(self, user_ids):
-        '''
-        sample neg samples for cl loss
-        Args:
-            user_ids:
-
-        Returns:
-
-        '''
-        result = []
-        for uid in user_ids:
-            neg = self.true_negs[uid]
-            # result.append(list(random.sample(list(neg)*10+list(self.neg_buffers[uid]), self.n_cl_neg)))
-
-            if len(neg) >= self.n_cl_neg // 2:
-                result.append(list(random.sample(neg, self.n_cl_neg // 2)) + list(
-                    random.sample(self.neg_buffers[uid], self.n_cl_neg - self.n_cl_neg // 2)))
-            else:
-                result.append(list(neg) + list(random.sample(self.neg_buffers[uid], self.n_cl_neg - len(neg))))
-        return result
+    # def get_neg_ids(self, user_ids):
+    #     '''
+    #     sample neg samples for cl loss
+    #     Args:
+    #         user_ids:
+    #
+    #     Returns:
+    #
+    #     '''
+    #     result = []
+    #     for uid in user_ids:
+    #         neg = self.true_negs[uid]
+    #         # result.append(list(random.sample(list(neg)*10+list(self.neg_buffers[uid]), self.n_cl_neg)))
+    #
+    #         if len(neg) >= self.n_cl_neg // 2:
+    #             result.append(list(random.sample(neg, self.n_cl_neg // 2)) + list(
+    #                 random.sample(self.neg_buffers[uid], self.n_cl_neg - self.n_cl_neg // 2)))
+    #         else:
+    #             result.append(list(neg) + list(random.sample(self.neg_buffers[uid], self.n_cl_neg - len(neg))))
+    #     return result
 
     def sample_vid(self, tuples):
         item_ids, cate_ids, timestamps = list(zip(*tuples))
@@ -225,28 +252,26 @@ class DataLoader(object):
             true_negs[user_id] = item_ids
         return true_negs
 
-    def sample_neg_worker(self, user_ids, neg_buffers):
-        for user_id in user_ids:
-            pos_items = list(map(lambda x: x[0], self.user_click_ids[user_id]))
-            candidates = set(range(984983)) - set(self.true_negs[user_id]) - set(pos_items)
-            neg_buffers[user_id] = random.sample(candidates, 5000)
+    def sample_neg_worker(self, item_ids, neg_buffers):
+        neg_pool = set(range(984983)) - self.hot_items
+        for iid in item_ids:
+            neg_buffers[iid] = random.sample(neg_pool, 50000)
 
     def pre_sample_negs(self):
         print('enter pre_sample_negs function')
         neg_buffers = Manager().dict()
-        users = list(self.true_negs.keys())
-        # users = [uid for uid in self.true_negs if len(self.true_negs[uid]) < self.n_cl_neg]
-        print(len(users))
+        items = list(self.hot_items)
+        print(len(items))
         n_workers = min(30, self.sampler_workers * 4)
-        users_per_worker = len(users) // n_workers
+        items_per_worker = len(items) // n_workers
         processors = []
         for i in range(n_workers):
             if i == n_workers - 1:
-                tar_users = users[i * users_per_worker:]
-                processors.append(Process(target=self.sample_neg_worker, args=(tar_users, neg_buffers)))
+                tar_items = items[i * items_per_worker:]
+                processors.append(Process(target=self.sample_neg_worker, args=(tar_items, neg_buffers)))
             else:
-                tar_users = users[i * users_per_worker:(i + 1) * users_per_worker]
-                processors.append(Process(target=self.sample_neg_worker, args=(tar_users, neg_buffers)))
+                tar_items = items[i * items_per_worker:(i + 1) * items_per_worker]
+                processors.append(Process(target=self.sample_neg_worker, args=(tar_items, neg_buffers)))
             processors[-1].daemon = True
             processors[-1].start()
 
@@ -271,8 +296,16 @@ class DataLoader(object):
         user_unclick_ids_path = os.path.join(self.data_dir, 'user_unclick_ids.npy')
         self.user_unclick_ids = np.load(user_unclick_ids_path, allow_pickle=True)
 
-        self.true_negs = self.gen_true_negs()
-        self.neg_buffers = self.pre_sample_negs()
+        item_pair_path = os.path.join(self.data_dir, 'pos_item_pairs.npy')
+        self.pos_item_pairs = np.load(item_pair_path, allow_pickle=True)
+
+        # item_strong_negs_path = os.path.join(self.data_dir, 'item_strong_negs.npy')
+        # self.item_strong_negs = np.load(item_strong_negs_path, allow_pickle=True)
+
+        hot_item_path = os.path.join(self.data_dir, 'hot_item.npy')
+        self.hot_items = set(np.load(hot_item_path, allow_pickle=True))
+
+        # self.neg_buffers = self.pre_sample_negs()  # sample neg items for each hot items
 
     def del_temp(self):
         del self.train_visual_feature

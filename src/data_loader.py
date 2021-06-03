@@ -101,27 +101,27 @@ class DataLoader(object):
     '''
     def gen_cl_item_batch(self):
         # random generate a item batch
-        indices = random.choice(list(range(len(self.pos_item_pairs))), self.batch_size * 4)
+        indices = random.sample(list(range(len(self.pos_item_pairs))), self.batch_size * 4)
         tar_items = list(map(lambda idx: self.pos_item_pairs[idx][0], indices))
         pos_items = list(map(lambda idx: self.pos_item_pairs[idx][1], indices))
         neg_items = []
         for item in tar_items:
             strong_negs = self.item_strong_negs[item]
             if len(strong_negs) >= self.n_cl_neg // 2:
-                neg_items.append(list(random.choice(strong_negs, self.n_cl_neg // 2)) +
-                                 list(random.choice(self.neg_buffers[item]), self.n_cl_neg - self.n_cl_neg // 2))
+                neg_items.append(list(random.sample(strong_negs, self.n_cl_neg // 2)) +
+                                 list(random.sample(self.neg_buffers[item]), self.n_cl_neg - self.n_cl_neg // 2))
             else:
-                neg_items.append(list(strong_negs) + list(random.choice(
+                neg_items.append(list(strong_negs) + list(random.sample(
                     self.neg_buffers[item], self.n_cl_neg - len(strong_negs))))
         return tar_items, pos_items, neg_items
     '''
 
     def gen_cl_item_batch(self):
         # random generate a item batch
-        indices = random.choice(list(range(len(self.pos_item_pairs))), self.batch_size * 4)
+        indices = random.sample(list(range(len(self.pos_item_pairs))), self.batch_size * 4)
         tar_items = list(map(lambda idx: self.pos_item_pairs[idx][0], indices))
         pos_items = list(map(lambda idx: self.pos_item_pairs[idx][1], indices))
-        neg_items = list(random.choice(set(range(984983)) - self.hot_items, self.n_cl_neg))
+        neg_items = list(random.sample(set(range(984983)) - self.hot_items, self.n_cl_neg))
         return tar_items, pos_items, neg_items
 
     def processTestBatch(self, first, last):

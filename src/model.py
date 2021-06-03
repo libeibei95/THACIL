@@ -47,7 +47,7 @@ class Model(object):
 
     def train_inference(self):
         item_vec = self.get_train_cover_image_feature(self.item_ids_ph)
-        loss, acc, _ = self.build_model(item_vec,
+        full_loss, _, acc, _ = self.build_model(item_vec,
                                         self.cate_ids_ph,
                                         self.att_iids_ph,
                                         self.att_cids_ph,
@@ -55,17 +55,21 @@ class Model(object):
                                         self.inter_mask_ph,
                                         self.labels_ph,
                                         self.cl_neg_ph,
-                                        self.dropout)
+                                        self.dropout,
+                                        self.att_iids_ph2,
+                                        self.att_cids_ph2,
+                                        self.intra_mask_ph2,
+                                        self.inter_mask_ph2)
         # train op
         train_params = tf.trainable_variables()
-        gradients = tf.gradients(loss, train_params)
+        gradients = tf.gradients(full_loss, train_params)
         clip_gradients, _ = tf.clip_by_global_norm(gradients, self.max_gradient_norm)
         self.train_op = self.opt.apply_gradients(zip(clip_gradients, train_params), self.global_step)
-        self.train_loss = loss
+        self.train_loss = full_loss
         self.train_acc = acc
 
         # summary
-        self.train_summuries = tf.summary.merge([tf.summary.scalar('train/loss', loss),
+        self.train_summuries = tf.summary.merge([tf.summary.scalar('train/loss', full_loss),
                                                  tf.summary.scalar('train/acc', acc),
                                                  tf.summary.scalar('lr', self.lr_ph)])
 
@@ -74,7 +78,7 @@ class Model(object):
         self.saver = tf.train.Saver(params, max_to_keep=1)
 
     def test_inference(self):
-        loss, acc, logits = self.build_model(self.item_vec_ph,
+        _, loss, acc, logits = self.build_model(self.item_vec_ph,
                                              self.cate_ids_ph,
                                              self.att_iids_ph,
                                              self.att_cids_ph,
@@ -158,22 +162,20 @@ class Model(object):
                     intra_mask2=None,
                     inter_mask2=None):
 
-        is_train = True if att_iids2 is not None else False
-
         with tf.variable_scope('item_embedding'):
             att_item_vec = self.get_train_cover_image_feature(att_iids)
             att_cate_emb = self.get_cate_emb(att_cids)
 
-            if is_train:
-                att_item_vec2 = self.get_train_cover_image_feature(att_iids2)
-                att_cate_emb2 = self.get_cate_emb(att_cids2)
+
+            att_item_vec2 = self.get_train_cover_image_feature(att_iids2)
+            att_cate_emb2 = self.get_cate_emb(att_cids2)
             # neg_item_vec = self.get_train_cover_image_feature(neg_iids)
             # neg_cate_emb = self.get_cate_emb(neg_iids)
 
             item_vec = dense(item_vec, self.item_dim, ['w1'], 1.0)
             att_item_vec = dense(att_item_vec, self.item_dim, ['w1'], 1.0, reuse=True)
-            if is_train:
-                att_item_vec2 = dense(att_item_vec2, self.item_dim, ['w1'], 1.0, reuse=True)
+
+            att_item_vec2 = dense(att_item_vec2, self.item_dim, ['w1'], 1.0, reuse=True)
             # neg_item_vec = dense(neg_item_vec, self.item_dim, ['w1'], 1.0, reuse=True)
 
             cate_emb = self.get_cate_emb(cate_ids)
@@ -191,14 +193,14 @@ class Model(object):
                                                             inter_mask,
                                                             self.num_heads,
                                                             keep_prob)
-            if is_train:
-                user_profiles2 = temporal_hierarchical_attention(att_cate_emb2,
-                                                                 att_item_vec2,
-                                                                 intra_mask2,
-                                                                 inter_mask2,
-                                                                 self.num_heads,
-                                                                 keep_prob)
-                user_cl_loss = self.seq_cl_loss(user_profiles, user_profiles2)
+
+            user_profiles2 = temporal_hierarchical_attention(att_cate_emb2,
+                                                             att_item_vec2,
+                                                             intra_mask2,
+                                                             inter_mask2,
+                                                             self.num_heads,
+                                                             keep_prob)
+            user_cl_loss = self.seq_cl_loss(user_profiles, user_profiles2)
 
         with tf.variable_scope('micro_video_click_through_prediction'):
             user_profile = vanilla_attention(user_profiles, item_emb, inter_mask, keep_prob)
@@ -216,10 +218,9 @@ class Model(object):
                 labels=labels)
         ) + l2_norm * self.reg
 
-        if is_train:
-            loss = loss + 0.1 * user_cl_loss
+        full_loss = loss + 0.1 * user_cl_loss
         acc = self.compute_acc(logits, self.labels_ph)
-        return loss, acc, logits
+        return full_loss, loss, acc, logits
 
     def train(self, sess, data, lr):
         feed_dicts = {

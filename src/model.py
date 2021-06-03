@@ -48,18 +48,18 @@ class Model(object):
     def train_inference(self):
         item_vec = self.get_train_cover_image_feature(self.item_ids_ph)
         full_loss, _, acc, _ = self.build_model(item_vec,
-                                        self.cate_ids_ph,
-                                        self.att_iids_ph,
-                                        self.att_cids_ph,
-                                        self.intra_mask_ph,
-                                        self.inter_mask_ph,
-                                        self.labels_ph,
-                                        self.cl_neg_ph,
-                                        self.dropout,
-                                        self.att_iids_ph2,
-                                        self.att_cids_ph2,
-                                        self.intra_mask_ph2,
-                                        self.inter_mask_ph2)
+                                                self.cate_ids_ph,
+                                                self.att_iids_ph,
+                                                self.att_cids_ph,
+                                                self.intra_mask_ph,
+                                                self.inter_mask_ph,
+                                                self.labels_ph,
+                                                self.cl_neg_ph,
+                                                self.dropout,
+                                                self.att_iids_ph2,
+                                                self.att_cids_ph2,
+                                                self.intra_mask_ph2,
+                                                self.inter_mask_ph2)
         # train op
         train_params = tf.trainable_variables()
         gradients = tf.gradients(full_loss, train_params)
@@ -79,14 +79,14 @@ class Model(object):
 
     def test_inference(self):
         _, loss, acc, logits = self.build_model(self.item_vec_ph,
-                                             self.cate_ids_ph,
-                                             self.att_iids_ph,
-                                             self.att_cids_ph,
-                                             self.intra_mask_ph,
-                                             self.inter_mask_ph,
-                                             self.labels_ph,
-                                             self.cl_neg_ph,
-                                             1.0)
+                                                self.cate_ids_ph,
+                                                self.att_iids_ph,
+                                                self.att_cids_ph,
+                                                self.intra_mask_ph,
+                                                self.inter_mask_ph,
+                                                self.labels_ph,
+                                                self.cl_neg_ph,
+                                                1.0)
 
         self.test_loss = loss
         self.test_acc = acc
@@ -157,10 +157,10 @@ class Model(object):
                     labels,
                     neg_iids,
                     keep_prob,
-                    att_iids2=None,
-                    att_cids2=None,
-                    intra_mask2=None,
-                    inter_mask2=None):
+                    att_iids2,
+                    att_cids2,
+                    intra_mask2,
+                    inter_mask2):
 
         with tf.variable_scope('item_embedding'):
             att_item_vec = self.get_train_cover_image_feature(att_iids)
@@ -251,9 +251,11 @@ class Model(object):
             self.att_cids_ph: data[4],
             self.intra_mask_ph: data[5],
             self.inter_mask_ph: data[6],
-            self.labels_ph: data[7]
-            # ,
-            # self.cl_neg_ph: data[-1]
+            self.att_iids_ph: data[7],
+            self.att_cids_ph: data[8],
+            self.intra_mask_ph: data[9],
+            self.inter_mask_ph: data[10],
+            self.labels_ph: data[11]
         }
         test_run_op = [self.test_loss, self.test_logits, self.test_acc, self.test_summuries]
         loss, logits, acc, summaries = sess.run(test_run_op, feed_dicts)

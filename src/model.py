@@ -128,7 +128,7 @@ class Model(object):
         ssl_loss = tf.reduce_mean(ssl_loss / avg_mask)
         return ssl_loss
 
-    def user_cl_loss(self, user_emb1, user_emb2):
+    def user_cl_loss(self, user_emb1, user_emb2, t=1):
         '''
         Calculating SSL loss
         '''
@@ -140,8 +140,8 @@ class Model(object):
         pos_score_user = tf.reduce_sum(tf.multiply(normalize_user_emb1, normalize_user_emb2), axis=1)
         ttl_score_user = tf.matmul(normalize_user_emb1, normalize_user_emb2_neg, transpose_a=False, transpose_b=True)
 
-        pos_score_user = tf.exp(pos_score_user / self.ssl_temp)
-        ttl_score_user = tf.reduce_sum(tf.exp(ttl_score_user / self.ssl_temp), axis=1)
+        pos_score_user = tf.exp(pos_score_user / t)
+        ttl_score_user = tf.reduce_sum(tf.exp(ttl_score_user / t), axis=1)
 
         ssl_loss = -tf.reduce_mean(tf.log(pos_score_user / ttl_score_user))
         # ssl_loss = -tf.reduce_sum(tf.log(pos_score_user / ttl_score_user))
@@ -183,7 +183,7 @@ class Model(object):
         #     # neg_item_emb = tf.concat([neg_item_vec, neg_cate_emb], axis=-1)
         #     seq_cl_loss = self.seq_cl_loss(att_item_vec, neg_item_vec, intra_mask)
 
-        with tf.variable_scope('temporal_hierarchical_attention', tf.AUTO_REUSE):
+        with tf.variable_scope('temporal_hierarchical_attention', reuse=tf.AUTO_REUSE):
             user_profiles = temporal_hierarchical_attention(att_cate_emb,
                                                             att_item_vec,
                                                             intra_mask,
@@ -197,7 +197,7 @@ class Model(object):
                                                              inter_mask2,
                                                              self.num_heads,
                                                              keep_prob)
-            user_cl_loss = self.seq_cl_loss(user_profiles, user_profiles2)
+            user_cl_loss = self.user_cl_loss(user_profiles, user_profiles2)
 
         with tf.variable_scope('micro_video_click_through_prediction'):
             user_profile = vanilla_attention(user_profiles, item_emb, inter_mask, keep_prob)

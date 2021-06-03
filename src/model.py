@@ -239,7 +239,7 @@ class Model(object):
             tf.nn.sigmoid_cross_entropy_with_logits(
                 logits=logits,
                 labels=labels)
-        ) + l2_norm * self.reg + 0.1 * seq_cl_loss
+        ) + l2_norm * self.reg + 1 * seq_cl_loss
         acc = self.compute_acc(logits, self.labels_ph)
         return loss, acc, logits
 

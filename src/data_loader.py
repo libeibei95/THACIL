@@ -110,13 +110,15 @@ class DataLoader(object):
             batch_data = data[i * self.batch_size: (i + 1) * self.batch_size]
             user_ids, item_ids, cate_ids, labels = zip(*batch_data)
             item_vecs = self.get_test_cover_img_feature(item_ids)
-            att_iids, att_cids, intra_mask, inter_mask = self.get_att_ids(user_ids)
+            att_iids, att_cids, intra_mask, inter_mask = self.get_att_ids(user_ids, False)
+            att_iids2, att_cids2, intra_mask2, inter_mask2 = self.get_att_ids(user_ids, False)
             # cl_negs = self.get_neg_ids(user_ids)
             # self.test_queue.put(
             #     (user_ids, item_vecs, cate_ids, att_iids, att_cids, intra_mask, inter_mask, labels, item_ids, cl_negs)
             # )
             self.test_queue.put(
-                (user_ids, item_vecs, cate_ids, att_iids, att_cids, intra_mask, inter_mask, labels, item_ids)
+                (user_ids, item_vecs, cate_ids, att_iids, att_cids, intra_mask, inter_mask, att_iids2, att_cids2,
+                 intra_mask2, inter_mask2, labels, item_ids)
             )
 
     def get_test_batch(self):
@@ -198,12 +200,15 @@ class DataLoader(object):
                 result.append(list(neg) + list(random.sample(self.neg_buffers[uid], self.n_cl_neg - len(neg))))
         return result
 
-    def sample_vid(self, tuples):
+    def sample_vid(self, tuples, istrain=True):
         item_ids, cate_ids, timestamps = list(zip(*tuples))
         length = len(item_ids)
         padding_num = self.max_length - length
         if padding_num > 0:
-            indices = random.sample(list(range(length)), int(len(item_ids) * 0.9))
+            if istrain:
+                indices = random.sample(list(range(length)), int(len(item_ids) * 0.9))
+            else:
+                indices = list(range(length))
             length = len(indices)
             padding_num = self.max_length - length
             item_ids = [item_ids[ind] for ind in indices] + [984983] * padding_num
@@ -221,8 +226,8 @@ class DataLoader(object):
 
         return item_ids, cate_ids, intra_mask, inter_mask
 
-    def get_att_ids(self, user_ids):
-        xx = [self.sample_vid(self.user_click_ids[uid]) for idx, uid in enumerate(user_ids)]
+    def get_att_ids(self, user_ids, istrain=True):
+        xx = [self.sample_vid(self.user_click_ids[uid], istrain) for idx, uid in enumerate(user_ids)]
         batch_att_iids, batch_att_cids, batch_intra_mask, batch_inter_mask = zip(*xx)
         return batch_att_iids, batch_att_cids, batch_intra_mask, batch_inter_mask
 

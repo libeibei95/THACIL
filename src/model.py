@@ -302,9 +302,9 @@ class Model(object):
         self.item_vec_ph = tf.placeholder(tf.float32, shape=(self.batch_size, 512))
         self.labels_ph = tf.placeholder(tf.float32, shape=(self.batch_size))
         self.lr_ph = tf.placeholder(tf.float32, shape=())
-        self.cl_tar_ph = tf.placeholder(tf.int32, shape=(self.batch_size,))
-        self.cl_pos_ph = tf.placeholder(tf.int32, shape=(self.batch_size,))
-        self.cl_neg_ph = tf.placeholder(tf.int32, shape=(self.batch_size,))
+        self.cl_tar_ph = tf.placeholder(tf.int32, shape=(self.batch_size * 4,))
+        self.cl_pos_ph = tf.placeholder(tf.int32, shape=(self.batch_size * 4,))
+        self.cl_neg_ph = tf.placeholder(tf.int32, shape=(self.n_cl_neg,))
 
     def init_embedding(self):
         category_embedding = var_init('category_embedding', [512, self.cate_dim], tf.random_normal_initializer())

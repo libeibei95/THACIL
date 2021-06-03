@@ -97,6 +97,7 @@ class DataLoader(object):
                 self.test_processors.append(Process(target=self.processTestBatch, args=(first, last)))
                 self.test_processors[-1].daemon = True
                 self.test_processors[-1].start()
+
     '''
     def gen_cl_item_batch(self):
         # random generate a item batch
@@ -245,6 +246,7 @@ class DataLoader(object):
         head_vec = [self.test_visual_feature[i] for i in vids]
         return head_vec
 
+    '''
     def gen_true_negs(self):
         true_negs = {}
         for user_id in range(len(self.user_unclick_ids)):
@@ -278,6 +280,7 @@ class DataLoader(object):
         for proc in processors:
             proc.join()
         return neg_buffers
+    '''
 
     def preload_feat_into_memory(self):
         train_feature_path = os.path.join(self.data_dir, 'train_cover_image_feature.npy')

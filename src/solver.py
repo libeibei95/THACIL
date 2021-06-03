@@ -131,7 +131,7 @@ class Solver(object):
 
                 if stop_training_counter > 5:
                     self.data.close_train_processes()
-                    self.initTestProcess()
+                    self.data.initTestProcess()
                     logging.info('start test phase')
                     logging.info('test iterations: {}'.format(self.data.n_test_batch))
                     pred_dict = {}

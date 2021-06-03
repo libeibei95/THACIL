@@ -137,11 +137,11 @@ class Model(object):
         normalize_user_emb2 = tf.nn.l2_normalize(user_emb2, 1)
         normalize_user_emb2_neg = normalize_user_emb2
 
-        pos_score_user = tf.reduce_sum(tf.multiply(normalize_user_emb1, normalize_user_emb2), axis=1)
+        pos_score_user = tf.reduce_sum(tf.multiply(normalize_user_emb1, normalize_user_emb2), axis=-1)
         ttl_score_user = tf.matmul(normalize_user_emb1, normalize_user_emb2_neg, transpose_a=False, transpose_b=True)
 
         pos_score_user = tf.exp(pos_score_user / t)
-        ttl_score_user = tf.reduce_sum(tf.exp(ttl_score_user / t), axis=1)
+        ttl_score_user = tf.reduce_sum(tf.exp(ttl_score_user / t), axis=-1)
 
         ssl_loss = -tf.reduce_mean(tf.log(pos_score_user / ttl_score_user))
         # ssl_loss = -tf.reduce_sum(tf.log(pos_score_user / ttl_score_user))

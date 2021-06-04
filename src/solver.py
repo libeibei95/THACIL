@@ -91,7 +91,7 @@ class Solver(object):
                     start = time.time()
                     batch_data = self.data.get_train_batch()
                     load_time = time.time() - start
-                    loss, pos_loss, neg_loss, acc, summaries = self.model.train(sess, batch_data, lr)
+                    loss, pos_loss, neg_loss, cl_loss, acc, summaries = self.model.train(sess, batch_data, lr)
                     run_time = time.time() - start - load_time
                     self.train_writer.add_summary(summaries, i + 1 + epoch * n_batch)
 

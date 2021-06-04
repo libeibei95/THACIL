@@ -102,8 +102,9 @@ class Solver(object):
                     epoch_avg_loss += loss
                     if (i + 1) % self.display == 0:
                         logging.info(
-                            'epoch {}-train step {}: loss: {:.3f}, cl_loss: {:.3f}, acc: {:.3f} in {:.3f}s, load {:.3f}s'.format(
-                                epoch + 1, i + 1, avg_loss / self.display, avg_cl_loss / self.display,
+                            'epoch {}-train step {}: loss: {:.3f} = {:.3f} + {:.3f}, acc: {:.3f} in {:.3f}s, load {:.3f}s'.format(
+                                epoch + 1, i + 1, avg_loss / self.display,
+                                avg_loss / self.display - avg_cl_loss / self.display, avg_cl_loss / self.display,
                                 avg_acc / self.display, run_times,
                                 load_times))
                         load_times, run_times, avg_acc, avg_loss = 0.0, 0.0, 0.0, 0.0

@@ -81,7 +81,7 @@ class Solver(object):
             for epoch in range(self.max_epoch):
                 logging.info('start train phase')
                 # n_batch = self.data.n_train_batch
-                n_batch = 500
+                n_batch = 2000
                 logging.info('train iterations: {}'.format(n_batch))
                 avg_loss, avg_acc = 0.0, 0.0
                 avg_pos_loss, avg_neg_loss, avg_cl_loss = 0.0, 0.0, 0.0
@@ -134,7 +134,9 @@ class Solver(object):
                 load_times, run_times, avg_acc, avg_loss = 0.0, 0.0, 0.0, 0.0
                 avg_pos_loss, avg_neg_loss, avg_cl_loss = 0.0, 0.0, 0.0
                 pred_dict = {}
-                for step in range(self.data.n_test_batch):
+                # n_test_batch = self.data.n_test_batch
+                n_test_batch = 500
+                for step in range(n_test_batch):
                     start = time.time()
                     batch_data = self.data.get_test_batch()
                     load_time = time.time() - start
@@ -158,6 +160,7 @@ class Solver(object):
                                 run_times,
                                 load_times))
                         load_times, run_times, avg_acc, avg_loss = 0.0, 0.0, 0.0, 0.0
+                        avg_pos_loss, avg_neg_loss, avg_cl_loss = 0.0, 0.0, 0.0
                         # break
                     for i in range(self.batch_size):
                         if pred_dict.get(batch_data[0][i]) is None:

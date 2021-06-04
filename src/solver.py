@@ -107,6 +107,7 @@ class Solver(object):
                                 avg_acc / self.display, run_times,
                                 load_times))
                         load_times, run_times, avg_acc, avg_loss = 0.0, 0.0, 0.0, 0.0
+                        avg_cl_loss = 0.0
                         # break
                 avg_loss, avg_acc = 0.0, 0.0
                 load_times, run_times = 0.0, 0.0

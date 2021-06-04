@@ -193,7 +193,7 @@ class Model(object):
                     pos_item_vec,
                     pos_mask,
                     neg_item_vec,
-                    t=1):
+                    t=0.5):
         '''
 
         Args:
@@ -224,7 +224,7 @@ class Model(object):
         avg_mask = tf.reduce_sum(pos_mask, axis=1)  # batch_size * seq_len
         ssl_loss = tf.reduce_sum(tf.multiply(- tf.log(pos_scores / (pos_scores + neg_scores)), pos_mask),
                                  axis=-1) / avg_mask
-        ssl_loss = tf.reduce_mean(ssl_loss)
+        ssl_loss = tf.reduce_sum(ssl_loss)
         return ssl_loss
 
     def build_model(self,

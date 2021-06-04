@@ -35,8 +35,7 @@ class DataLoader(object):
             self.initTrainProcess()
         self.read_test_data(test_csv_path)
         self.test_queue = Queue(maxsize=self.sampler_workers * 10)
-        if params.phase == 'test':
-            self.initTestProcess()
+        self.initTestProcess()
 
     def initTrainProcess(self):
         self.train_processors = []

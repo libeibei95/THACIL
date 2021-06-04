@@ -331,9 +331,10 @@ class Model(object):
             self.neg_inter_mask_ph2: data[18],
             self.labels_ph: data[19]
         }
-        test_run_op = [self.test_loss, self.test_pos_loss, self.test_neg_loss, self.test_logits, self.test_acc, self.test_summuries]
-        loss, pos_loss, neg_loss, logits, acc, summaries = sess.run(test_run_op, feed_dicts)
-        return loss, pos_loss, neg_loss, logits, acc, summaries
+        test_run_op = [self.test_loss, self.test_pos_loss, self.test_neg_loss, self.test_cl_loss, self.test_logits,
+                       self.test_acc, self.test_summuries]
+        loss, pos_loss, neg_loss, cl_loss, logits, acc, summaries = sess.run(test_run_op, feed_dicts)
+        return loss, pos_loss, neg_loss, cl_loss, logits, acc, summaries
 
     def save(self, sess, model_path, epoch):
         self.saver.save(sess, model_path, global_step=epoch)

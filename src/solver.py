@@ -84,30 +84,37 @@ class Solver(object):
                 n_batch = 500
                 logging.info('train iterations: {}'.format(n_batch))
                 avg_loss, avg_acc = 0.0, 0.0
+                avg_pos_loss, avg_neg_loss, avg_cl_loss = 0.0, 0.0, 0.0
                 load_times, run_times = 0.0, 0.0
                 epoch_avg_loss = 0.0
                 for i in range(n_batch):
                     start = time.time()
                     batch_data = self.data.get_train_batch()
                     load_time = time.time() - start
-                    loss, acc, summaries = self.model.train(sess, batch_data, lr)
+                    loss, pos_loss, neg_loss, acc, summaries = self.model.train(sess, batch_data, lr)
                     run_time = time.time() - start - load_time
                     self.train_writer.add_summary(summaries, i + 1 + epoch * n_batch)
 
                     load_times += load_time
                     run_times += run_time
                     avg_loss += loss
+                    avg_pos_loss += pos_loss
+                    avg_neg_loss += neg_loss
+                    avg_cl_loss += cl_loss
                     avg_acc += acc
                     epoch_avg_loss += loss
                     if (i + 1) % self.display == 0:
                         logging.info(
-                            'epoch {}-train step {}: loss: {:.3f}, acc: {:.3f} in {:.3f}s, load {:.3f}s'.format(
-                                epoch + 1, i + 1, avg_loss / self.display, avg_acc / self.display, run_times,
+                            'epoch {}-train step {}: loss: {:.3f} = {:.3f} + {:.3f} + {:.3f}, acc: {:.3f} in {:.3f}s, load {:.3f}s'.format(
+                                epoch + 1, i + 1, avg_loss / self.display, avg_pos_loss / self.display,
+                                avg_neg_loss / self.display, avg_cl_loss / self.display, avg_acc / self.display,
+                                run_times,
                                 load_times))
                         load_times, run_times, avg_acc, avg_loss = 0.0, 0.0, 0.0, 0.0
+                        avg_pos_loss, avg_neg_loss, avg_cl_loss = 0.0, 0.0, 0.0
                         # break
-                avg_loss, avg_acc = 0.0, 0.0
-                load_times, run_times = 0.0, 0.0
+                # load_times, run_times, avg_acc, avg_loss = 0.0, 0.0, 0.0, 0.0
+                # avg_pos_loss, avg_neg_loss, avg_cl_loss = 0.0, 0.0, 0.0
                 epoch_avg_loss /= n_batch
                 if epoch_avg_loss < min_loss:
                     if min_loss - epoch_avg_loss < 0.0001:
@@ -123,28 +130,32 @@ class Solver(object):
                     lr *= 0.5
 
                 logging.info('lr: {}, min loss: {}'.format(lr, min_loss))
-                # regenerate negative buffers
 
-                self.data.initTestProcess()
-                logging.info('start test phase')
-                logging.info('test iterations: {}'.format(self.data.n_test_batch))
+                load_times, run_times, avg_acc, avg_loss = 0.0, 0.0, 0.0, 0.0
+                avg_pos_loss, avg_neg_loss, avg_cl_loss = 0.0, 0.0, 0.0
                 pred_dict = {}
                 for step in range(self.data.n_test_batch):
                     start = time.time()
                     batch_data = self.data.get_test_batch()
                     load_time = time.time() - start
-                    loss, logits, acc, summaries = self.model.test(sess, batch_data)
+                    loss, pos_loss, neg_loss, cl_loss, logits, acc, summaries = self.model.test(sess, batch_data)
                     run_time = time.time() - start - load_time
                     self.test_writer.add_summary(summaries, step + 1 + epoch * self.data.n_test_batch)
 
                     avg_loss += loss
+                    avg_pos_loss += pos_loss
+                    avg_neg_loss += neg_loss
+                    avg_cl_loss += cl_loss
                     load_times += load_time
                     run_times += run_time
                     avg_acc += acc
+
                     if (step + 1) % (self.display * 1000) == 0:
                         logging.info(
-                            'epoch {}-test step {}: loss: {:.3f}, acc: {:.3f} in {:.3f}s, load {:.3f}s'.format(
-                                epoch + 1, step + 1, avg_loss / self.display, avg_acc / self.display, run_times,
+                            'epoch {}-test step {}: loss: {:.3f} = {:.3f} + {:.3f} + {:.3f}, acc: {:.3f} in {:.3f}s, load {:.3f}s'.format(
+                                epoch + 1, step + 1, avg_loss / self.display, avg_pos_loss / self.display,
+                                avg_neg_loss / self.display, avg_cl_loss / self.display, avg_acc / self.display,
+                                run_times,
                                 load_times))
                         load_times, run_times, avg_acc, avg_loss = 0.0, 0.0, 0.0, 0.0
                         # break
@@ -154,7 +165,6 @@ class Solver(object):
                         pred_dict[batch_data[0][i]].append(
                             [logits[i], int(batch_data[-2][i]), int(batch_data[-1][i])])
 
-                self.data.close_test_processes()
                 precision, recall, ndcg, auc = evaluation(pred_dict, 0)
                 logging.info('test auc: {:.4f}, ndcg: {:.4f}, precision: {:.4f}, recall: {:.4f}'.format(
                     auc, ndcg, precision, recall))
@@ -168,7 +178,10 @@ class Solver(object):
                                 intra_op_parallelism_threads=8,
                                 allow_soft_placement=True)
         config.gpu_options.allow_growth = True
-        load_times, run_times = 0.0, 0.0
+
+        load_times, run_times, avg_acc, avg_loss = 0.0, 0.0, 0.0, 0.0
+        avg_pos_loss, avg_neg_loss, avg_cl_loss = 0.0, 0.0, 0.0
+
         with tf.Session(config=config) as sess:
             self.create_model(sess)
             logging.info('start test phase')
@@ -180,14 +193,22 @@ class Solver(object):
                 start = time.time()
                 batch_data = self.data.get_test_batch()
                 load_time = time.time() - start
-                _, logits, _, _ = self.model.test(sess, batch_data)
+                loss, pos_loss, neg_loss, cl_loss, logits, acc, summaries = self.model.test(sess, batch_data)
                 run_time = time.time() - start - load_time
 
+                avg_loss += loss
+                avg_pos_loss += pos_loss
+                avg_neg_loss += neg_loss
+                avg_cl_loss += cl_loss
                 load_times += load_time
                 run_times += run_time
+                avg_acc += acc
+
                 if (step + 1) % (self.display * 1) == 0:
-                    logging.info('test step {}: in {:.3f}s, load {:.3f}s'.format(
-                        step + 1, run_times, load_times))
+                    logging.info(
+                        'test step {}: in {:.3f}s, load {:.3f}s, loss: {:.3f} = {:.3f} + {:.3f} + {:.3f}'.format(
+                            step + 1, run_times, load_times, avg_loss / self.display, avg_pos_loss / self.display,
+                            avg_neg_loss / self.display, avg_cl_loss / self.display))
                     load_times, run_times, avg_acc, avg_loss = 0.0, 0.0, 0.0, 0.0
                     # break
                 for i in range(self.batch_size):
@@ -195,8 +216,6 @@ class Solver(object):
                         pred_dict[batch_data[0][i]] = []
                     pred_dict[batch_data[0][i]].append([logits[i], int(batch_data[-2][i]), int(batch_data[-1][i])])
 
-            self.data.close_test_processes()
-            print('close test preprocesses')
             pres, recalls, ndcgs = [], [], []
             for k in range(1, 11):
                 top_k = k * 10

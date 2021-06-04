@@ -213,11 +213,12 @@ class Model(object):
 
         # shape(batch_size, seq_len)
         pos_scores = tf.exp(tf.reduce_sum(tf.multiply(base_item_vec, pos_item_vec), axis=-1) / t)
-        # shape(batch_size, seq_len, n_cl_negs)
-        neg_scores = tf.multiply(tf.reshape(base_item_vec, [-1, emb_size]),
-                                 tf.transpose(neg_item_vec, [1, 0]))
+        # shape(batch_size*seq_len, n_cl_negs)
+        neg_scores = tf.matmul(tf.reshape(base_item_vec, [-1, emb_size]),
+                               tf.transpose(neg_item_vec, [1, 0]))
         # shape(batch_size, seq_len)
-        neg_scores = tf.reduce_sum(tf.exp(tf.reshape(neg_scores, shape=[batch_size, seq_len]) / t), axis=1)
+        neg_scores = tf.reduce_sum(tf.exp(tf.reshape(neg_scores, shape=[batch_size, seq_len, self.n_cl_neg]) / t),
+                                   axis=-1)
         pos_mask = tf.cast(pos_mask, dtype=tf.float32)  # batch_size * seq_len
         avg_mask = tf.reduce_sum(pos_mask, axis=1)  # batch_size * seq_len
         ssl_loss = tf.reduce_sum(tf.multiply(- tf.log(pos_scores / (pos_scores + neg_scores)), pos_mask),

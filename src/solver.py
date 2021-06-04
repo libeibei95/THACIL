@@ -133,8 +133,7 @@ class Solver(object):
                 # self.data.neg_buffers = self.data.pre_sample_negs()
                 # self.data.initTrainProcess()
 
-                self.data.close_train_processes()
-                self.initTestProcess()
+                self.data.initTestProcess()
                 logging.info('start test phase')
                 logging.info('test iterations: {}'.format(self.data.n_test_batch))
                 pred_dict = {}
@@ -163,7 +162,6 @@ class Solver(object):
                         pred_dict[batch_data[0][i]].append(
                             [logits[i], int(batch_data[-2][i]), int(batch_data[-1][i])])
 
-                self.data.close_test_processes()
                 precision, recall, ndcg, auc = evaluation(pred_dict, 0)
                 logging.info('test auc: {:.4f}, ndcg: {:.4f}, precision: {:.4f}, recall: {:.4f}'.format(
                     auc, ndcg, precision, recall))

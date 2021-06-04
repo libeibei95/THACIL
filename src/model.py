@@ -193,7 +193,7 @@ class Model(object):
                     pos_item_vec,
                     pos_mask,
                     neg_item_vec,
-                    t=1):
+                    t=0.5):
         '''
 
         Args:

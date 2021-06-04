@@ -28,7 +28,7 @@ class Config:
     ITEM_DIM = 64
     CATE_DIM = 64
     USER_DIM = 128
-    DISPLAY = 1000
+    DISPLAY = 100
     NUM_HEADS = 8
     N_BLOCK = 8
     N_CL_NEG = 2048

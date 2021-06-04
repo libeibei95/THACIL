@@ -133,43 +133,44 @@ class Solver(object):
                 # self.data.neg_buffers = self.data.pre_sample_negs()
                 # self.data.initTrainProcess()
 
+                self.data.close_train_processes()
+                self.initTestProcess()
+                logging.info('start test phase')
+                logging.info('test iterations: {}'.format(self.data.n_test_batch))
+                pred_dict = {}
+                for step in range(self.data.n_test_batch):
+                    start = time.time()
+                    batch_data = self.data.get_test_batch()
+                    load_time = time.time() - start
+                    loss, logits, acc, summaries = self.model.test(sess, batch_data)
+                    run_time = time.time() - start - load_time
+                    self.test_writer.add_summary(summaries, step + 1 + epoch * self.data.n_test_batch)
+
+                    avg_loss += loss
+                    load_times += load_time
+                    run_times += run_time
+                    avg_acc += acc
+                    if (step + 1) % (self.display * 1000) == 0:
+                        logging.info(
+                            'epoch {}-test step {}: loss: {:.3f}, acc: {:.3f} in {:.3f}s, load {:.3f}s'.format(
+                                epoch + 1, step + 1, avg_loss / self.display, avg_acc / self.display, run_times,
+                                load_times))
+                        load_times, run_times, avg_acc, avg_loss = 0.0, 0.0, 0.0, 0.0
+                        # break
+                    for i in range(self.batch_size):
+                        if pred_dict.get(batch_data[0][i]) is None:
+                            pred_dict[batch_data[0][i]] = []
+                        pred_dict[batch_data[0][i]].append(
+                            [logits[i], int(batch_data[-2][i]), int(batch_data[-1][i])])
+
+                self.data.close_test_processes()
+                precision, recall, ndcg, auc = evaluation(pred_dict, 0)
+                logging.info('test auc: {:.4f}, ndcg: {:.4f}, precision: {:.4f}, recall: {:.4f}'.format(
+                    auc, ndcg, precision, recall))
+                save_path = os.path.join(self.model_dir, 'model-{:.4f}-{:.4f}.ckpt'.format(auc, min_loss))
+                self.model.save(sess, save_path, epoch + 1)
+
                 if stop_training_counter > 5:
-                    self.data.close_train_processes()
-                    self.initTestProcess()
-                    logging.info('start test phase')
-                    logging.info('test iterations: {}'.format(self.data.n_test_batch))
-                    pred_dict = {}
-                    for step in range(self.data.n_test_batch):
-                        start = time.time()
-                        batch_data = self.data.get_test_batch()
-                        load_time = time.time() - start
-                        loss, logits, acc, summaries = self.model.test(sess, batch_data)
-                        run_time = time.time() - start - load_time
-                        self.test_writer.add_summary(summaries, step + 1 + epoch * self.data.n_test_batch)
-
-                        avg_loss += loss
-                        load_times += load_time
-                        run_times += run_time
-                        avg_acc += acc
-                        if (step + 1) % (self.display * 1000) == 0:
-                            logging.info(
-                                'epoch {}-test step {}: loss: {:.3f}, acc: {:.3f} in {:.3f}s, load {:.3f}s'.format(
-                                    epoch + 1, step + 1, avg_loss / self.display, avg_acc / self.display, run_times,
-                                    load_times))
-                            load_times, run_times, avg_acc, avg_loss = 0.0, 0.0, 0.0, 0.0
-                            # break
-                        for i in range(self.batch_size):
-                            if pred_dict.get(batch_data[0][i]) is None:
-                                pred_dict[batch_data[0][i]] = []
-                            pred_dict[batch_data[0][i]].append(
-                                [logits[i], int(batch_data[-2][i]), int(batch_data[-1][i])])
-
-                    self.data.close_test_processes()
-                    precision, recall, ndcg, auc = evaluation(pred_dict, 0)
-                    logging.info('test auc: {:.4f}, ndcg: {:.4f}, precision: {:.4f}, recall: {:.4f}'.format(
-                        auc, ndcg, precision, recall))
-                    save_path = os.path.join(self.model_dir, 'model-{:.4f}-{:.4f}.ckpt'.format(auc, min_loss))
-                    self.model.save(sess, save_path, epoch + 1)
                     break
 
     def test(self):

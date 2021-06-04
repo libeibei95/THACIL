@@ -275,10 +275,10 @@ class Model(object):
             self.att_cids_ph: data[4],
             self.intra_mask_ph: data[5],
             self.inter_mask_ph: data[6],
-            self.labels_ph: data[7],
-            self.cl_tar_ph: data[8],
-            self.cl_pos_ph: data[9],
-            self.cl_neg_ph: data[10]
+            self.cl_tar_ph: data[7],
+            self.cl_pos_ph: data[8],
+            self.cl_neg_ph: data[9],
+            self.labels_ph: data[10]
         }
         test_run_op = [self.test_loss, self.test_logits, self.test_acc, self.test_summuries]
         loss, logits, acc, summaries = sess.run(test_run_op, feed_dicts)

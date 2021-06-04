@@ -178,7 +178,7 @@ class Solver(object):
             self.create_model(sess)
             logging.info('start test phase')
             n_batch = self.data.n_test_batch
-            #n_batch = 2000
+            #n_batch = 1000
             logging.info('test iterations: {}'.format(n_batch))
             pred_dict = {}
             for step in range(n_batch):
@@ -198,7 +198,7 @@ class Solver(object):
                 for i in range(self.batch_size):
                     if pred_dict.get(batch_data[0][i]) is None:
                         pred_dict[batch_data[0][i]] = []
-                    pred_dict[batch_data[0][i]].append([logits[i], int(batch_data[-3][i]), int(batch_data[-2][i])])
+                    pred_dict[batch_data[0][i]].append([logits[i], int(batch_data[-2][i]), int(batch_data[-1][i])])
 
             self.data.close_test_processes()
             print('close test preprocesses')

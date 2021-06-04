@@ -54,8 +54,8 @@ class Model(object):
                                         self.intra_mask_ph,
                                         self.inter_mask_ph,
                                         self.labels_ph,
-                                        self.cl_tar_ph,
                                         self.cl_pos_ph,
+                                        self.cl_mask_ph,
                                         self.cl_neg_ph,
                                         self.dropout)
         # train op
@@ -83,8 +83,8 @@ class Model(object):
                                              self.intra_mask_ph,
                                              self.inter_mask_ph,
                                              self.labels_ph,
-                                             self.cl_tar_ph,
                                              self.cl_pos_ph,
+                                             self.cl_mask_ph,
                                              self.cl_neg_ph,
                                              1.0)
 
@@ -156,6 +156,7 @@ class Model(object):
         return ssl_loss
     """
 
+    """
     def seq_cl_loss(self,
                     tar_item_vec,
                     pos_item_vec,
@@ -184,6 +185,45 @@ class Model(object):
         # (1, )
         ssl_loss = -tf.reduce_mean(tf.log(pos_scores / (pos_scores + neg_scores)))
         return ssl_loss
+    """
+
+    def seq_cl_loss(self,
+                    base_item_vec,
+                    pos_item_vec,
+                    pos_mask,
+                    neg_item_vec,
+                    t=1):
+        '''
+
+        Args:
+            base_item_vec: batch_size * seq_len * embed_size
+            pos_item_vec: batch_size * seq_len * embed_size
+            pos_mask: batch_size * seq_len
+            neg_item_vec: n_cl_negs * embed_size
+
+        Returns:
+
+        '''
+
+        base_item_vec = tf.nn.l2_normalize(base_item_vec, -1)
+        pos_item_vec = tf.nn.l2_normalize(pos_item_vec, -1)
+        neg_item_vec = tf.nn.l2_normalize(neg_item_vec, -1)
+
+        batch_size, seq_len, emb_size = base_item_vec.shape
+
+        # shape(batch_size, seq_len)
+        pos_scores = tf.exp(tf.reduce_sum(tf.multiply(base_item_vec, pos_item_vec), axis=-1) / t)
+        # shape(batch_size, seq_len, n_cl_negs)
+        neg_scores = tf.multiply(tf.reshape(base_item_vec, [-1, emb_size]),
+                                 tf.transpose(neg_item_vec, [1, 0]))
+        # shape(batch_size, seq_len)
+        neg_scores = tf.reduce_sum(tf.exp(tf.reshape(neg_scores, shape=[batch_size, seq_len]) / t), axis=1)
+        pos_mask = tf.cast(pos_mask, dtype=tf.float32)  # batch_size * seq_len
+        avg_mask = tf.reduce_sum(pos_mask, axis=1)  # batch_size * seq_len
+        ssl_loss = tf.reduce_sum(tf.multiply(- tf.log(pos_scores / (pos_scores + neg_scores)), pos_mask),
+                                 axis=-1) / avg_mask
+        ssl_loss = tf.reduce_mean(ssl_loss)
+        return ssl_loss
 
     def build_model(self,
                     item_vec,
@@ -193,8 +233,8 @@ class Model(object):
                     intra_mask,
                     inter_mask,
                     labels,
-                    cl_tar_iids,
                     cl_pos_iids,
+                    cl_mask,
                     cl_neg_iids,
                     keep_prob):
 
@@ -202,13 +242,11 @@ class Model(object):
             att_item_vec = self.get_train_cover_image_feature(att_iids)
             att_cate_emb = self.get_cate_emb(att_cids)
 
-            tar_item_vec = self.get_train_cover_image_feature(cl_tar_iids)
             pos_item_vec = self.get_train_cover_image_feature(cl_pos_iids)
             neg_item_vec = self.get_train_cover_image_feature(cl_neg_iids)
 
             item_vec = dense(item_vec, self.item_dim, ['w1'], 1.0)
             att_item_vec = dense(att_item_vec, self.item_dim, ['w1'], 1.0, reuse=True)
-            tar_item_vec = dense(tar_item_vec, self.item_dim, ['w1'], 1.0, reuse=True)
             pos_item_vec = dense(pos_item_vec, self.item_dim, ['w1'], 1.0, reuse=True)
             neg_item_vec = dense(neg_item_vec, self.item_dim, ['w1'], 1.0, reuse=True)
 
@@ -218,7 +256,7 @@ class Model(object):
         with tf.variable_scope('cl_loss'):
             # att_item_emb = tf.concat([att_item_vec, att_cate_emb], axis=-1)
             # neg_item_emb = tf.concat([neg_item_vec, neg_cate_emb], axis=-1)
-            seq_cl_loss = self.seq_cl_loss(tar_item_vec, pos_item_vec, neg_item_vec)
+            seq_cl_loss = self.seq_cl_loss(att_item_vec, pos_item_vec, cl_mask, neg_item_vec)
 
         with tf.variable_scope('temporal_hierarchical_attention'):
             user_profiles = temporal_hierarchical_attention(att_cate_emb,
@@ -257,8 +295,8 @@ class Model(object):
             self.inter_mask_ph: data[6],
             self.labels_ph: data[7],
             self.lr_ph: lr,
-            self.cl_tar_ph: data[8],
-            self.cl_pos_ph: data[9],
+            self.cl_pos_ph: data[8],
+            self.cl_mask_ph: data[9],
             self.cl_neg_ph: data[10]
         }
         train_run_op = [self.train_loss, self.train_acc, self.train_summuries, self.train_op]
@@ -275,8 +313,8 @@ class Model(object):
             self.att_cids_ph: data[4],
             self.intra_mask_ph: data[5],
             self.inter_mask_ph: data[6],
-            self.cl_tar_ph: data[7],
-            self.cl_pos_ph: data[8],
+            self.cl_pos_ph: data[7],
+            self.cl_mask_ph: data[8],
             self.cl_neg_ph: data[9],
             self.labels_ph: data[10]
         }
@@ -305,8 +343,8 @@ class Model(object):
         self.item_vec_ph = tf.placeholder(tf.float32, shape=(self.batch_size, 512))
         self.labels_ph = tf.placeholder(tf.float32, shape=(self.batch_size))
         self.lr_ph = tf.placeholder(tf.float32, shape=())
-        self.cl_tar_ph = tf.placeholder(tf.int32, shape=(self.batch_size * 4,))
-        self.cl_pos_ph = tf.placeholder(tf.int32, shape=(self.batch_size * 4,))
+        self.cl_pos_ph = tf.placeholder(tf.int32, shape=(self.batch_size, self.max_length))
+        self.cl_mask_ph = tf.placeholder(tf.int32, shape=(self.batch_size, self.max_length))
         self.cl_neg_ph = tf.placeholder(tf.int32, shape=(self.n_cl_neg,))
 
     def init_embedding(self):

@@ -70,10 +70,10 @@ class DataLoader(object):
                 batch_data = data[i * self.batch_size: (i + 1) * self.batch_size]
                 user_ids, item_ids, cate_ids, labels = zip(*batch_data)
                 att_iids, att_cids, intra_mask, inter_mask = self.get_att_ids(user_ids)
-                cl_tar_items, cl_pos_items, cl_neg_items = self.gen_cl_item_batch()
+                cl_pos_items, cl_mask, cl_neg_items = self.gen_cl_item_batch(att_iids)
                 self.train_queue.put(
                     (user_ids, item_ids, cate_ids, att_iids, att_cids, intra_mask, inter_mask, labels,
-                     cl_tar_items, cl_pos_items, cl_neg_items)
+                     cl_pos_items, cl_mask, cl_neg_items)
                 )
 
     def get_train_batch(self):
@@ -116,13 +116,22 @@ class DataLoader(object):
         return tar_items, pos_items, neg_items
     '''
 
-    def gen_cl_item_batch(self):
-        # random generate a item batch
-        indices = random.sample(list(range(len(self.pos_item_pairs))), self.batch_size * 4)
-        tar_items = list(map(lambda idx: self.pos_item_pairs[idx][0], indices))
-        pos_items = list(map(lambda idx: self.pos_item_pairs[idx][1], indices))
+    def gen_cl_item_batch(self, att_iids):
+        '''
+        Args:
+            att_iids: batch_size * seq_len
+            intra_mask: batch_size * seq_len
+
+        Returns:
+            pos_iids: batch_size * seq_len
+            pos_mask: batch_size * seq_len
+            neg_items: (self.n_cl_neg, )
+
+        '''
+        pos_iids = [[random.choice(self.pos_item_dict.get(iid, [iid])) for iid in iids] for iids in att_iids]
+        pos_mask = [[1 if self.pos_item_dict.get(iid) is not None else 0 for iid in iids] for iids in att_iids]
         neg_items = list(random.sample(set(range(984983)) - self.hot_items, self.n_cl_neg))
-        return tar_items, pos_items, neg_items
+        return pos_iids, pos_mask, neg_items
 
     def processTestBatch(self, first, last):
         data = self.test_data[first:last]
@@ -132,9 +141,9 @@ class DataLoader(object):
             user_ids, item_ids, cate_ids, labels = zip(*batch_data)
             item_vecs = self.get_test_cover_img_feature(item_ids)
             att_iids, att_cids, intra_mask, inter_mask = self.get_att_ids(user_ids)
-            cl_tar_items, cl_pos_items, cl_neg_items = self.gen_cl_item_batch()
+            cl_pos_items, cl_mask, cl_neg_items = self.gen_cl_item_batch(att_iids)
             self.test_queue.put(
-                (user_ids, item_vecs, cate_ids, att_iids, att_cids, intra_mask, inter_mask, cl_tar_items, cl_pos_items,
+                (user_ids, item_vecs, cate_ids, att_iids, att_cids, intra_mask, inter_mask, cl_pos_items, cl_mask,
                  cl_neg_items, labels, item_ids)
             )
 
@@ -299,8 +308,8 @@ class DataLoader(object):
         user_unclick_ids_path = os.path.join(self.data_dir, 'user_unclick_ids.npy')
         self.user_unclick_ids = np.load(user_unclick_ids_path, allow_pickle=True)
 
-        item_pair_path = os.path.join(self.data_dir, 'pos_item_pairs.npy')
-        self.pos_item_pairs = np.load(item_pair_path, allow_pickle=True)
+        pos_item_path = os.path.join(self.data_dir, 'pos_items.npy')
+        self.pos_item_dict = np.load(pos_item_path, allow_pickle=True).item()
 
         # item_strong_negs_path = os.path.join(self.data_dir, 'item_strong_negs.npy')
         # self.item_strong_negs = np.load(item_strong_negs_path, allow_pickle=True)

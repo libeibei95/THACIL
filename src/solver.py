@@ -80,29 +80,31 @@ class Solver(object):
 
             for epoch in range(self.max_epoch):
                 logging.info('start train phase')
-                #n_batch = self.data.n_train_batch
+                # n_batch = self.data.n_train_batch
                 n_batch = 10000
                 logging.info('train iterations: {}'.format(n_batch))
-                avg_loss, avg_acc = 0.0, 0.0
+                avg_loss, avg_cl_loss, avg_acc = 0.0, 0.0, 0.0
                 load_times, run_times = 0.0, 0.0
                 epoch_avg_loss = 0.0
                 for i in range(n_batch):
                     start = time.time()
                     batch_data = self.data.get_train_batch()
                     load_time = time.time() - start
-                    loss, acc, summaries = self.model.train(sess, batch_data, lr)
+                    loss, cl_loss, acc, summaries = self.model.train(sess, batch_data, lr)
                     run_time = time.time() - start - load_time
                     self.train_writer.add_summary(summaries, i + 1 + epoch * n_batch)
 
                     load_times += load_time
                     run_times += run_time
                     avg_loss += loss
+                    avg_cl_loss += cl_loss
                     avg_acc += acc
                     epoch_avg_loss += loss
                     if (i + 1) % self.display == 0:
                         logging.info(
-                            'epoch {}-train step {}: loss: {:.3f}, acc: {:.3f} in {:.3f}s, load {:.3f}s'.format(
-                                epoch + 1, i + 1, avg_loss / self.display, avg_acc / self.display, run_times,
+                            'epoch {}-train step {}: loss: {:.3f}, cl_loss: {:.3f}, acc: {:.3f} in {:.3f}s, load {:.3f}s'.format(
+                                epoch + 1, i + 1, avg_loss / self.display, avg_cl_loss / self.display,
+                                avg_acc / self.display, run_times,
                                 load_times))
                         load_times, run_times, avg_acc, avg_loss = 0.0, 0.0, 0.0, 0.0
                         # break
@@ -178,7 +180,7 @@ class Solver(object):
             self.create_model(sess)
             logging.info('start test phase')
             n_batch = self.data.n_test_batch
-            #n_batch = 1000
+            # n_batch = 1000
             logging.info('test iterations: {}'.format(n_batch))
             pred_dict = {}
             for step in range(n_batch):

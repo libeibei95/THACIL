@@ -47,7 +47,7 @@ class Model(object):
 
     def train_inference(self):
         item_vec = self.get_train_cover_image_feature(self.item_ids_ph)
-        loss, acc, _ = self.build_model(item_vec,
+        loss, cl_loss, acc, _ = self.build_model(item_vec,
                                         self.cate_ids_ph,
                                         self.att_iids_ph,
                                         self.att_cids_ph,
@@ -64,6 +64,7 @@ class Model(object):
         clip_gradients, _ = tf.clip_by_global_norm(gradients, self.max_gradient_norm)
         self.train_op = self.opt.apply_gradients(zip(clip_gradients, train_params), self.global_step)
         self.train_loss = loss
+        self.train_cl_loss = cl_loss
         self.train_acc = acc
 
         # summary
@@ -76,7 +77,7 @@ class Model(object):
         self.saver = tf.train.Saver(params, max_to_keep=1)
 
     def test_inference(self):
-        loss, acc, logits = self.build_model(self.item_vec_ph,
+        loss, _, acc, logits = self.build_model(self.item_vec_ph,
                                              self.cate_ids_ph,
                                              self.att_iids_ph,
                                              self.att_cids_ph,
@@ -283,7 +284,7 @@ class Model(object):
                 labels=labels)
         ) + l2_norm * self.reg + 1 * seq_cl_loss
         acc = self.compute_acc(logits, self.labels_ph)
-        return loss, acc, logits
+        return loss, seq_cl_loss, acc, logits
 
     def train(self, sess, data, lr):
         feed_dicts = {
@@ -300,9 +301,9 @@ class Model(object):
             self.cl_mask_ph: data[9],
             self.cl_neg_ph: data[10]
         }
-        train_run_op = [self.train_loss, self.train_acc, self.train_summuries, self.train_op]
-        loss, acc, summaries, _ = sess.run(train_run_op, feed_dicts)
-        return loss, acc, summaries
+        train_run_op = [self.train_loss, self.train_cl_loss, self.train_acc, self.train_summuries, self.train_op]
+        loss,  cl_loss, acc, summaries, _ = sess.run(train_run_op, feed_dicts)
+        return loss, cl_loss, acc, summaries
 
     def test(self, sess, data):
         feed_dicts = {

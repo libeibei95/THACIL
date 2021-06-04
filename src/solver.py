@@ -150,7 +150,7 @@ class Solver(object):
                     run_times += run_time
                     avg_acc += acc
 
-                    if (step + 1) % (self.display * 1000) == 0:
+                    if (step + 1) % (self.display) == 0:
                         logging.info(
                             'epoch {}-test step {}: loss: {:.3f} = {:.3f} + {:.3f} + {:.3f}, acc: {:.3f} in {:.3f}s, load {:.3f}s'.format(
                                 epoch + 1, step + 1, avg_loss / self.display, avg_pos_loss / self.display,

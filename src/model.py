@@ -47,28 +47,39 @@ class Model(object):
 
     def train_inference(self):
         item_vec = self.get_train_cover_image_feature(self.item_ids_ph)
-        full_loss, _, acc, _ = self.build_model(item_vec,
-                                                self.cate_ids_ph,
-                                                self.att_iids_ph,
-                                                self.att_cids_ph,
-                                                self.intra_mask_ph,
-                                                self.inter_mask_ph,
-                                                self.labels_ph,
-                                                self.dropout,
-                                                self.att_iids_ph2,
-                                                self.att_cids_ph2,
-                                                self.intra_mask_ph2,
-                                                self.inter_mask_ph2)
+        loss, pos_loss, neg_loss, cl_loss, acc, logits = self.build_model(item_vec,
+                                                                          self.cate_ids_ph,
+                                                                          self.att_iids_ph,
+                                                                          self.att_cids_ph,
+                                                                          self.intra_mask_ph,
+                                                                          self.inter_mask_ph,
+                                                                          self.labels_ph,
+                                                                          self.dropout,
+                                                                          self.att_iids_ph2,
+                                                                          self.att_cids_ph2,
+                                                                          self.intra_mask_ph2,
+                                                                          self.inter_mask_ph2,
+                                                                          self.neg_att_iids_ph,
+                                                                          self.neg_att_cids_ph,
+                                                                          self.neg_intra_mask_ph,
+                                                                          self.neg_inter_mask_ph,
+                                                                          self.neg_att_iids_ph2,
+                                                                          self.neg_att_cids_ph2,
+                                                                          self.neg_intra_mask_ph2,
+                                                                          self.neg_inter_mask_ph2)
         # train op
         train_params = tf.trainable_variables()
-        gradients = tf.gradients(full_loss, train_params)
+        gradients = tf.gradients(loss, train_params)
         clip_gradients, _ = tf.clip_by_global_norm(gradients, self.max_gradient_norm)
         self.train_op = self.opt.apply_gradients(zip(clip_gradients, train_params), self.global_step)
-        self.train_loss = full_loss
+        self.train_loss = loss
+        self.train_pos_loss = pos_loss
+        self.train_neg_loss = neg_loss
+        self.cl_loss = cl_loss
         self.train_acc = acc
 
         # summary
-        self.train_summuries = tf.summary.merge([tf.summary.scalar('train/loss', full_loss),
+        self.train_summuries = tf.summary.merge([tf.summary.scalar('train/loss', loss),
                                                  tf.summary.scalar('train/acc', acc),
                                                  tf.summary.scalar('lr', self.lr_ph)])
 
@@ -77,20 +88,31 @@ class Model(object):
         self.saver = tf.train.Saver(params, max_to_keep=1)
 
     def test_inference(self):
-        _, loss, acc, logits = self.build_model(self.item_vec_ph,
-                                                self.cate_ids_ph,
-                                                self.att_iids_ph,
-                                                self.att_cids_ph,
-                                                self.intra_mask_ph,
-                                                self.inter_mask_ph,
-                                                self.labels_ph,
-                                                1.0,
-                                                self.att_iids_ph2,
-                                                self.att_cids_ph2,
-                                                self.intra_mask_ph2,
-                                                self.inter_mask_ph2)
+        loss, pos_loss, neg_loss, cl_loss, acc, logits = self.build_model(self.item_vec_ph,
+                                                                          self.cate_ids_ph,
+                                                                          self.att_iids_ph,
+                                                                          self.att_cids_ph,
+                                                                          self.intra_mask_ph,
+                                                                          self.inter_mask_ph,
+                                                                          self.labels_ph,
+                                                                          1.0,
+                                                                          self.att_iids_ph2,
+                                                                          self.att_cids_ph2,
+                                                                          self.intra_mask_ph2,
+                                                                          self.inter_mask_ph2,
+                                                                          self.neg_att_iids_ph,
+                                                                          self.neg_att_cids_ph,
+                                                                          self.neg_intra_mask_ph,
+                                                                          self.neg_inter_mask_ph,
+                                                                          self.neg_att_iids_ph2,
+                                                                          self.neg_att_cids_ph2,
+                                                                          self.neg_intra_mask_ph2,
+                                                                          self.neg_inter_mask_ph2)
 
         self.test_loss = loss
+        self.test_pos_loss = pos_loss
+        self.test_neg_loss = neg_loss
+        self.test_cl_loss = cl_loss
         self.test_acc = acc
         self.test_logits = logits
 
@@ -162,28 +184,35 @@ class Model(object):
                     att_iids2,
                     att_cids2,
                     intra_mask2,
-                    inter_mask2):
+                    inter_mask2,
+                    neg_att_iids,
+                    neg_att_cids,
+                    neg_intra_mask,
+                    neg_inter_mask,
+                    neg_att_iids2,
+                    neg_att_cids2,
+                    neg_intra_mask2,
+                    neg_inter_mask2):
 
         with tf.variable_scope('item_embedding'):
             att_item_vec = self.get_train_cover_image_feature(att_iids)
             att_cate_emb = self.get_cate_emb(att_cids)
             att_item_vec2 = self.get_train_cover_image_feature(att_iids2)
             att_cate_emb2 = self.get_cate_emb(att_cids2)
-            # neg_item_vec = self.get_train_cover_image_feature(neg_iids)
-            # neg_cate_emb = self.get_cate_emb(neg_iids)
+
+            neg_att_item_vec = self.get_train_cover_image_feature(neg_att_iids)
+            neg_att_cate_emb = self.get_cate_emb(neg_att_cids)
+            neg_att_item_vec2 = self.get_train_cover_image_feature(neg_att_iids2)
+            neg_att_cate_emb2 = self.get_cate_emb(neg_att_cids2)
 
             item_vec = dense(item_vec, self.item_dim, ['w1'], 1.0)
             att_item_vec = dense(att_item_vec, self.item_dim, ['w1'], 1.0, reuse=True)
             att_item_vec2 = dense(att_item_vec2, self.item_dim, ['w1'], 1.0, reuse=True)
-            # neg_item_vec = dense(neg_item_vec, self.item_dim, ['w1'], 1.0, reuse=True)
+            neg_att_item_vec = dense(neg_att_item_vec, self.item_dim, ['w1'], 1.0, reuse=True)
+            neg_att_item_vec2 = dense(neg_att_item_vec2, self.item_dim, ['w1'], 1.0, reuse=True)
 
             cate_emb = self.get_cate_emb(cate_ids)
             item_emb = tf.concat([item_vec, cate_emb], axis=-1)
-
-        # with tf.variable_scope('cl_loss'):
-        #     # att_item_emb = tf.concat([att_item_vec, att_cate_emb], axis=-1)
-        #     # neg_item_emb = tf.concat([neg_item_vec, neg_cate_emb], axis=-1)
-        #     seq_cl_loss = self.seq_cl_loss(att_item_vec, neg_item_vec, intra_mask)
 
         with tf.variable_scope('temporal_hierarchical_attention', reuse=tf.AUTO_REUSE):
             user_profiles = temporal_hierarchical_attention(att_cate_emb,
@@ -200,29 +229,53 @@ class Model(object):
                                                              self.num_heads,
                                                              keep_prob)
 
+            neg_user_profiles = temporal_hierarchical_attention(neg_att_cate_emb,
+                                                                neg_att_item_vec,
+                                                                neg_intra_mask,
+                                                                neg_inter_mask,
+                                                                self.num_heads,
+                                                                keep_prob)
+
+            neg_user_profiles2 = temporal_hierarchical_attention(neg_att_cate_emb2,
+                                                                 neg_att_item_vec2,
+                                                                 neg_intra_mask2,
+                                                                 neg_inter_mask2,
+                                                                 self.num_heads,
+                                                                 keep_prob)
+
         with tf.variable_scope('micro_video_click_through_prediction', reuse=tf.AUTO_REUSE):
             user_profile = vanilla_attention(user_profiles, item_emb, inter_mask, keep_prob)
             user_profile2 = vanilla_attention(user_profiles2, item_emb, inter_mask, keep_prob)
-            user_cl_loss = self.user_cl_loss(user_profile, user_profile2)
-            y = dnn(tf.concat([user_profile, item_emb], axis=-1), self.fusion_layers, keep_prob)
+            neg_user_profiles = vanilla_attention(neg_user_profiles, item_emb, inter_mask, keep_prob)
+            neg_user_profiles2 = vanilla_attention(neg_user_profiles2, item_emb, inter_mask, keep_prob)
 
-        logits = y
+            user_cl_loss = self.user_cl_loss(tf.concat([user_profile, neg_user_profiles], axis=0),
+                                             tf.concat([user_profile2, neg_user_profiles2], axis=0))
+
+            y = dnn(tf.concat([user_profile, item_emb], axis=-1), self.fusion_layers, keep_prob)
+            neg_y = dnn(tf.concat([neg_user_profiles, item_emb], axis=-1), self.fusion_layers, keep_prob)
 
         # regularization
         emb_l2_loss = tf.add_n([tf.nn.l2_loss(v) for v in tf.trainable_variables() if 'embedding' in v.name])
         w_l2_loss = tf.add_n([tf.nn.l2_loss(v) for v in tf.trainable_variables() if 'w' in v.name])
         l2_norm = emb_l2_loss + w_l2_loss
 
-        
-        loss = tf.reduce_mean(
+        pos_loss = tf.reduce_mean(
             tf.nn.sigmoid_cross_entropy_with_logits(
-                logits=logits,
+                logits=y,
                 labels=labels)
-        ) + l2_norm * self.reg
-        
-        full_loss = loss + 1 * user_cl_loss
+        )
+
+        neg_loss = tf.reduce_mean(
+            tf.nn.sigmoid_cross_entropy_with_logits(
+                logits=neg_y,
+                labels=1 - labels)
+        )
+
+        loss = pos_loss + neg_loss + l2_norm * self.reg + 1 * user_cl_loss
+        logits = y - neg_y
         acc = self.compute_acc(logits, self.labels_ph)
-        return full_loss, loss, acc, logits
+        return loss, pos_loss, neg_loss, user_cl_loss, acc, logits
 
     def train(self, sess, data, lr):
         feed_dicts = {
@@ -239,11 +292,20 @@ class Model(object):
             self.att_iids_ph2: data[8],
             self.att_cids_ph2: data[9],
             self.intra_mask_ph2: data[10],
-            self.inter_mask_ph2: data[11]
+            self.inter_mask_ph2: data[11],
+            self.neg_att_iids_ph: data[12],
+            self.neg_att_cids_ph: data[13],
+            self.neg_intra_mask_ph: data[14],
+            self.neg_inter_mask_ph: data[15],
+            self.neg_att_iids_ph2: data[16],
+            self.neg_att_cids_ph2: data[17],
+            self.neg_intra_mask_ph2: data[18],
+            self.neg_inter_mask_ph2: data[19]
         }
-        train_run_op = [self.train_loss, self.train_acc, self.train_summuries, self.train_op]
-        loss, acc, summaries, _ = sess.run(train_run_op, feed_dicts)
-        return loss, acc, summaries
+        train_run_op = [self.train_loss, self.train_pos_loss, self.train_neg_loss, self.cl_loss, self.train_acc,
+                        self.train_summuries, self.train_op]
+        loss, pos_loss, neg_loss, cl_loss, acc, summaries, _ = sess.run(train_run_op, feed_dicts)
+        return loss, pos_loss, neg_loss, cl_loss, acc, summaries
 
     def test(self, sess, data):
         feed_dicts = {
@@ -259,11 +321,19 @@ class Model(object):
             self.att_cids_ph2: data[8],
             self.intra_mask_ph2: data[9],
             self.inter_mask_ph2: data[10],
-            self.labels_ph: data[11]
+            self.neg_att_iids_ph: data[11],
+            self.neg_att_cids_ph: data[12],
+            self.neg_intra_mask_ph: data[13],
+            self.neg_inter_mask_ph: data[14],
+            self.neg_att_iids_ph2: data[15],
+            self.neg_att_cids_ph2: data[16],
+            self.neg_intra_mask_ph2: data[17],
+            self.neg_inter_mask_ph2: data[18],
+            self.labels_ph: data[19]
         }
-        test_run_op = [self.test_loss, self.test_logits, self.test_acc, self.test_summuries]
-        loss, logits, acc, summaries = sess.run(test_run_op, feed_dicts)
-        return loss, logits, acc, summaries
+        test_run_op = [self.test_loss, self.test_pos_loss, self.test_neg_loss, self.test_logits, self.test_acc, self.test_summuries]
+        loss, pos_loss, neg_loss, logits, acc, summaries = sess.run(test_run_op, feed_dicts)
+        return loss, pos_loss, neg_loss, logits, acc, summaries
 
     def save(self, sess, model_path, epoch):
         self.saver.save(sess, model_path, global_step=epoch)
@@ -279,18 +349,31 @@ class Model(object):
         self.user_ids_ph = tf.placeholder(tf.int32, shape=(self.batch_size,))
         self.item_ids_ph = tf.placeholder(tf.int32, shape=(self.batch_size,))
         self.cate_ids_ph = tf.placeholder(tf.int32, shape=(self.batch_size,))
+
         self.att_iids_ph = tf.placeholder(tf.int32, shape=(self.batch_size, self.max_length))
         self.att_cids_ph = tf.placeholder(tf.int32, shape=(self.batch_size, self.max_length))
         self.intra_mask_ph = tf.placeholder(tf.bool, shape=(self.batch_size, self.max_length))
         self.inter_mask_ph = tf.placeholder(tf.bool, shape=(self.batch_size, self.n_block))
+
         self.item_vec_ph = tf.placeholder(tf.float32, shape=(self.batch_size, 512))
-        self.labels_ph = tf.placeholder(tf.float32, shape=(self.batch_size))
+        self.labels_ph = tf.placeholder(tf.float32, shape=(self.batch_size,))
         self.lr_ph = tf.placeholder(tf.float32, shape=())
         self.cl_neg_ph = tf.placeholder(tf.int32, shape=(self.batch_size, self.n_cl_neg))
+
         self.att_iids_ph2 = tf.placeholder(tf.int32, shape=(self.batch_size, self.max_length))
         self.att_cids_ph2 = tf.placeholder(tf.int32, shape=(self.batch_size, self.max_length))
         self.intra_mask_ph2 = tf.placeholder(tf.bool, shape=(self.batch_size, self.max_length))
         self.inter_mask_ph2 = tf.placeholder(tf.bool, shape=(self.batch_size, self.n_block))
+
+        self.neg_att_iids_ph = tf.placeholder(tf.int32, shape=(self.batch_size, self.max_length))
+        self.neg_att_cids_ph = tf.placeholder(tf.int32, shape=(self.batch_size, self.max_length))
+        self.neg_intra_mask_ph = tf.placeholder(tf.bool, shape=(self.batch_size, self.max_length))
+        self.neg_inter_mask_ph = tf.placeholder(tf.bool, shape=(self.batch_size, self.n_block))
+
+        self.neg_att_iids_ph2 = tf.placeholder(tf.int32, shape=(self.batch_size, self.max_length))
+        self.neg_att_cids_ph2 = tf.placeholder(tf.int32, shape=(self.batch_size, self.max_length))
+        self.neg_intra_mask_ph2 = tf.placeholder(tf.bool, shape=(self.batch_size, self.max_length))
+        self.neg_inter_mask_ph2 = tf.placeholder(tf.bool, shape=(self.batch_size, self.n_block))
 
     def init_embedding(self):
         category_embedding = var_init('category_embedding', [512, self.cate_dim], tf.random_normal_initializer())

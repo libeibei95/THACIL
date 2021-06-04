@@ -221,10 +221,8 @@ class Model(object):
         neg_scores = tf.reduce_sum(tf.exp(tf.reshape(neg_scores, shape=[batch_size, seq_len, self.n_cl_neg]) / t),
                                    axis=-1)
         pos_mask = tf.cast(pos_mask, dtype=tf.float32)  # batch_size * seq_len
-        avg_mask = tf.reduce_sum(pos_mask, axis=1)  # batch_size * seq_len
-        ssl_loss = tf.reduce_sum(tf.multiply(- tf.log(pos_scores / (pos_scores + neg_scores)), pos_mask),
-                                 axis=-1) / avg_mask
-        ssl_loss = tf.reduce_mean(ssl_loss)
+        num = tf.reduce_sum(pos_mask)  # batch_size * seq_len
+        ssl_loss = tf.reduce_sum(tf.multiply(- tf.log(pos_scores / (pos_scores + neg_scores)), pos_mask)) / num
         return ssl_loss
 
     def build_model(self,

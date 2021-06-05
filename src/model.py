@@ -272,10 +272,10 @@ class Model(object):
                 labels=1 - labels)
         )
 
-        loss = 1 * pos_loss + 1 * neg_loss + l2_norm * self.reg + 0.5 * user_cl_loss
+        loss = 1 * pos_loss + 0 * neg_loss + l2_norm * self.reg + 0 * user_cl_loss
         # logits = (tf.nn.sigmoid(y) + 1 - tf.nn.sigmoid(neg_y)) / 2
-        logits = (y - neg_y) / 2
-        #logits = y
+        # logits = (y - neg_y) / 2
+        logits = y
         #logits = - neg_y
         acc = self.compute_acc(logits, self.labels_ph)
         return loss, pos_loss, neg_loss, user_cl_loss, acc, logits

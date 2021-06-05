@@ -216,6 +216,7 @@ class Solver(object):
                             step + 1, run_times, load_times, avg_loss / self.display, avg_pos_loss / self.display,
                             avg_neg_loss / self.display, avg_cl_loss / self.display))
                     load_times, run_times, avg_acc, avg_loss = 0.0, 0.0, 0.0, 0.0
+                    avg_pos_loss, avg_neg_loss, avg_cl_loss = 0.0, 0.0, 0.0
                     # break
                 for i in range(self.batch_size):
                     if pred_dict.get(batch_data[0][i]) is None:

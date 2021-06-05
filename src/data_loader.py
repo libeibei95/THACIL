@@ -71,8 +71,8 @@ class DataLoader(object):
                 att_iids1, att_cids1, intra_mask1, inter_mask1 = self.get_att_ids(user_ids)
                 att_iids2, att_cids2, intra_mask2, inter_mask2 = self.get_att_ids(user_ids)
 
-                neg_att_iids, neg_att_cids, neg_intra_mask, neg_inter_mask = self.get_att_ids(user_ids, False)
-                neg_att_iids2, neg_att_cids2, neg_intra_mask2, neg_inter_mask2 = self.get_att_ids(user_ids, False)
+                neg_att_iids, neg_att_cids, neg_intra_mask, neg_inter_mask = self.get_neg_att_ids(user_ids, False)
+                neg_att_iids2, neg_att_cids2, neg_intra_mask2, neg_inter_mask2 = self.get_neg_att_ids(user_ids, False)
 
                 self.train_queue.put(
                     (user_ids, item_ids, cate_ids, att_iids1, att_cids1, intra_mask1, inter_mask1, labels,
@@ -112,8 +112,8 @@ class DataLoader(object):
             att_iids, att_cids, intra_mask, inter_mask = self.get_att_ids(user_ids, False)
             att_iids2, att_cids2, intra_mask2, inter_mask2 = self.get_att_ids(user_ids, False)
 
-            neg_att_iids, neg_att_cids, neg_intra_mask, neg_inter_mask = self.get_att_ids(user_ids, False)
-            neg_att_iids2, neg_att_cids2, neg_intra_mask2, neg_inter_mask2 = self.get_att_ids(user_ids, False)
+            neg_att_iids, neg_att_cids, neg_intra_mask, neg_inter_mask = self.get_neg_att_ids(user_ids, False)
+            neg_att_iids2, neg_att_cids2, neg_intra_mask2, neg_inter_mask2 = self.get_neg_att_ids(user_ids, False)
 
             self.test_queue.put(
                 (user_ids, item_vecs, cate_ids, att_iids, att_cids, intra_mask, inter_mask, att_iids2, att_cids2,
@@ -179,26 +179,26 @@ class DataLoader(object):
         self.epoch_test_length = len(self.test_data)
         logging.info('{} test samples'.format(self.epoch_test_length))
 
-    def get_neg_ids(self, user_ids):
-        '''
-        sample neg samples for cl loss
-        Args:
-            user_ids:
-
-        Returns:
-
-        '''
-        result = []
-        for uid in user_ids:
-            neg = self.true_negs[uid]
-            # result.append(list(random.sample(list(neg)*10+list(self.neg_buffers[uid]), self.n_cl_neg)))
-
-            if len(neg) >= self.n_cl_neg // 2:
-                result.append(list(random.sample(neg, self.n_cl_neg // 2)) + list(
-                    random.sample(self.neg_buffers[uid], self.n_cl_neg - self.n_cl_neg // 2)))
-            else:
-                result.append(list(neg) + list(random.sample(self.neg_buffers[uid], self.n_cl_neg - len(neg))))
-        return result
+    # def get_neg_ids(self, user_ids):
+    #     '''
+    #     sample neg samples for cl loss
+    #     Args:
+    #         user_ids:
+    #
+    #     Returns:
+    #
+    #     '''
+    #     result = []
+    #     for uid in user_ids:
+    #         neg = self.true_negs[uid]
+    #         # result.append(list(random.sample(list(neg)*10+list(self.neg_buffers[uid]), self.n_cl_neg)))
+    #
+    #         if len(neg) >= self.n_cl_neg // 2:
+    #             result.append(list(random.sample(neg, self.n_cl_neg // 2)) + list(
+    #                 random.sample(self.neg_buffers[uid], self.n_cl_neg - self.n_cl_neg // 2)))
+    #         else:
+    #             result.append(list(neg) + list(random.sample(self.neg_buffers[uid], self.n_cl_neg - len(neg))))
+    #     return result
 
     def sample_vid(self, tuples, istrain=True):
         item_ids, cate_ids, timestamps = list(zip(*tuples))

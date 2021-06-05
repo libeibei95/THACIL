@@ -174,7 +174,10 @@ class Solver(object):
                 save_path = os.path.join(self.model_dir, 'model-{:.4f}-{:.4f}.ckpt'.format(auc, min_loss))
                 self.model.save(sess, save_path, epoch + 1)
                 if stop_training_counter > 5:
+                    self.data.close_train_processes()
+                    self.data.close_test_processes()
                     break
+
 
     def test(self):
         config = tf.ConfigProto(inter_op_parallelism_threads=8,

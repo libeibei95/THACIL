@@ -272,8 +272,9 @@ class Model(object):
                 labels=1 - labels)
         )
 
-        loss = pos_loss + neg_loss + l2_norm * self.reg + 1 * user_cl_loss
-        logits = y - neg_y
+        loss = 0 * pos_loss + neg_loss + l2_norm * self.reg + 0 * user_cl_loss
+        #logits = y - neg_y
+        logits = 0 - neg_y
         acc = self.compute_acc(logits, self.labels_ph)
         return loss, pos_loss, neg_loss, user_cl_loss, acc, logits
 

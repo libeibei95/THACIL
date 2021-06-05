@@ -273,7 +273,8 @@ class Model(object):
         )
 
         loss = 1 * pos_loss + neg_loss + l2_norm * self.reg + 0 * user_cl_loss
-        logits = (tf.nn.sigmoid(y) + 1 - tf.nn.sigmoid(neg_y)) / 2
+        # logits = (tf.nn.sigmoid(y) + 1 - tf.nn.sigmoid(neg_y)) / 2
+        logits = (y - neg_y) / 2
         acc = self.compute_acc(logits, self.labels_ph)
         return loss, pos_loss, neg_loss, user_cl_loss, acc, logits
 
@@ -341,7 +342,7 @@ class Model(object):
         logging.info("Saved model in epoch {}".format(epoch))
 
     def compute_acc(self, logit, labels):
-        pred = tf.cast(logit >= 0.5, tf.float32)
+        pred = tf.cast(tf.nn.sigmoid(logit) >= 0.5, tf.float32)
         correct_pred = tf.equal(pred, labels)
         accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
         return accuracy

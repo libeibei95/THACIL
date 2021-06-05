@@ -340,8 +340,8 @@ class Model(object):
         self.saver.save(sess, model_path, global_step=epoch)
         logging.info("Saved model in epoch {}".format(epoch))
 
-    def compute_acc(self, logit, labels):
-        pred = tf.cast(tf.nn.sigmoid(logit) >= 0.5, tf.float32)
+    def compute_acc(self, logit, neg_logit, labels):
+        pred = tf.cast(tf.nn.sigmoid(logit) >= tf.nn.sigmoid(neg_logit), tf.float32)
         correct_pred = tf.equal(pred, labels)
         accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
         return accuracy

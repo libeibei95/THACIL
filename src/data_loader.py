@@ -71,8 +71,8 @@ class DataLoader(object):
                 att_iids1, att_cids1, intra_mask1, inter_mask1 = self.get_att_ids(user_ids)
                 att_iids2, att_cids2, intra_mask2, inter_mask2 = self.get_att_ids(user_ids)
 
-                neg_att_iids, neg_att_cids, neg_intra_mask, neg_inter_mask = self.get_neg_att_ids(user_ids, False)
-                neg_att_iids2, neg_att_cids2, neg_intra_mask2, neg_inter_mask2 = self.get_neg_att_ids(user_ids, False)
+                neg_att_iids, neg_att_cids, neg_intra_mask, neg_inter_mask = self.get_neg_att_ids(user_ids)
+                neg_att_iids2, neg_att_cids2, neg_intra_mask2, neg_inter_mask2 = self.get_neg_att_ids(user_ids)
 
                 self.train_queue.put(
                     (user_ids, item_ids, cate_ids, att_iids1, att_cids1, intra_mask1, inter_mask1, labels,

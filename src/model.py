@@ -59,7 +59,11 @@ class Model(object):
                                                 self.att_iids_ph2,
                                                 self.att_cids_ph2,
                                                 self.intra_mask_ph2,
-                                                self.inter_mask_ph2)
+                                                self.inter_mask_ph2,
+                                                self.neg_att_iids_ph,
+                                                self.neg_att_cids_ph,
+                                                self.neg_intra_mask_ph,
+                                                self.neg_inter_mask_ph)
         # train op
         train_params = tf.trainable_variables()
         gradients = tf.gradients(full_loss, train_params)
@@ -89,7 +93,11 @@ class Model(object):
                                                 self.att_iids_ph2,
                                                 self.att_cids_ph2,
                                                 self.intra_mask_ph2,
-                                                self.inter_mask_ph2)
+                                                self.inter_mask_ph2,
+                                                self.neg_att_iids_ph,
+                                                self.neg_att_cids_ph,
+                                                self.neg_intra_mask_ph,
+                                                self.neg_inter_mask_ph)
 
         self.test_loss = loss
         self.test_acc = acc

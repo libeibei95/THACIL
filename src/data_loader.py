@@ -21,6 +21,9 @@ class DataLoader(object):
         self.n_block = params.n_block
         self.max_length = params.max_length
         self.n_cl_neg = params.n_cl_neg
+        self.pos_flag = params.pos_flag
+        self.neg_flag = params.neg_flag
+
         self.sampler_workers = sampler_workers
 
         self.block_size = self.max_length // self.n_block
@@ -71,14 +74,11 @@ class DataLoader(object):
                 user_ids, item_ids, cate_ids, labels = zip(*batch_data)
                 att_iids1, att_cids1, intra_mask1, inter_mask1 = self.get_att_ids(user_ids)
                 att_iids2, att_cids2, intra_mask2, inter_mask2 = self.get_att_ids(user_ids)
-                # cl_negs = self.get_neg_ids(user_ids)
-                # self.train_queue.put(
-                #     (user_ids, item_ids, cate_ids, att_iids1, att_cids1, intra_mask1, inter_mask1, labels, cl_negs,
-                #      att_iids2, att_cids2, intra_mask2, inter_mask2)
-                # )
+                neg_att_iids1, neg_att_cids1, neg_intra_mask1, neg_inter_mask1 = self.get_neg_att_ids(user_ids)
                 self.train_queue.put(
                     (user_ids, item_ids, cate_ids, att_iids1, att_cids1, intra_mask1, inter_mask1, labels,
-                     att_iids2, att_cids2, intra_mask2, inter_mask2)
+                     att_iids2, att_cids2, intra_mask2, inter_mask2, neg_att_iids1, neg_att_cids1, neg_intra_mask1,
+                     neg_inter_mask1)
                 )
 
     def get_train_batch(self):
@@ -112,13 +112,11 @@ class DataLoader(object):
             item_vecs = self.get_test_cover_img_feature(item_ids)
             att_iids, att_cids, intra_mask, inter_mask = self.get_att_ids(user_ids, False)
             att_iids2, att_cids2, intra_mask2, inter_mask2 = self.get_att_ids(user_ids, False)
-            # cl_negs = self.get_neg_ids(user_ids)
-            # self.test_queue.put(
-            #     (user_ids, item_vecs, cate_ids, att_iids, att_cids, intra_mask, inter_mask, labels, item_ids, cl_negs)
-            # )
+            neg_att_iids2, neg_att_cids2, neg_intra_mask2, neg_inter_mask2 = self.get_neg_att_ids(user_ids, False)
             self.test_queue.put(
                 (user_ids, item_vecs, cate_ids, att_iids, att_cids, intra_mask, inter_mask, att_iids2, att_cids2,
-                 intra_mask2, inter_mask2, labels, item_ids)
+                 intra_mask2, inter_mask2, neg_att_iids2, neg_att_cids2, neg_intra_mask2,
+                 neg_inter_mask2, labels, item_ids)
             )
 
     def get_test_batch(self):
@@ -179,26 +177,6 @@ class DataLoader(object):
         self.epoch_test_length = len(self.test_data)
         logging.info('{} test samples'.format(self.epoch_test_length))
 
-    def get_neg_ids(self, user_ids):
-        '''
-        sample neg samples for cl loss
-        Args:
-            user_ids:
-
-        Returns:
-
-        '''
-        result = []
-        for uid in user_ids:
-            neg = self.true_negs[uid]
-            # result.append(list(random.sample(list(neg)*10+list(self.neg_buffers[uid]), self.n_cl_neg)))
-
-            if len(neg) >= self.n_cl_neg // 2:
-                result.append(list(random.sample(neg, self.n_cl_neg // 2)) + list(
-                    random.sample(self.neg_buffers[uid], self.n_cl_neg - self.n_cl_neg // 2)))
-            else:
-                result.append(list(neg) + list(random.sample(self.neg_buffers[uid], self.n_cl_neg - len(neg))))
-        return result
 
     def sample_vid(self, tuples, istrain=True):
         item_ids, cate_ids, timestamps = list(zip(*tuples))
@@ -226,52 +204,54 @@ class DataLoader(object):
 
         return item_ids, cate_ids, intra_mask, inter_mask
 
+    def crop_vid(self, tuples, istrain=True):
+        item_ids, cate_ids, timestamps = list(zip(*tuples))
+        length = len(item_ids)
+        padding_num = self.max_length - length
+
+        if padding_num > 0:
+            indices = list(range(length))
+            if istrain:
+                indices = indices[random.choice(list(range(0.1 * length))):]
+            else:
+                pass
+            length = len(indices)
+            padding_num = self.max_length - length
+            item_ids = [item_ids[ind] for ind in indices] + [984983] * padding_num
+            cate_ids = [cate_ids[ind] for ind in indices] + [512] * padding_num
+            intra_mask = [1] * length + [0] * padding_num
+            pad_n_block = padding_num // self.block_size
+            inter_mask = [1] * (self.n_block - pad_n_block) + [0] * pad_n_block
+        else:
+            start_ind = random.choice(list(range(length - self.max_length)))
+            indices = list(range(length))[start_ind: start_ind + self.max_length]
+            item_ids = [item_ids[i] for i in indices]
+            cate_ids = [cate_ids[i] for i in indices]
+            intra_mask = [1] * self.max_length
+            inter_mask = [1] * self.n_block
+
+        return item_ids, cate_ids, intra_mask, inter_mask
+
     def get_att_ids(self, user_ids, istrain=True):
-        xx = [self.sample_vid(self.user_click_ids[uid], istrain) for idx, uid in enumerate(user_ids)]
+        if self.pos_flag == 1:
+            xx = [self.sample_vid(self.user_click_ids[uid], istrain) for idx, uid in enumerate(user_ids)]
+        elif self.pos_flag == 2:
+            xx = [self.crop_vid(self.user_click_ids[uid], istrain) for idx, uid in enumerate(user_ids)]
+
         batch_att_iids, batch_att_cids, batch_intra_mask, batch_inter_mask = zip(*xx)
         return batch_att_iids, batch_att_cids, batch_intra_mask, batch_inter_mask
+
+    def get_neg_att_ids(self, user_ids, istrain=True):
+        # notice: only one strategy when sampling neg iids.
+        xx = [self.sample_vid(self.user_unclick_ids[uid], istrain) for idx, uid in enumerate(user_ids)]
+        batch_att_iids, batch_att_cids, batch_intra_mask, batch_inter_mask = zip(*xx)
+        return batch_att_iids, batch_att_cids, batch_intra_mask, batch_inter_mask
+
 
     def get_test_cover_img_feature(self, vids):
         head_vec = [self.test_visual_feature[i] for i in vids]
         return head_vec
 
-    '''
-    def gen_true_negs(self):
-        true_negs = {}
-        for user_id in range(len(self.user_unclick_ids)):
-            item_ids, cate_ids, timestamps = list(zip(*self.user_unclick_ids[user_id]))
-            true_negs[user_id] = item_ids
-        return true_negs
-
-    def sample_neg_worker(self, user_ids, neg_buffers):
-        for user_id in user_ids:
-            pos_items = list(map(lambda x: x[0], self.user_click_ids[user_id]))
-            candidates = set(range(984983)) - set(self.true_negs[user_id]) - set(pos_items)
-            neg_buffers[user_id] = random.sample(candidates, 5000)
-
-    def pre_sample_negs(self):
-        print('enter pre_sample_negs function')
-        neg_buffers = Manager().dict()
-        users = list(self.true_negs.keys())
-        # users = [uid for uid in self.true_negs if len(self.true_negs[uid]) < self.n_cl_neg]
-        print(len(users))
-        n_workers = min(30, self.sampler_workers * 4)
-        users_per_worker = len(users) // n_workers
-        processors = []
-        for i in range(n_workers):
-            if i == n_workers - 1:
-                tar_users = users[i * users_per_worker:]
-                processors.append(Process(target=self.sample_neg_worker, args=(tar_users, neg_buffers)))
-            else:
-                tar_users = users[i * users_per_worker:(i + 1) * users_per_worker]
-                processors.append(Process(target=self.sample_neg_worker, args=(tar_users, neg_buffers)))
-            processors[-1].daemon = True
-            processors[-1].start()
-
-        for proc in processors:
-            proc.join()
-        return neg_buffers
-    '''
 
     def preload_feat_into_memory(self):
         train_feature_path = os.path.join(self.data_dir, 'train_cover_image_feature.npy')
@@ -290,8 +270,6 @@ class DataLoader(object):
         user_unclick_ids_path = os.path.join(self.data_dir, 'user_unclick_ids.npy')
         self.user_unclick_ids = np.load(user_unclick_ids_path, allow_pickle=True)
 
-        # self.true_negs = self.gen_true_negs()
-        # self.neg_buffers = self.pre_sample_negs()
 
     def del_temp(self):
         del self.train_visual_feature

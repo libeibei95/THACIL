@@ -129,7 +129,7 @@ class Solver(object):
                 # self.data.neg_buffers = self.data.pre_sample_negs()
                 self.data.initTrainProcess()
 
-                if stop_training_counter > 5:
+                if stop_training_counter >= 3:
                     self.data.close_train_processes()
                     self.data.initTestProcess()
                     logging.info('start test phase')

@@ -32,3 +32,6 @@ class Config:
     NUM_HEADS = 8
     N_BLOCK = 8
     N_CL_NEG = 256
+
+    POS_STR = 1 #positive sample strategy, 1 for random sample, 2 for crop
+    NEG_STR = 1 #negative sample strategy, 1 for negative in a batch, 2 for unclick sequence

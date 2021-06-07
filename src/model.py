@@ -163,10 +163,13 @@ class Model(object):
         user_emb1 = tf.nn.l2_normalize(user_emb1, axis=-1)
         user_emb2 = tf.nn.l2_normalize(user_emb2, axis=-1)
         neg_emb = tf.nn.l2_normalize(neg_emb, axis=-1)
-        pos_sim_user = tf.reduce_sum(tf.multiply(user_emb1, user_emb2), axis=-1)
-        neg_sim_user = tf.reduce_sum(tf.multiply(user_emb1, neg_emb), axis=-1)
+        # pos_sim_user = tf.reduce_sum(tf.multiply(user_emb1, user_emb2), axis=-1)
+        # neg_sim_user = tf.reduce_sum(tf.multiply(user_emb1, neg_emb), axis=-1)
+        pos_dis_user = 1 - tf.reduce_sum(tf.multiply(user_emb1, user_emb2), axis=-1)
+        neg_dis_user = 1 - tf.reduce_sum(tf.multiply(user_emb1, neg_emb), axis=-1)
 
-        ssl_loss = tf.reduce_mean(-tf.maximum(neg_sim_user + 1 - pos_sim_user, 0))
+        # ssl_loss = tf.reduce_mean(-tf.maximum(neg_sim_user + 1 - pos_sim_user, 0))
+        ssl_loss = tf.reduce_mean(tf.maximum(tf.square(pos_dis_user) + 2 - tf.square(neg_dis_user), 0))
         # ssl_loss = tf.reduce_mean(tf.square(pos_dis_user)) + tf.reduce_mean(
         #     tf.square(tf.maximum((1 - neg_dis_user), 0)))
         return ssl_loss

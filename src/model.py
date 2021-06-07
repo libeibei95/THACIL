@@ -165,7 +165,7 @@ class Model(object):
         neg_emb = tf.nn.l2_normalize(neg_emb, axis=-1)
         pos_dis_user = 1 - tf.reduce_sum(tf.multiply(user_emb1, user_emb2), axis=-1)
         neg_dis_user = 1 - tf.reduce_sum(tf.multiply(user_emb1, neg_emb), axis=-1)
-        ssl_loss = tf.reduce_sum(tf.square(pos_dis_user)) + tf.reduce_sum(tf.square(tf.maximum((1 - neg_dis_user), 0)))
+        ssl_loss = tf.reduce_mean(tf.square(pos_dis_user)) + tf.reduce_mean(tf.square(tf.maximum((1 - neg_dis_user), 0)))
         return ssl_loss
 
     def build_model(self,
@@ -290,11 +290,11 @@ class Model(object):
             self.att_cids_ph2: data[8],
             self.intra_mask_ph2: data[9],
             self.inter_mask_ph2: data[10],
-            self.neg_att_iids_ph: data[12],
-            self.neg_att_cids_ph: data[13],
-            self.neg_intra_mask_ph: data[14],
-            self.neg_inter_mask_ph: data[15],
-            self.labels_ph: data[16]
+            self.neg_att_iids_ph: data[11],
+            self.neg_att_cids_ph: data[12],
+            self.neg_intra_mask_ph: data[13],
+            self.neg_inter_mask_ph: data[14],
+            self.labels_ph: data[15],
         }
         test_run_op = [self.test_loss, self.test_logits, self.test_acc, self.test_summuries]
         loss, logits, acc, summaries = sess.run(test_run_op, feed_dicts)

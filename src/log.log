@@ -1,0 +1,1161 @@
+nohup: 忽略输入
+2021-06-07 00:28:34.437494: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+WARNING:tensorflow:Deprecation warnings have been disabled. Set TF_ENABLE_DEPRECATION_WARNINGS=1 to re-enable them.
+WARNING:tensorflow:
+The TensorFlow contrib module will not be included in TensorFlow 2.0.
+For more information, please see:
+  * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+  * https://github.com/tensorflow/addons
+  * https://github.com/tensorflow/io (for I/O related ops)
+If you depend on functionality not listed there, please file an issue.
+
+2021-06-07 00:28:36,795 root  INFO     phase: train
+2021-06-07 00:28:36,799 root  INFO     batch_size: 2048
+2021-06-07 00:28:36,804 root  INFO     max_epoch: 40
+2021-06-07 00:28:36,809 root  INFO     initial_learning_rate: 0.001
+2021-06-07 00:28:36,814 root  INFO     reg: 0.00005000
+2021-06-07 00:28:36,818 root  INFO     optimizer: adam
+2021-06-07 00:28:36,822 root  INFO     dropout: 0.80
+2021-06-07 00:28:36,827 root  INFO     data_dir: ../data/input
+2021-06-07 00:28:36,831 root  INFO     out_dir: ../data/output2/THACIL
+2021-06-07 00:28:36,835 root  INFO     optimizer: adam
+2021-06-07 00:28:36,840 root  INFO     restore_model_dir: ../data/input
+2021-06-07 00:28:36,844 root  INFO     neg_ratio: 1.0
+2021-06-07 00:28:36,860 root  INFO     max_length: 160
+2021-06-07 00:28:36,863 root  INFO     user_dim: 128
+2021-06-07 00:28:36,867 root  INFO     item_dim: 64
+2021-06-07 00:28:36,872 root  INFO     cate_dim: 64
+2021-06-07 00:28:36,876 root  INFO     num_heads: 8
+2021-06-07 00:28:36,880 root  INFO     fusion_layers: 128
+2021-06-07 00:28:36,886 root  INFO     --------------------
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:17: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+2021-06-07 00:28:36,901 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:17: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:23: The name tf.get_variable_scope is deprecated. Please use tf.compat.v1.get_variable_scope instead.
+
+2021-06-07 00:28:36,922 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:23: The name tf.get_variable_scope is deprecated. Please use tf.compat.v1.get_variable_scope instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:24: The name tf.add_to_collection is deprecated. Please use tf.compat.v1.add_to_collection instead.
+
+2021-06-07 00:28:36,928 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:24: The name tf.add_to_collection is deprecated. Please use tf.compat.v1.add_to_collection instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:314: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+2021-06-07 00:28:36,945 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:314: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:356: The name tf.train.AdamOptimizer is deprecated. Please use tf.compat.v1.train.AdamOptimizer instead.
+
+2021-06-07 00:28:36,984 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:356: The name tf.train.AdamOptimizer is deprecated. Please use tf.compat.v1.train.AdamOptimizer instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:44: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+2021-06-07 00:28:36,990 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:44: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:205: The name tf.AUTO_REUSE is deprecated. Please use tf.compat.v1.AUTO_REUSE instead.
+
+2021-06-07 00:28:37,051 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:205: The name tf.AUTO_REUSE is deprecated. Please use tf.compat.v1.AUTO_REUSE instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:158: The name tf.log is deprecated. Please use tf.math.log instead.
+
+2021-06-07 00:28:37,779 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:158: The name tf.log is deprecated. Please use tf.math.log instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:240: The name tf.trainable_variables is deprecated. Please use tf.compat.v1.trainable_variables instead.
+
+2021-06-07 00:28:37,820 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:240: The name tf.trainable_variables is deprecated. Please use tf.compat.v1.trainable_variables instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:76: The name tf.summary.merge is deprecated. Please use tf.compat.v1.summary.merge instead.
+
+2021-06-07 00:28:38,812 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:76: The name tf.summary.merge is deprecated. Please use tf.compat.v1.summary.merge instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:76: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.scalar instead.
+
+2021-06-07 00:28:38,820 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:76: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.scalar instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:82: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+
+2021-06-07 00:28:38,833 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:82: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+
+2021-06-07 00:28:39,356 root  INFO     load train visual feature
+2021-06-07 00:28:41,213 root  INFO     load test visual feature
+2021-06-07 00:28:45,846 root  INFO     start read data list from disk
+2021-06-07 00:29:01,529 root  INFO     generate samples for training
+Namespace(batch_size=2048, cate_dim=64, data_dir='../data/input', display=100, dropout=0.8, fusion_layers=[128], initial_lr=0.001, item_dim=64, max_epoch=40, max_gradient_norm=5.0, max_length=160, n_block=8, n_cl_neg=256, neg_flag=1, neg_ratio=1.0, num_heads=8, optimizer='adam', out_dir='../data/output2', phase='train', pos_flag=1, reg=5e-05, restore_model_dir='../data/input', user_dim=128)
+(2048, 128) (2048, 128)
+(2048, 128) (2048, 128)
+2021-06-07 00:29:26,627 root  INFO     3767308 test samples
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:71: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+2021-06-07 00:29:26,645 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:71: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:75: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2021-06-07 00:29:26,673 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:75: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2021-06-07 00:29:26.836477: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2300000000 Hz
+2021-06-07 00:29:26.840772: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55928e9b5070 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2021-06-07 00:29:26.860363: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2021-06-07 00:29:26.865907: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcuda.so.1
+2021-06-07 00:29:27.112775: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55928e9b85a0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2021-06-07 00:29:27.112939: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): GeForce RTX 3090, Compute Capability 8.6
+2021-06-07 00:29:27.114775: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1665] Found device 0 with properties: 
+name: GeForce RTX 3090 major: 8 minor: 6 memoryClockRate(GHz): 1.695
+pciBusID: 0000:b3:00.0
+2021-06-07 00:29:27.114976: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-06-07 00:29:27.119814: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2021-06-07 00:29:27.121487: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2021-06-07 00:29:27.122113: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2021-06-07 00:29:27.126188: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusolver.so.11
+2021-06-07 00:29:27.141486: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2021-06-07 00:29:27.141944: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2021-06-07 00:29:27.145189: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1793] Adding visible gpu devices: 0
+2021-06-07 00:29:27.145384: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-06-07 00:29:27.596369: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1206] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-06-07 00:29:27.596556: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1212]      0 
+2021-06-07 00:29:27.596597: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1225] 0:   N 
+2021-06-07 00:29:27.600340: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1351] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 22000 MB memory) -> physical GPU (device: 0, name: GeForce RTX 3090, pci bus id: 0000:b3:00.0, compute capability: 8.6)
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:41: The name tf.global_variables_initializer is deprecated. Please use tf.compat.v1.global_variables_initializer instead.
+
+2021-06-07 00:29:27,617 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:41: The name tf.global_variables_initializer is deprecated. Please use tf.compat.v1.global_variables_initializer instead.
+
+2021-06-07 00:29:46,276 root  INFO     load train visual feature into GPU memory successfully
+2021-06-07 00:29:46,293 root  INFO     Create model with fresh parameters
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:60: The name tf.summary.FileWriter is deprecated. Please use tf.compat.v1.summary.FileWriter instead.
+
+2021-06-07 00:29:46,294 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:60: The name tf.summary.FileWriter is deprecated. Please use tf.compat.v1.summary.FileWriter instead.
+
+2021-06-07 00:29:49,194 root  INFO     create summary writer successfully
+2021-06-07 00:29:49,200 root  INFO     start train phase
+2021-06-07 00:29:49,201 root  INFO     train iterations: 500
+2021-06-07 00:29:59.416654: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2021-06-07 00:30:00.570176: I tensorflow/stream_executor/cuda/cuda_driver.cc:802] failed to allocate 8.00G (8589934592 bytes) from device: CUDA_ERROR_OUT_OF_MEMORY: out of memory
+2021-06-07 00:30:00.573519: I tensorflow/stream_executor/cuda/cuda_driver.cc:802] failed to allocate 7.20G (7730940928 bytes) from device: CUDA_ERROR_OUT_OF_MEMORY: out of memory
+2021-06-07 00:31:40,152 root  INFO     epoch 1-train step 100: loss: 8.331, acc: 0.619 in 46.462s, load 64.467s
+2021-06-07 00:33:13,492 root  INFO     epoch 1-train step 200: loss: 8.057, acc: 0.626 in 34.831s, load 58.432s
+2021-06-07 00:34:24,487 root  INFO     epoch 1-train step 300: loss: 7.932, acc: 0.627 in 29.787s, load 41.134s
+2021-06-07 00:35:26,662 root  INFO     epoch 1-train step 400: loss: 7.832, acc: 0.628 in 28.530s, load 33.625s
+2021-06-07 00:36:29,687 root  INFO     epoch 1-train step 500: loss: 7.749, acc: 0.630 in 28.881s, load 34.123s
+2021-06-07 00:36:30,123 root  INFO     Saved model in epoch 1
+2021-06-07 00:36:30,123 root  INFO     lr: 0.001, min loss: 7.980451118469238
+2021-06-07 00:36:38,602 root  INFO     start train phase
+2021-06-07 00:36:38,603 root  INFO     train iterations: 500
+2021-06-07 00:38:10,949 root  INFO     epoch 2-train step 100: loss: 7.682, acc: 0.630 in 33.583s, load 58.743s
+2021-06-07 00:39:17,413 root  INFO     epoch 2-train step 200: loss: 7.624, acc: 0.629 in 28.396s, load 38.047s
+2021-06-07 00:40:25,248 root  INFO     epoch 2-train step 300: loss: 7.575, acc: 0.631 in 28.562s, load 39.251s
+2021-06-07 00:41:33,428 root  INFO     epoch 2-train step 400: loss: 7.535, acc: 0.629 in 28.509s, load 39.651s
+2021-06-07 00:42:44,017 root  INFO     epoch 2-train step 500: loss: 7.497, acc: 0.632 in 28.626s, load 41.941s
+2021-06-07 00:42:44,314 root  INFO     Saved model in epoch 2
+2021-06-07 00:42:44,315 root  INFO     lr: 0.001, min loss: 7.582476417541504
+2021-06-07 00:42:52,779 root  INFO     start train phase
+2021-06-07 00:42:52,780 root  INFO     train iterations: 500
+2021-06-07 00:44:21,594 root  INFO     epoch 3-train step 100: loss: 7.465, acc: 0.632 in 33.010s, load 55.782s
+2021-06-07 00:45:25,034 root  INFO     epoch 3-train step 200: loss: 7.440, acc: 0.632 in 28.675s, load 34.744s
+2021-06-07 00:46:25,576 root  INFO     epoch 3-train step 300: loss: 7.416, acc: 0.631 in 28.661s, load 31.861s
+2021-06-07 00:47:28,166 root  INFO     epoch 3-train step 400: loss: 7.395, acc: 0.633 in 29.097s, load 33.472s
+2021-06-07 00:48:32,744 root  INFO     epoch 3-train step 500: loss: 7.379, acc: 0.631 in 28.984s, load 35.572s
+2021-06-07 00:48:33,053 root  INFO     Saved model in epoch 3
+2021-06-07 00:48:33,053 root  INFO     lr: 0.001, min loss: 7.418830169677735
+2021-06-07 00:48:41,459 root  INFO     start train phase
+2021-06-07 00:48:41,459 root  INFO     train iterations: 500
+2021-06-07 00:50:11,629 root  INFO     epoch 4-train step 100: loss: 7.364, acc: 0.631 in 33.200s, load 56.948s
+2021-06-07 00:51:16,849 root  INFO     epoch 4-train step 200: loss: 7.350, acc: 0.633 in 28.824s, load 36.374s
+2021-06-07 00:52:22,037 root  INFO     epoch 4-train step 300: loss: 7.338, acc: 0.632 in 28.432s, load 36.735s
+2021-06-07 00:53:26,069 root  INFO     epoch 4-train step 400: loss: 7.329, acc: 0.633 in 28.822s, load 35.190s
+2021-06-07 00:54:29,279 root  INFO     epoch 4-train step 500: loss: 7.321, acc: 0.633 in 29.056s, load 34.133s
+2021-06-07 00:54:29,611 root  INFO     Saved model in epoch 4
+2021-06-07 00:54:29,612 root  INFO     lr: 0.001, min loss: 7.340351003646851
+2021-06-07 00:54:38,103 root  INFO     start train phase
+2021-06-07 00:54:38,104 root  INFO     train iterations: 500
+2021-06-07 00:56:06,925 root  INFO     epoch 5-train step 100: loss: 7.314, acc: 0.632 in 33.110s, load 55.689s
+2021-06-07 00:57:13,380 root  INFO     epoch 5-train step 200: loss: 7.306, acc: 0.634 in 28.846s, load 37.588s
+2021-06-07 00:58:18,306 root  INFO     epoch 5-train step 300: loss: 7.303, acc: 0.632 in 28.412s, load 36.493s
+2021-06-07 00:59:23,276 root  INFO     epoch 5-train step 400: loss: 7.298, acc: 0.631 in 28.721s, load 36.227s
+2021-06-07 01:00:28,988 root  INFO     epoch 5-train step 500: loss: 7.293, acc: 0.634 in 28.803s, load 36.887s
+2021-06-07 01:00:29,311 root  INFO     Saved model in epoch 5
+2021-06-07 01:00:29,312 root  INFO     lr: 0.001, min loss: 7.302647346496582
+2021-06-07 01:00:37,751 root  INFO     start train phase
+2021-06-07 01:00:37,752 root  INFO     train iterations: 500
+2021-06-07 01:02:04,525 root  INFO     epoch 6-train step 100: loss: 7.288, acc: 0.635 in 32.859s, load 53.893s
+2021-06-07 01:03:07,513 root  INFO     epoch 6-train step 200: loss: 7.287, acc: 0.634 in 29.063s, load 33.904s
+2021-06-07 01:04:09,196 root  INFO     epoch 6-train step 300: loss: 7.287, acc: 0.633 in 28.586s, load 33.076s
+2021-06-07 01:05:13,337 root  INFO     epoch 6-train step 400: loss: 7.281, acc: 0.636 in 28.718s, load 35.402s
+2021-06-07 01:06:16,628 root  INFO     epoch 6-train step 500: loss: 7.280, acc: 0.635 in 28.768s, load 34.501s
+2021-06-07 01:06:16,933 root  INFO     Saved model in epoch 6
+2021-06-07 01:06:16,933 root  INFO     lr: 0.001, min loss: 7.28463512134552
+2021-06-07 01:06:25,380 root  INFO     start train phase
+2021-06-07 01:06:25,381 root  INFO     train iterations: 500
+2021-06-07 01:07:52,875 root  INFO     epoch 7-train step 100: loss: 7.279, acc: 0.633 in 33.468s, load 54.005s
+2021-06-07 01:08:56,977 root  INFO     epoch 7-train step 200: loss: 7.276, acc: 0.636 in 28.588s, load 35.494s
+2021-06-07 01:09:59,188 root  INFO     epoch 7-train step 300: loss: 7.275, acc: 0.634 in 28.691s, load 33.499s
+2021-06-07 01:11:03,254 root  INFO     epoch 7-train step 400: loss: 7.276, acc: 0.634 in 29.038s, load 35.007s
+2021-06-07 01:12:07,633 root  INFO     epoch 7-train step 500: loss: 7.274, acc: 0.634 in 29.032s, load 35.326s
+2021-06-07 01:12:07,944 root  INFO     Saved model in epoch 7
+2021-06-07 01:12:07,944 root  INFO     lr: 0.001, min loss: 7.276008816719055
+2021-06-07 01:12:16,458 root  INFO     start train phase
+2021-06-07 01:12:16,458 root  INFO     train iterations: 500
+2021-06-07 01:13:48,998 root  INFO     epoch 8-train step 100: loss: 7.275, acc: 0.633 in 31.749s, load 60.770s
+2021-06-07 01:14:57,192 root  INFO     epoch 8-train step 200: loss: 7.273, acc: 0.633 in 28.675s, load 39.498s
+2021-06-07 01:16:02,611 root  INFO     epoch 8-train step 300: loss: 7.271, acc: 0.636 in 28.738s, load 36.658s
+2021-06-07 01:17:09,633 root  INFO     epoch 8-train step 400: loss: 7.271, acc: 0.634 in 28.954s, load 38.047s
+2021-06-07 01:18:15,007 root  INFO     epoch 8-train step 500: loss: 7.273, acc: 0.633 in 29.110s, load 36.243s
+2021-06-07 01:18:15,325 root  INFO     Saved model in epoch 8
+2021-06-07 01:18:15,325 root  INFO     lr: 0.001, min loss: 7.272488948822022
+2021-06-07 01:18:23,799 root  INFO     start train phase
+2021-06-07 01:18:23,800 root  INFO     train iterations: 500
+2021-06-07 01:19:51,660 root  INFO     epoch 9-train step 100: loss: 7.271, acc: 0.635 in 32.261s, load 55.577s
+2021-06-07 01:20:57,963 root  INFO     epoch 9-train step 200: loss: 7.269, acc: 0.635 in 28.762s, load 37.520s
+2021-06-07 01:22:02,825 root  INFO     epoch 9-train step 300: loss: 7.271, acc: 0.633 in 28.950s, load 35.892s
+2021-06-07 01:23:09,791 root  INFO     epoch 9-train step 400: loss: 7.270, acc: 0.634 in 28.908s, load 38.036s
+2021-06-07 01:24:16,521 root  INFO     epoch 9-train step 500: loss: 7.268, acc: 0.635 in 29.365s, load 37.343s
+2021-06-07 01:24:16,820 root  INFO     Saved model in epoch 9
+2021-06-07 01:24:16,821 root  INFO     lr: 0.001, min loss: 7.269884420394898
+2021-06-07 01:24:25,298 root  INFO     start train phase
+2021-06-07 01:24:25,299 root  INFO     train iterations: 500
+2021-06-07 01:25:56,109 root  INFO     epoch 10-train step 100: loss: 7.270, acc: 0.635 in 32.608s, load 58.180s
+2021-06-07 01:27:05,921 root  INFO     epoch 10-train step 200: loss: 7.268, acc: 0.636 in 28.916s, load 40.874s
+2021-06-07 01:28:14,145 root  INFO     epoch 10-train step 300: loss: 7.269, acc: 0.634 in 28.940s, load 39.263s
+2021-06-07 01:29:22,479 root  INFO     epoch 10-train step 400: loss: 7.269, acc: 0.636 in 29.018s, load 39.294s
+2021-06-07 01:30:29,402 root  INFO     epoch 10-train step 500: loss: 7.268, acc: 0.635 in 28.801s, load 38.100s
+2021-06-07 01:30:29,749 root  INFO     Saved model in epoch 10
+2021-06-07 01:30:29,750 root  INFO     lr: 0.001, min loss: 7.268823002815247
+2021-06-07 01:30:38,239 root  INFO     start train phase
+2021-06-07 01:30:38,239 root  INFO     train iterations: 500
+2021-06-07 01:32:06,815 root  INFO     epoch 11-train step 100: loss: 7.268, acc: 0.635 in 33.744s, load 54.811s
+2021-06-07 01:33:12,647 root  INFO     epoch 11-train step 200: loss: 7.268, acc: 0.636 in 28.778s, load 37.033s
+2021-06-07 01:34:17,084 root  INFO     epoch 11-train step 300: loss: 7.267, acc: 0.636 in 29.209s, load 35.207s
+2021-06-07 01:35:22,485 root  INFO     epoch 11-train step 400: loss: 7.268, acc: 0.635 in 28.857s, load 36.523s
+2021-06-07 01:36:24,693 root  INFO     epoch 11-train step 500: loss: 7.269, acc: 0.633 in 28.932s, load 33.255s
+2021-06-07 01:36:25,020 root  INFO     Saved model in epoch 11
+2021-06-07 01:36:25,020 root  INFO     lr: 0.001, min loss: 7.268051779747009
+2021-06-07 01:36:33,519 root  INFO     start train phase
+2021-06-07 01:36:33,520 root  INFO     train iterations: 500
+2021-06-07 01:38:04,701 root  INFO     epoch 12-train step 100: loss: 7.267, acc: 0.635 in 32.862s, load 58.299s
+2021-06-07 01:39:13,328 root  INFO     epoch 12-train step 200: loss: 7.268, acc: 0.635 in 28.620s, load 39.986s
+2021-06-07 01:40:19,853 root  INFO     epoch 12-train step 300: loss: 7.268, acc: 0.635 in 28.496s, load 38.008s
+2021-06-07 01:41:25,721 root  INFO     epoch 12-train step 400: loss: 7.266, acc: 0.635 in 29.086s, load 36.761s
+2021-06-07 01:42:33,270 root  INFO     epoch 12-train step 500: loss: 7.268, acc: 0.633 in 28.804s, load 38.724s
+2021-06-07 01:42:33,588 root  INFO     Saved model in epoch 12
+2021-06-07 01:42:33,588 root  INFO     lr: 0.001, min loss: 7.267561003684998
+2021-06-07 01:42:41,979 root  INFO     start train phase
+2021-06-07 01:42:41,980 root  INFO     train iterations: 500
+2021-06-07 01:44:10,754 root  INFO     epoch 13-train step 100: loss: 7.267, acc: 0.634 in 33.105s, load 55.648s
+2021-06-07 01:45:14,618 root  INFO     epoch 13-train step 200: loss: 7.267, acc: 0.634 in 28.949s, load 34.893s
+2021-06-07 01:46:16,438 root  INFO     epoch 13-train step 300: loss: 7.267, acc: 0.635 in 29.357s, load 32.442s
+2021-06-07 01:47:18,406 root  INFO     epoch 13-train step 400: loss: 7.269, acc: 0.633 in 29.528s, load 32.419s
+2021-06-07 01:48:21,629 root  INFO     epoch 13-train step 500: loss: 7.268, acc: 0.634 in 29.275s, load 33.928s
+2021-06-07 01:48:21,629 root  INFO     lr: 0.0005, min loss: 7.267561003684998
+2021-06-07 01:48:29,954 root  INFO     start train phase
+2021-06-07 01:48:29,954 root  INFO     train iterations: 500
+2021-06-07 01:49:57,302 root  INFO     epoch 14-train step 100: loss: 7.266, acc: 0.636 in 32.904s, load 54.423s
+2021-06-07 01:51:01,243 root  INFO     epoch 14-train step 200: loss: 7.265, acc: 0.636 in 29.016s, load 34.904s
+2021-06-07 01:52:06,203 root  INFO     epoch 14-train step 300: loss: 7.264, acc: 0.636 in 29.189s, load 35.750s
+2021-06-07 01:53:12,680 root  INFO     epoch 14-train step 400: loss: 7.263, acc: 0.638 in 29.263s, load 37.193s
+2021-06-07 01:54:18,036 root  INFO     epoch 14-train step 500: loss: 7.265, acc: 0.635 in 28.939s, load 36.396s
+2021-06-07 01:54:18,374 root  INFO     Saved model in epoch 14
+2021-06-07 01:54:18,374 root  INFO     lr: 0.0005, min loss: 7.264509593009949
+2021-06-07 01:54:26,861 root  INFO     start train phase
+2021-06-07 01:54:26,861 root  INFO     train iterations: 500
+2021-06-07 01:55:58,016 root  INFO     epoch 15-train step 100: loss: 7.263, acc: 0.638 in 33.691s, load 57.443s
+2021-06-07 01:57:05,372 root  INFO     epoch 15-train step 200: loss: 7.265, acc: 0.635 in 28.428s, load 38.907s
+2021-06-07 01:58:12,721 root  INFO     epoch 15-train step 300: loss: 7.265, acc: 0.634 in 29.398s, load 37.929s
+2021-06-07 01:59:19,069 root  INFO     epoch 15-train step 400: loss: 7.264, acc: 0.636 in 29.087s, load 37.240s
+2021-06-07 02:00:26,972 root  INFO     epoch 15-train step 500: loss: 7.263, acc: 0.637 in 29.000s, load 38.881s
+2021-06-07 02:00:27,279 root  INFO     Saved model in epoch 15
+2021-06-07 02:00:27,280 root  INFO     lr: 0.0005, min loss: 7.264055773735047
+2021-06-07 02:00:35,729 root  INFO     start train phase
+2021-06-07 02:00:35,730 root  INFO     train iterations: 500
+2021-06-07 02:02:06,350 root  INFO     epoch 16-train step 100: loss: 7.263, acc: 0.636 in 32.864s, load 57.734s
+2021-06-07 02:03:14,286 root  INFO     epoch 16-train step 200: loss: 7.263, acc: 0.636 in 29.028s, load 38.888s
+2021-06-07 02:04:20,971 root  INFO     epoch 16-train step 300: loss: 7.263, acc: 0.638 in 28.718s, load 37.946s
+2021-06-07 02:05:26,113 root  INFO     epoch 16-train step 400: loss: 7.263, acc: 0.636 in 28.978s, load 36.142s
+2021-06-07 02:06:31,602 root  INFO     epoch 16-train step 500: loss: 7.263, acc: 0.638 in 28.795s, load 36.674s
+2021-06-07 02:06:31,924 root  INFO     Saved model in epoch 16
+2021-06-07 02:06:31,925 root  INFO     lr: 0.0005, min loss: 7.263145007133484
+2021-06-07 02:06:40,387 root  INFO     start train phase
+2021-06-07 02:06:40,388 root  INFO     train iterations: 500
+2021-06-07 02:08:07,804 root  INFO     epoch 17-train step 100: loss: 7.262, acc: 0.637 in 33.666s, load 53.729s
+2021-06-07 02:09:09,442 root  INFO     epoch 17-train step 200: loss: 7.263, acc: 0.637 in 29.329s, load 32.289s
+2021-06-07 02:10:13,526 root  INFO     epoch 17-train step 300: loss: 7.262, acc: 0.638 in 29.006s, load 35.057s
+2021-06-07 02:11:19,750 root  INFO     epoch 17-train step 400: loss: 7.264, acc: 0.636 in 29.238s, load 36.965s
+2021-06-07 02:12:24,465 root  INFO     epoch 17-train step 500: loss: 7.261, acc: 0.639 in 28.838s, load 35.856s
+2021-06-07 02:12:24,798 root  INFO     Saved model in epoch 17
+2021-06-07 02:12:24,798 root  INFO     lr: 0.0005, min loss: 7.262562880516052
+2021-06-07 02:12:33,242 root  INFO     start train phase
+2021-06-07 02:12:33,242 root  INFO     train iterations: 500
+2021-06-07 02:14:02,538 root  INFO     epoch 18-train step 100: loss: 7.263, acc: 0.636 in 32.055s, load 57.220s
+2021-06-07 02:15:09,071 root  INFO     epoch 18-train step 200: loss: 7.262, acc: 0.639 in 28.863s, load 37.650s
+2021-06-07 02:16:16,317 root  INFO     epoch 18-train step 300: loss: 7.262, acc: 0.636 in 28.952s, load 38.272s
+2021-06-07 02:17:20,202 root  INFO     epoch 18-train step 400: loss: 7.264, acc: 0.636 in 29.145s, load 34.719s
+2021-06-07 02:18:23,536 root  INFO     epoch 18-train step 500: loss: 7.262, acc: 0.638 in 29.466s, load 33.846s
+2021-06-07 02:18:23,862 root  INFO     Saved model in epoch 18
+2021-06-07 02:18:23,862 root  INFO     lr: 0.0005, min loss: 7.262377665519715
+2021-06-07 02:18:32,325 root  INFO     start train phase
+2021-06-07 02:18:32,325 root  INFO     train iterations: 500
+2021-06-07 02:20:02,685 root  INFO     epoch 19-train step 100: loss: 7.261, acc: 0.637 in 33.632s, load 56.706s
+2021-06-07 02:21:06,481 root  INFO     epoch 19-train step 200: loss: 7.263, acc: 0.638 in 29.260s, load 34.515s
+2021-06-07 02:22:12,083 root  INFO     epoch 19-train step 300: loss: 7.263, acc: 0.637 in 29.222s, load 36.360s
+2021-06-07 02:23:22,339 root  INFO     epoch 19-train step 400: loss: 7.263, acc: 0.637 in 29.248s, load 40.986s
+2021-06-07 02:24:28,004 root  INFO     epoch 19-train step 500: loss: 7.262, acc: 0.639 in 29.190s, load 36.454s
+2021-06-07 02:24:28,316 root  INFO     Saved model in epoch 19
+2021-06-07 02:24:28,316 root  INFO     lr: 0.0005, min loss: 7.262262771606445
+2021-06-07 02:24:36,738 root  INFO     start train phase
+2021-06-07 02:24:36,738 root  INFO     train iterations: 500
+2021-06-07 02:26:07,232 root  INFO     epoch 20-train step 100: loss: 7.262, acc: 0.636 in 33.128s, load 57.345s
+2021-06-07 02:27:12,629 root  INFO     epoch 20-train step 200: loss: 7.262, acc: 0.637 in 28.895s, load 36.481s
+2021-06-07 02:28:21,380 root  INFO     epoch 20-train step 300: loss: 7.261, acc: 0.638 in 28.966s, load 39.764s
+2021-06-07 02:29:29,698 root  INFO     epoch 20-train step 400: loss: 7.262, acc: 0.636 in 28.828s, load 39.470s
+2021-06-07 02:30:37,650 root  INFO     epoch 20-train step 500: loss: 7.262, acc: 0.638 in 29.096s, load 38.834s
+2021-06-07 02:30:37,967 root  INFO     Saved model in epoch 20
+2021-06-07 02:30:37,968 root  INFO     lr: 0.0005, min loss: 7.261856886863709
+2021-06-07 02:30:46,373 root  INFO     start train phase
+2021-06-07 02:30:46,374 root  INFO     train iterations: 500
+2021-06-07 02:32:13,939 root  INFO     epoch 21-train step 100: loss: 7.259, acc: 0.639 in 35.333s, load 52.212s
+2021-06-07 02:33:18,085 root  INFO     epoch 21-train step 200: loss: 7.262, acc: 0.637 in 29.112s, load 35.013s
+2021-06-07 02:34:25,278 root  INFO     epoch 21-train step 300: loss: 7.263, acc: 0.637 in 28.979s, load 38.193s
+2021-06-07 02:35:31,114 root  INFO     epoch 21-train step 400: loss: 7.263, acc: 0.636 in 29.004s, load 36.810s
+2021-06-07 02:36:37,638 root  INFO     epoch 21-train step 500: loss: 7.261, acc: 0.638 in 29.228s, load 37.276s
+2021-06-07 02:36:37,951 root  INFO     Saved model in epoch 21
+2021-06-07 02:36:37,951 root  INFO     lr: 0.0005, min loss: 7.261619658470154
+2021-06-07 02:36:46,347 root  INFO     start train phase
+2021-06-07 02:36:46,348 root  INFO     train iterations: 500
+2021-06-07 02:38:15,598 root  INFO     epoch 22-train step 100: loss: 7.263, acc: 0.635 in 33.876s, load 55.353s
+2021-06-07 02:39:18,892 root  INFO     epoch 22-train step 200: loss: 7.262, acc: 0.637 in 29.060s, load 34.213s
+2021-06-07 02:40:25,463 root  INFO     epoch 22-train step 300: loss: 7.262, acc: 0.637 in 29.311s, load 37.240s
+2021-06-07 02:41:28,410 root  INFO     epoch 22-train step 400: loss: 7.261, acc: 0.639 in 28.931s, load 33.995s
+2021-06-07 02:42:33,554 root  INFO     epoch 22-train step 500: loss: 7.263, acc: 0.636 in 29.007s, load 36.116s
+2021-06-07 02:42:33,555 root  INFO     lr: 0.00025, min loss: 7.261619658470154
+2021-06-07 02:42:42,048 root  INFO     start train phase
+2021-06-07 02:42:42,048 root  INFO     train iterations: 500
+2021-06-07 02:44:10,180 root  INFO     epoch 23-train step 100: loss: 7.261, acc: 0.638 in 33.568s, load 54.542s
+2021-06-07 02:45:15,403 root  INFO     epoch 23-train step 200: loss: 7.260, acc: 0.638 in 29.034s, load 36.169s
+2021-06-07 02:46:21,385 root  INFO     epoch 23-train step 300: loss: 7.261, acc: 0.637 in 28.907s, load 37.054s
+2021-06-07 02:47:28,477 root  INFO     epoch 23-train step 400: loss: 7.262, acc: 0.636 in 29.300s, load 37.771s
+2021-06-07 02:48:35,384 root  INFO     epoch 23-train step 500: loss: 7.260, acc: 0.637 in 29.399s, load 37.486s
+2021-06-07 02:48:35,708 root  INFO     Saved model in epoch 23
+2021-06-07 02:48:35,709 root  INFO     lr: 0.00025, min loss: 7.260958929061889
+2021-06-07 02:48:44,141 root  INFO     start train phase
+2021-06-07 02:48:44,142 root  INFO     train iterations: 500
+2021-06-07 02:50:12,795 root  INFO     epoch 24-train step 100: loss: 7.259, acc: 0.639 in 33.472s, load 55.159s
+2021-06-07 02:51:19,259 root  INFO     epoch 24-train step 200: loss: 7.259, acc: 0.639 in 28.981s, load 37.461s
+2021-06-07 02:52:32,930 root  INFO     epoch 24-train step 300: loss: 7.260, acc: 0.638 in 28.907s, load 44.743s
+2021-06-07 02:53:43,243 root  INFO     epoch 24-train step 400: loss: 7.262, acc: 0.637 in 29.076s, load 41.217s
+2021-06-07 02:54:53,632 root  INFO     epoch 24-train step 500: loss: 7.261, acc: 0.636 in 29.024s, load 41.344s
+2021-06-07 02:54:53,954 root  INFO     Saved model in epoch 24
+2021-06-07 02:54:53,955 root  INFO     lr: 0.00025, min loss: 7.260130124092102
+2021-06-07 02:55:02,467 root  INFO     start train phase
+2021-06-07 02:55:02,467 root  INFO     train iterations: 500
+2021-06-07 02:56:32,933 root  INFO     epoch 25-train step 100: loss: 7.260, acc: 0.639 in 33.752s, load 56.692s
+2021-06-07 02:57:40,648 root  INFO     epoch 25-train step 200: loss: 7.260, acc: 0.637 in 28.954s, load 38.740s
+2021-06-07 02:58:48,319 root  INFO     epoch 25-train step 300: loss: 7.260, acc: 0.638 in 29.180s, load 38.469s
+2021-06-07 02:59:55,285 root  INFO     epoch 25-train step 400: loss: 7.260, acc: 0.635 in 29.162s, load 37.782s
+2021-06-07 03:00:59,890 root  INFO     epoch 25-train step 500: loss: 7.262, acc: 0.636 in 29.466s, load 35.118s
+2021-06-07 03:00:59,891 root  INFO     lr: 0.000125, min loss: 7.260130124092102
+2021-06-07 03:01:08,449 root  INFO     start train phase
+2021-06-07 03:01:08,450 root  INFO     train iterations: 500
+2021-06-07 03:02:39,031 root  INFO     epoch 26-train step 100: loss: 7.260, acc: 0.637 in 34.008s, load 56.552s
+2021-06-07 03:03:44,624 root  INFO     epoch 26-train step 200: loss: 7.260, acc: 0.638 in 29.189s, load 36.382s
+2021-06-07 03:04:51,113 root  INFO     epoch 26-train step 300: loss: 7.259, acc: 0.639 in 29.218s, load 37.250s
+2021-06-07 03:05:56,846 root  INFO     epoch 26-train step 400: loss: 7.259, acc: 0.639 in 29.030s, load 36.682s
+2021-06-07 03:07:02,635 root  INFO     epoch 26-train step 500: loss: 7.259, acc: 0.639 in 29.491s, load 36.277s
+2021-06-07 03:07:03,126 root  INFO     Saved model in epoch 26
+2021-06-07 03:07:03,127 root  INFO     lr: 0.000125, min loss: 7.259434582710266
+2021-06-07 03:07:11,646 root  INFO     start train phase
+2021-06-07 03:07:11,647 root  INFO     train iterations: 500
+2021-06-07 03:08:39,847 root  INFO     epoch 27-train step 100: loss: 7.258, acc: 0.640 in 34.081s, load 54.097s
+2021-06-07 03:09:45,893 root  INFO     epoch 27-train step 200: loss: 7.259, acc: 0.638 in 29.546s, load 36.479s
+2021-06-07 03:10:49,540 root  INFO     epoch 27-train step 300: loss: 7.259, acc: 0.638 in 29.275s, load 34.351s
+2021-06-07 03:11:52,715 root  INFO     epoch 27-train step 400: loss: 7.257, acc: 0.639 in 29.537s, load 33.617s
+2021-06-07 03:12:55,847 root  INFO     epoch 27-train step 500: loss: 7.259, acc: 0.638 in 29.547s, load 33.564s
+2021-06-07 03:12:56,143 root  INFO     Saved model in epoch 27
+2021-06-07 03:12:56,144 root  INFO     lr: 0.000125, min loss: 7.258404986381531
+2021-06-07 03:13:04,625 root  INFO     start train phase
+2021-06-07 03:13:04,626 root  INFO     train iterations: 500
+2021-06-07 03:14:35,068 root  INFO     epoch 28-train step 100: loss: 7.258, acc: 0.638 in 33.696s, load 56.725s
+2021-06-07 03:15:47,140 root  INFO     epoch 28-train step 200: loss: 7.258, acc: 0.638 in 29.167s, load 42.883s
+2021-06-07 03:17:00,025 root  INFO     epoch 28-train step 300: loss: 7.259, acc: 0.640 in 28.767s, load 44.097s
+2021-06-07 03:18:14,756 root  INFO     epoch 28-train step 400: loss: 7.259, acc: 0.639 in 28.799s, load 45.912s
+2021-06-07 03:19:24,975 root  INFO     epoch 28-train step 500: loss: 7.259, acc: 0.637 in 29.267s, load 40.931s
+2021-06-07 03:19:24,976 root  INFO     lr: 6.25e-05, min loss: 7.258404986381531
+2021-06-07 03:19:33,478 root  INFO     start train phase
+2021-06-07 03:19:33,479 root  INFO     train iterations: 500
+2021-06-07 03:21:06,173 root  INFO     epoch 29-train step 100: loss: 7.258, acc: 0.637 in 34.113s, load 58.560s
+2021-06-07 03:22:15,629 root  INFO     epoch 29-train step 200: loss: 7.259, acc: 0.638 in 28.586s, load 40.849s
+2021-06-07 03:23:22,059 root  INFO     epoch 29-train step 300: loss: 7.259, acc: 0.638 in 29.244s, load 37.165s
+2021-06-07 03:24:27,774 root  INFO     epoch 29-train step 400: loss: 7.259, acc: 0.637 in 28.988s, load 36.706s
+2021-06-07 03:25:36,321 root  INFO     epoch 29-train step 500: loss: 7.258, acc: 0.639 in 29.077s, load 39.448s
+2021-06-07 03:25:36,321 root  INFO     lr: 3.125e-05, min loss: 7.258404986381531
+2021-06-07 03:25:44,772 root  INFO     start train phase
+2021-06-07 03:25:44,772 root  INFO     train iterations: 500
+2021-06-07 03:27:11,785 root  INFO     epoch 30-train step 100: loss: 7.258, acc: 0.639 in 32.620s, load 54.371s
+2021-06-07 03:28:16,951 root  INFO     epoch 30-train step 200: loss: 7.258, acc: 0.639 in 29.006s, load 36.138s
+2021-06-07 03:29:19,815 root  INFO     epoch 30-train step 300: loss: 7.257, acc: 0.640 in 29.337s, load 33.506s
+2021-06-07 03:30:23,160 root  INFO     epoch 30-train step 400: loss: 7.257, acc: 0.639 in 29.352s, load 33.972s
+2021-06-07 03:31:28,347 root  INFO     epoch 30-train step 500: loss: 7.257, acc: 0.639 in 29.234s, load 35.932s
+2021-06-07 03:31:28,674 root  INFO     Saved model in epoch 30
+2021-06-07 03:31:28,675 root  INFO     lr: 3.125e-05, min loss: 7.257495985031128
+2021-06-07 03:31:37,132 root  INFO     start train phase
+2021-06-07 03:31:37,132 root  INFO     train iterations: 500
+2021-06-07 03:33:06,112 root  INFO     epoch 31-train step 100: loss: 7.259, acc: 0.638 in 32.459s, load 56.499s
+2021-06-07 03:34:17,649 root  INFO     epoch 31-train step 200: loss: 7.257, acc: 0.638 in 28.703s, load 42.814s
+2021-06-07 03:35:31,330 root  INFO     epoch 31-train step 300: loss: 7.260, acc: 0.639 in 28.593s, load 45.067s
+2021-06-07 03:36:43,546 root  INFO     epoch 31-train step 400: loss: 7.258, acc: 0.639 in 29.709s, load 42.485s
+2021-06-07 03:37:52,743 root  INFO     epoch 31-train step 500: loss: 7.258, acc: 0.639 in 30.280s, load 38.895s
+2021-06-07 03:37:52,744 root  INFO     lr: 1.5625e-05, min loss: 7.257495985031128
+2021-06-07 03:38:02,549 root  INFO     start train phase
+2021-06-07 03:38:02,550 root  INFO     train iterations: 500
+2021-06-07 03:39:31,873 root  INFO     epoch 32-train step 100: loss: 7.256, acc: 0.640 in 33.409s, load 55.893s
+2021-06-07 03:40:39,804 root  INFO     epoch 32-train step 200: loss: 7.257, acc: 0.639 in 29.358s, load 38.552s
+2021-06-07 03:41:49,594 root  INFO     epoch 32-train step 300: loss: 7.258, acc: 0.638 in 30.489s, load 39.278s
+2021-06-07 03:42:55,859 root  INFO     epoch 32-train step 400: loss: 7.256, acc: 0.639 in 29.941s, load 36.303s
+2021-06-07 03:44:01,627 root  INFO     epoch 32-train step 500: loss: 7.257, acc: 0.639 in 29.448s, load 36.297s
+2021-06-07 03:44:02,104 root  INFO     Saved model in epoch 32
+2021-06-07 03:44:02,105 root  INFO     lr: 1.5625e-05, min loss: 7.25692006111145
+2021-06-07 03:44:10,739 root  INFO     start train phase
+2021-06-07 03:44:10,740 root  INFO     train iterations: 500
+2021-06-07 03:45:35,362 root  INFO     epoch 33-train step 100: loss: 7.257, acc: 0.639 in 33.402s, load 51.199s
+2021-06-07 03:46:39,345 root  INFO     epoch 33-train step 200: loss: 7.258, acc: 0.639 in 28.956s, load 35.005s
+2021-06-07 03:47:42,398 root  INFO     epoch 33-train step 300: loss: 7.258, acc: 0.638 in 28.939s, load 34.093s
+2021-06-07 03:48:43,802 root  INFO     epoch 33-train step 400: loss: 7.256, acc: 0.640 in 29.212s, load 32.171s
+2021-06-07 03:49:46,461 root  INFO     epoch 33-train step 500: loss: 7.257, acc: 0.640 in 29.345s, load 33.292s
+2021-06-07 03:49:46,461 root  INFO     lr: 7.8125e-06, min loss: 7.25692006111145
+2021-06-07 03:49:55,599 root  INFO     start train phase
+2021-06-07 03:49:55,599 root  INFO     train iterations: 500
+2021-06-07 03:51:25,098 root  INFO     epoch 34-train step 100: loss: 7.259, acc: 0.637 in 33.281s, load 56.196s
+2021-06-07 03:52:33,478 root  INFO     epoch 34-train step 200: loss: 7.259, acc: 0.638 in 28.819s, load 39.540s
+2021-06-07 03:53:40,600 root  INFO     epoch 34-train step 300: loss: 7.257, acc: 0.639 in 29.456s, load 37.645s
+2021-06-07 03:54:49,679 root  INFO     epoch 34-train step 400: loss: 7.256, acc: 0.639 in 29.076s, load 39.982s
+2021-06-07 03:55:55,077 root  INFO     epoch 34-train step 500: loss: 7.258, acc: 0.638 in 29.192s, load 36.185s
+2021-06-07 03:55:55,078 root  INFO     lr: 3.90625e-06, min loss: 7.25692006111145
+2021-06-07 03:56:06,917 root  INFO     start test phase
+2021-06-07 03:56:06,918 root  INFO     test iterations: 1824
+Traceback (most recent call last):
+  File "launcher.py", line 121, in <module>
+    main(sys.argv[1:], config.Config)
+  File "launcher.py", line 113, in main
+    solver.train()
+  File "/mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py", line 142, in train
+    loss, logits, acc, summaries = self.model.test(sess, batch_data)
+  File "/mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py", line 300, in test
+    loss, logits, acc, summaries = sess.run(test_run_op, feed_dicts)
+  File "/home/ubuntu/anaconda3/envs/py36-tfgpu/lib/python3.6/site-packages/tensorflow_core/python/client/session.py", line 956, in run
+    run_metadata_ptr)
+  File "/home/ubuntu/anaconda3/envs/py36-tfgpu/lib/python3.6/site-packages/tensorflow_core/python/client/session.py", line 1156, in _run
+    (np_val.shape, subfeed_t.name, str(subfeed_t.get_shape())))
+ValueError: Cannot feed value of shape (2048, 8) for Tensor 'Placeholder_17:0', which has shape '(2048, 160)'
+2021-06-07 03:56:12.127740: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+WARNING:tensorflow:Deprecation warnings have been disabled. Set TF_ENABLE_DEPRECATION_WARNINGS=1 to re-enable them.
+WARNING:tensorflow:
+The TensorFlow contrib module will not be included in TensorFlow 2.0.
+For more information, please see:
+  * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+  * https://github.com/tensorflow/addons
+  * https://github.com/tensorflow/io (for I/O related ops)
+If you depend on functionality not listed there, please file an issue.
+
+2021-06-07 03:56:14,431 root  INFO     phase: test
+2021-06-07 03:56:14,431 root  INFO     batch_size: 2048
+2021-06-07 03:56:14,431 root  INFO     max_epoch: 40
+2021-06-07 03:56:14,431 root  INFO     initial_learning_rate: 0.001
+2021-06-07 03:56:14,432 root  INFO     reg: 0.00005000
+2021-06-07 03:56:14,432 root  INFO     optimizer: adam
+2021-06-07 03:56:14,432 root  INFO     dropout: 0.80
+2021-06-07 03:56:14,432 root  INFO     data_dir: ../data/input
+2021-06-07 03:56:14,433 root  INFO     out_dir: ../data/output2/THACIL
+2021-06-07 03:56:14,433 root  INFO     optimizer: adam
+2021-06-07 03:56:14,433 root  INFO     restore_model_dir: ../data/input
+2021-06-07 03:56:14,433 root  INFO     neg_ratio: 1.0
+2021-06-07 03:56:14,434 root  INFO     max_length: 160
+2021-06-07 03:56:14,434 root  INFO     user_dim: 128
+2021-06-07 03:56:14,434 root  INFO     item_dim: 64
+2021-06-07 03:56:14,434 root  INFO     cate_dim: 64
+2021-06-07 03:56:14,434 root  INFO     num_heads: 8
+2021-06-07 03:56:14,435 root  INFO     fusion_layers: 128
+2021-06-07 03:56:14,435 root  INFO     --------------------
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:17: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+2021-06-07 03:56:14,444 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:17: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:23: The name tf.get_variable_scope is deprecated. Please use tf.compat.v1.get_variable_scope instead.
+
+2021-06-07 03:56:14,455 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:23: The name tf.get_variable_scope is deprecated. Please use tf.compat.v1.get_variable_scope instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:24: The name tf.add_to_collection is deprecated. Please use tf.compat.v1.add_to_collection instead.
+
+2021-06-07 03:56:14,455 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:24: The name tf.add_to_collection is deprecated. Please use tf.compat.v1.add_to_collection instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:314: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+2021-06-07 03:56:14,460 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:314: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:356: The name tf.train.AdamOptimizer is deprecated. Please use tf.compat.v1.train.AdamOptimizer instead.
+
+2021-06-07 03:56:14,467 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:356: The name tf.train.AdamOptimizer is deprecated. Please use tf.compat.v1.train.AdamOptimizer instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:44: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+2021-06-07 03:56:14,468 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:44: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:205: The name tf.AUTO_REUSE is deprecated. Please use tf.compat.v1.AUTO_REUSE instead.
+
+2021-06-07 03:56:14,496 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:205: The name tf.AUTO_REUSE is deprecated. Please use tf.compat.v1.AUTO_REUSE instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:158: The name tf.log is deprecated. Please use tf.math.log instead.
+
+2021-06-07 03:56:15,113 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:158: The name tf.log is deprecated. Please use tf.math.log instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:240: The name tf.trainable_variables is deprecated. Please use tf.compat.v1.trainable_variables instead.
+
+2021-06-07 03:56:15,142 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:240: The name tf.trainable_variables is deprecated. Please use tf.compat.v1.trainable_variables instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:76: The name tf.summary.merge is deprecated. Please use tf.compat.v1.summary.merge instead.
+
+2021-06-07 03:56:16,029 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:76: The name tf.summary.merge is deprecated. Please use tf.compat.v1.summary.merge instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:76: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.scalar instead.
+
+2021-06-07 03:56:16,029 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:76: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.scalar instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:82: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+
+2021-06-07 03:56:16,032 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:82: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+
+2021-06-07 03:56:16,477 root  INFO     load train visual feature
+2021-06-07 03:56:36,630 root  INFO     load test visual feature
+2021-06-07 03:56:43,011 root  INFO     3767308 test samples
+Namespace(batch_size=2048, cate_dim=64, data_dir='../data/input', display=100, dropout=0.8, fusion_layers=[128], initial_lr=0.001, item_dim=64, max_epoch=40, max_gradient_norm=5.0, max_length=160, n_block=8, n_cl_neg=256, neg_flag=1, neg_ratio=1.0, num_heads=8, optimizer='adam', out_dir='../data/output2', phase='test', pos_flag=1, reg=5e-05, restore_model_dir='../data/input', user_dim=128)
+(2048, 128) (2048, 128)
+(2048, 128) (2048, 128)
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:172: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+2021-06-07 03:56:43,637 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:172: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:177: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2021-06-07 03:56:43,639 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:177: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2021-06-07 03:56:43.688499: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2300000000 Hz
+2021-06-07 03:56:43.689356: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x557104fca660 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2021-06-07 03:56:43.689474: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2021-06-07 03:56:43.694245: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcuda.so.1
+2021-06-07 03:56:43.847816: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x557104fce340 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2021-06-07 03:56:43.847995: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): GeForce RTX 3090, Compute Capability 8.6
+2021-06-07 03:56:43.849867: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1665] Found device 0 with properties: 
+name: GeForce RTX 3090 major: 8 minor: 6 memoryClockRate(GHz): 1.695
+pciBusID: 0000:b3:00.0
+2021-06-07 03:56:43.850043: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-06-07 03:56:43.853571: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2021-06-07 03:56:43.855115: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2021-06-07 03:56:43.855698: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2021-06-07 03:56:43.859468: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusolver.so.11
+2021-06-07 03:56:43.860474: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2021-06-07 03:56:43.860827: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2021-06-07 03:56:43.864252: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1793] Adding visible gpu devices: 0
+2021-06-07 03:56:43.864436: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-06-07 03:56:44.275336: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1206] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-06-07 03:56:44.275508: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1212]      0 
+2021-06-07 03:56:44.275564: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1225] 0:   N 
+2021-06-07 03:56:44.278977: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1351] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 22365 MB memory) -> physical GPU (device: 0, name: GeForce RTX 3090, pci bus id: 0000:b3:00.0, compute capability: 8.6)
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:41: The name tf.global_variables_initializer is deprecated. Please use tf.compat.v1.global_variables_initializer instead.
+
+2021-06-07 03:56:44,280 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:41: The name tf.global_variables_initializer is deprecated. Please use tf.compat.v1.global_variables_initializer instead.
+
+2021-06-07 03:56:59,969 root  INFO     load train visual feature into GPU memory successfully
+INFO:tensorflow:Restoring parameters from ../data/output2/THACIL/ckpt/model-7.2569.ckpt-32
+2021-06-07 03:56:59,973 tensorflow INFO     Restoring parameters from ../data/output2/THACIL/ckpt/model-7.2569.ckpt-32
+2021-06-07 03:57:00,232 root  INFO     Load model from ../data/output2/THACIL/ckpt/model-7.2569.ckpt-32
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:64: The name tf.summary.FileWriter is deprecated. Please use tf.compat.v1.summary.FileWriter instead.
+
+2021-06-07 03:57:00,232 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:64: The name tf.summary.FileWriter is deprecated. Please use tf.compat.v1.summary.FileWriter instead.
+
+2021-06-07 03:57:01,761 root  INFO     create summary writer successfully
+2021-06-07 03:57:01,761 root  INFO     start test phase
+2021-06-07 03:57:01,761 root  INFO     test iterations: 1824
+Traceback (most recent call last):
+  File "launcher.py", line 121, in <module>
+    main(sys.argv[1:], config.Config)
+  File "launcher.py", line 115, in main
+    solver.test()
+  File "/mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py", line 188, in test
+    _, logits, _, _ = self.model.test(sess, batch_data)
+  File "/mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py", line 300, in test
+    loss, logits, acc, summaries = sess.run(test_run_op, feed_dicts)
+  File "/home/ubuntu/anaconda3/envs/py36-tfgpu/lib/python3.6/site-packages/tensorflow_core/python/client/session.py", line 956, in run
+    run_metadata_ptr)
+  File "/home/ubuntu/anaconda3/envs/py36-tfgpu/lib/python3.6/site-packages/tensorflow_core/python/client/session.py", line 1156, in _run
+    (np_val.shape, subfeed_t.name, str(subfeed_t.get_shape())))
+ValueError: Cannot feed value of shape (2048, 8) for Tensor 'Placeholder_17:0', which has shape '(2048, 160)'
+2021-06-07 03:57:04.506836: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+WARNING:tensorflow:Deprecation warnings have been disabled. Set TF_ENABLE_DEPRECATION_WARNINGS=1 to re-enable them.
+WARNING:tensorflow:
+The TensorFlow contrib module will not be included in TensorFlow 2.0.
+For more information, please see:
+  * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+  * https://github.com/tensorflow/addons
+  * https://github.com/tensorflow/io (for I/O related ops)
+If you depend on functionality not listed there, please file an issue.
+
+2021-06-07 03:57:06,095 root  INFO     phase: train
+2021-06-07 03:57:06,095 root  INFO     batch_size: 2048
+2021-06-07 03:57:06,095 root  INFO     max_epoch: 40
+2021-06-07 03:57:06,095 root  INFO     initial_learning_rate: 0.001
+2021-06-07 03:57:06,095 root  INFO     reg: 0.00005000
+2021-06-07 03:57:06,095 root  INFO     optimizer: adam
+2021-06-07 03:57:06,095 root  INFO     dropout: 0.80
+2021-06-07 03:57:06,095 root  INFO     data_dir: ../data/input
+2021-06-07 03:57:06,096 root  INFO     out_dir: ../data/output2/THACIL
+2021-06-07 03:57:06,096 root  INFO     optimizer: adam
+2021-06-07 03:57:06,096 root  INFO     restore_model_dir: ../data/input
+2021-06-07 03:57:06,096 root  INFO     neg_ratio: 1.0
+2021-06-07 03:57:06,096 root  INFO     max_length: 160
+2021-06-07 03:57:06,096 root  INFO     user_dim: 128
+2021-06-07 03:57:06,096 root  INFO     item_dim: 64
+2021-06-07 03:57:06,097 root  INFO     cate_dim: 64
+2021-06-07 03:57:06,097 root  INFO     num_heads: 8
+2021-06-07 03:57:06,097 root  INFO     fusion_layers: 128
+2021-06-07 03:57:06,097 root  INFO     --------------------
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:17: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+2021-06-07 03:57:06,100 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:17: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:23: The name tf.get_variable_scope is deprecated. Please use tf.compat.v1.get_variable_scope instead.
+
+2021-06-07 03:57:06,105 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:23: The name tf.get_variable_scope is deprecated. Please use tf.compat.v1.get_variable_scope instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:24: The name tf.add_to_collection is deprecated. Please use tf.compat.v1.add_to_collection instead.
+
+2021-06-07 03:57:06,105 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:24: The name tf.add_to_collection is deprecated. Please use tf.compat.v1.add_to_collection instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:314: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+2021-06-07 03:57:06,108 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:314: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:356: The name tf.train.AdamOptimizer is deprecated. Please use tf.compat.v1.train.AdamOptimizer instead.
+
+2021-06-07 03:57:06,112 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:356: The name tf.train.AdamOptimizer is deprecated. Please use tf.compat.v1.train.AdamOptimizer instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:44: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+2021-06-07 03:57:06,113 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:44: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:205: The name tf.AUTO_REUSE is deprecated. Please use tf.compat.v1.AUTO_REUSE instead.
+
+2021-06-07 03:57:06,140 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:205: The name tf.AUTO_REUSE is deprecated. Please use tf.compat.v1.AUTO_REUSE instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:158: The name tf.log is deprecated. Please use tf.math.log instead.
+
+2021-06-07 03:57:06,761 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:158: The name tf.log is deprecated. Please use tf.math.log instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:240: The name tf.trainable_variables is deprecated. Please use tf.compat.v1.trainable_variables instead.
+
+2021-06-07 03:57:06,790 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:240: The name tf.trainable_variables is deprecated. Please use tf.compat.v1.trainable_variables instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:76: The name tf.summary.merge is deprecated. Please use tf.compat.v1.summary.merge instead.
+
+2021-06-07 03:57:07,684 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:76: The name tf.summary.merge is deprecated. Please use tf.compat.v1.summary.merge instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:76: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.scalar instead.
+
+2021-06-07 03:57:07,684 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:76: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.scalar instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:82: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+
+2021-06-07 03:57:07,687 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:82: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+
+2021-06-07 03:57:08,133 root  INFO     load train visual feature
+2021-06-07 03:57:09,934 root  INFO     load test visual feature
+2021-06-07 03:57:11,810 root  INFO     start read data list from disk
+2021-06-07 03:57:27,780 root  INFO     generate samples for training
+Namespace(batch_size=2048, cate_dim=64, data_dir='../data/input', display=100, dropout=0.8, fusion_layers=[128], initial_lr=0.001, item_dim=64, max_epoch=40, max_gradient_norm=5.0, max_length=160, n_block=8, n_cl_neg=256, neg_flag=1, neg_ratio=1.0, num_heads=8, optimizer='adam', out_dir='../data/output2', phase='train', pos_flag=2, reg=5e-05, restore_model_dir='../data/input', user_dim=128)
+(2048, 128) (2048, 128)
+(2048, 128) (2048, 128)
+2021-06-07 03:57:48,071 root  INFO     3767308 test samples
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:71: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+2021-06-07 03:57:48,072 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:71: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:75: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2021-06-07 03:57:48,073 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:75: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2021-06-07 03:57:48.116491: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2300000000 Hz
+2021-06-07 03:57:48.117186: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55935b3b3650 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2021-06-07 03:57:48.117285: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2021-06-07 03:57:48.122569: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcuda.so.1
+2021-06-07 03:57:48.241549: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55935b371820 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2021-06-07 03:57:48.241695: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): GeForce RTX 3090, Compute Capability 8.6
+2021-06-07 03:57:48.243260: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1665] Found device 0 with properties: 
+name: GeForce RTX 3090 major: 8 minor: 6 memoryClockRate(GHz): 1.695
+pciBusID: 0000:b3:00.0
+2021-06-07 03:57:48.243387: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-06-07 03:57:48.246743: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2021-06-07 03:57:48.247781: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2021-06-07 03:57:48.248158: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2021-06-07 03:57:48.250427: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusolver.so.11
+2021-06-07 03:57:48.251051: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2021-06-07 03:57:48.251260: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2021-06-07 03:57:48.254085: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1793] Adding visible gpu devices: 0
+2021-06-07 03:57:48.254212: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-06-07 03:57:48.566542: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1206] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-06-07 03:57:48.566719: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1212]      0 
+2021-06-07 03:57:48.566763: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1225] 0:   N 
+2021-06-07 03:57:48.569811: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1351] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 22365 MB memory) -> physical GPU (device: 0, name: GeForce RTX 3090, pci bus id: 0000:b3:00.0, compute capability: 8.6)
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:41: The name tf.global_variables_initializer is deprecated. Please use tf.compat.v1.global_variables_initializer instead.
+
+2021-06-07 03:57:48,571 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:41: The name tf.global_variables_initializer is deprecated. Please use tf.compat.v1.global_variables_initializer instead.
+
+2021-06-07 03:58:01,535 root  INFO     load train visual feature into GPU memory successfully
+2021-06-07 03:58:01,537 root  INFO     Create model with fresh parameters
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:60: The name tf.summary.FileWriter is deprecated. Please use tf.compat.v1.summary.FileWriter instead.
+
+2021-06-07 03:58:01,538 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:60: The name tf.summary.FileWriter is deprecated. Please use tf.compat.v1.summary.FileWriter instead.
+
+2021-06-07 03:58:03,615 root  INFO     create summary writer successfully
+2021-06-07 03:58:03,616 root  INFO     start train phase
+2021-06-07 03:58:03,616 root  INFO     train iterations: 500
+2021-06-07 03:58:12.623751: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2021-06-07 03:59:18,288 root  INFO     epoch 1-train step 100: loss: 8.329, acc: 0.612 in 38.050s, load 36.601s
+2021-06-07 04:00:21,055 root  INFO     epoch 1-train step 200: loss: 8.056, acc: 0.625 in 28.018s, load 34.730s
+2021-06-07 04:01:23,321 root  INFO     epoch 1-train step 300: loss: 7.933, acc: 0.628 in 28.316s, load 33.929s
+2021-06-07 04:02:25,289 root  INFO     epoch 1-train step 400: loss: 7.833, acc: 0.629 in 28.041s, load 33.907s
+2021-06-07 04:03:27,924 root  INFO     epoch 1-train step 500: loss: 7.752, acc: 0.630 in 27.988s, load 34.626s
+2021-06-07 04:03:28,338 root  INFO     Saved model in epoch 1
+2021-06-07 04:03:28,339 root  INFO     lr: 0.001, min loss: 7.980607578277588
+2021-06-07 04:03:36,257 root  INFO     start train phase
+2021-06-07 04:03:36,258 root  INFO     train iterations: 500
+2021-06-07 04:05:04,429 root  INFO     epoch 2-train step 100: loss: 7.685, acc: 0.628 in 31.194s, load 56.955s
+2021-06-07 04:06:06,932 root  INFO     epoch 2-train step 200: loss: 7.625, acc: 0.630 in 27.833s, load 34.649s
+2021-06-07 04:07:07,474 root  INFO     epoch 2-train step 300: loss: 7.575, acc: 0.632 in 27.885s, load 32.636s
+2021-06-07 04:08:12,932 root  INFO     epoch 2-train step 400: loss: 7.534, acc: 0.631 in 28.003s, load 37.432s
+2021-06-07 04:09:15,260 root  INFO     epoch 2-train step 500: loss: 7.497, acc: 0.631 in 28.099s, load 34.208s
+2021-06-07 04:09:15,582 root  INFO     Saved model in epoch 2
+2021-06-07 04:09:15,582 root  INFO     lr: 0.001, min loss: 7.583239528656006
+2021-06-07 04:09:23,845 root  INFO     start train phase
+2021-06-07 04:09:23,846 root  INFO     train iterations: 500
+2021-06-07 04:10:51,843 root  INFO     epoch 3-train step 100: loss: 7.464, acc: 0.631 in 30.537s, load 57.438s
+2021-06-07 04:11:57,233 root  INFO     epoch 3-train step 200: loss: 7.437, acc: 0.634 in 28.060s, load 37.309s
+2021-06-07 04:12:59,689 root  INFO     epoch 3-train step 300: loss: 7.412, acc: 0.633 in 28.086s, load 34.349s
+2021-06-07 04:14:02,686 root  INFO     epoch 3-train step 400: loss: 7.392, acc: 0.632 in 28.045s, load 34.930s
+2021-06-07 04:15:08,903 root  INFO     epoch 3-train step 500: loss: 7.377, acc: 0.631 in 27.932s, load 38.264s
+2021-06-07 04:15:09,209 root  INFO     Saved model in epoch 3
+2021-06-07 04:15:09,210 root  INFO     lr: 0.001, min loss: 7.416573959350586
+2021-06-07 04:15:17,500 root  INFO     start train phase
+2021-06-07 04:15:17,500 root  INFO     train iterations: 500
+2021-06-07 04:16:44,889 root  INFO     epoch 4-train step 100: loss: 7.358, acc: 0.633 in 30.272s, load 57.095s
+2021-06-07 04:17:52,516 root  INFO     epoch 4-train step 200: loss: 7.347, acc: 0.632 in 28.088s, load 39.517s
+2021-06-07 04:18:59,901 root  INFO     epoch 4-train step 300: loss: 7.333, acc: 0.635 in 28.323s, load 39.041s
+2021-06-07 04:20:08,613 root  INFO     epoch 4-train step 400: loss: 7.325, acc: 0.633 in 27.905s, load 40.786s
+2021-06-07 04:21:15,367 root  INFO     epoch 4-train step 500: loss: 7.317, acc: 0.632 in 28.062s, load 38.671s
+2021-06-07 04:21:15,682 root  INFO     Saved model in epoch 4
+2021-06-07 04:21:15,682 root  INFO     lr: 0.001, min loss: 7.3359475488662715
+2021-06-07 04:21:23,928 root  INFO     start train phase
+2021-06-07 04:21:23,928 root  INFO     train iterations: 500
+2021-06-07 04:22:54,414 root  INFO     epoch 5-train step 100: loss: 7.309, acc: 0.633 in 32.434s, load 58.031s
+2021-06-07 04:24:00,195 root  INFO     epoch 5-train step 200: loss: 7.304, acc: 0.631 in 28.021s, load 37.740s
+2021-06-07 04:25:02,096 root  INFO     epoch 5-train step 300: loss: 7.296, acc: 0.634 in 27.905s, load 33.974s
+2021-06-07 04:26:07,757 root  INFO     epoch 5-train step 400: loss: 7.290, acc: 0.635 in 27.817s, load 37.824s
+2021-06-07 04:27:13,905 root  INFO     epoch 5-train step 500: loss: 7.288, acc: 0.634 in 28.207s, load 37.920s
+2021-06-07 04:27:14,222 root  INFO     Saved model in epoch 5
+2021-06-07 04:27:14,222 root  INFO     lr: 0.001, min loss: 7.2974807024002075
+2021-06-07 04:27:22,475 root  INFO     start train phase
+2021-06-07 04:27:22,476 root  INFO     train iterations: 500
+2021-06-07 04:28:49,075 root  INFO     epoch 6-train step 100: loss: 7.283, acc: 0.634 in 31.775s, load 54.802s
+2021-06-07 04:29:52,315 root  INFO     epoch 6-train step 200: loss: 7.280, acc: 0.637 in 28.113s, load 35.106s
+2021-06-07 04:30:55,866 root  INFO     epoch 6-train step 300: loss: 7.278, acc: 0.635 in 28.193s, load 35.337s
+2021-06-07 04:32:01,113 root  INFO     epoch 6-train step 400: loss: 7.274, acc: 0.636 in 28.229s, load 36.997s
+2021-06-07 04:33:05,723 root  INFO     epoch 6-train step 500: loss: 7.273, acc: 0.634 in 28.133s, load 36.455s
+2021-06-07 04:33:06,035 root  INFO     Saved model in epoch 6
+2021-06-07 04:33:06,035 root  INFO     lr: 0.001, min loss: 7.277836846351623
+2021-06-07 04:33:14,342 root  INFO     start train phase
+2021-06-07 04:33:14,343 root  INFO     train iterations: 500
+2021-06-07 04:34:48,971 root  INFO     epoch 7-train step 100: loss: 7.272, acc: 0.634 in 32.485s, load 62.121s
+2021-06-07 04:35:56,522 root  INFO     epoch 7-train step 200: loss: 7.272, acc: 0.634 in 28.402s, load 39.128s
+2021-06-07 04:37:05,162 root  INFO     epoch 7-train step 300: loss: 7.268, acc: 0.638 in 28.414s, load 40.204s
+2021-06-07 04:38:13,958 root  INFO     epoch 7-train step 400: loss: 7.269, acc: 0.635 in 29.589s, load 39.184s
+2021-06-07 04:39:22,581 root  INFO     epoch 7-train step 500: loss: 7.268, acc: 0.634 in 28.861s, load 39.741s
+2021-06-07 04:39:22,966 root  INFO     Saved model in epoch 7
+2021-06-07 04:39:22,966 root  INFO     lr: 0.001, min loss: 7.2696121978759765
+2021-06-07 04:39:32,014 root  INFO     start train phase
+2021-06-07 04:39:32,015 root  INFO     train iterations: 500
+2021-06-07 04:41:05,988 root  INFO     epoch 8-train step 100: loss: 7.266, acc: 0.636 in 32.950s, load 61.001s
+2021-06-07 04:42:14,969 root  INFO     epoch 8-train step 200: loss: 7.266, acc: 0.636 in 29.152s, load 39.807s
+2021-06-07 04:43:20,822 root  INFO     epoch 8-train step 300: loss: 7.265, acc: 0.635 in 28.591s, load 37.240s
+2021-06-07 04:44:29,944 root  INFO     epoch 8-train step 400: loss: 7.266, acc: 0.635 in 28.936s, load 40.163s
+2021-06-07 04:45:38,523 root  INFO     epoch 8-train step 500: loss: 7.264, acc: 0.634 in 29.024s, load 39.533s
+2021-06-07 04:45:38,843 root  INFO     Saved model in epoch 8
+2021-06-07 04:45:38,843 root  INFO     lr: 0.001, min loss: 7.2653582487106325
+2021-06-07 04:45:47,949 root  INFO     start train phase
+2021-06-07 04:45:47,949 root  INFO     train iterations: 500
+2021-06-07 04:47:15,919 root  INFO     epoch 9-train step 100: loss: 7.263, acc: 0.636 in 32.747s, load 55.201s
+2021-06-07 04:48:20,333 root  INFO     epoch 9-train step 200: loss: 7.264, acc: 0.636 in 28.957s, load 35.435s
+2021-06-07 04:49:24,329 root  INFO     epoch 9-train step 300: loss: 7.265, acc: 0.635 in 29.186s, load 34.787s
+2021-06-07 04:50:31,666 root  INFO     epoch 9-train step 400: loss: 7.265, acc: 0.634 in 29.037s, load 38.278s
+2021-06-07 04:51:37,910 root  INFO     epoch 9-train step 500: loss: 7.262, acc: 0.637 in 28.579s, load 37.644s
+2021-06-07 04:51:38,245 root  INFO     Saved model in epoch 9
+2021-06-07 04:51:38,246 root  INFO     lr: 0.001, min loss: 7.263644233703613
+2021-06-07 04:51:47,328 root  INFO     start train phase
+2021-06-07 04:51:47,328 root  INFO     train iterations: 500
+2021-06-07 04:53:22,198 root  INFO     epoch 10-train step 100: loss: 7.261, acc: 0.636 in 33.252s, load 61.595s
+2021-06-07 04:54:31,730 root  INFO     epoch 10-train step 200: loss: 7.261, acc: 0.638 in 29.177s, load 40.332s
+2021-06-07 04:55:40,113 root  INFO     epoch 10-train step 300: loss: 7.263, acc: 0.637 in 29.136s, load 39.225s
+2021-06-07 04:56:47,475 root  INFO     epoch 10-train step 400: loss: 7.263, acc: 0.635 in 29.327s, load 38.013s
+2021-06-07 04:57:54,553 root  INFO     epoch 10-train step 500: loss: 7.263, acc: 0.634 in 28.932s, load 38.124s
+2021-06-07 04:57:54,907 root  INFO     Saved model in epoch 10
+2021-06-07 04:57:54,907 root  INFO     lr: 0.001, min loss: 7.262369277954101
+2021-06-07 04:58:04,422 root  INFO     start train phase
+2021-06-07 04:58:04,422 root  INFO     train iterations: 500
+2021-06-07 04:59:32,913 root  INFO     epoch 11-train step 100: loss: 7.260, acc: 0.637 in 32.665s, load 55.804s
+2021-06-07 05:00:39,375 root  INFO     epoch 11-train step 200: loss: 7.262, acc: 0.637 in 28.656s, load 37.785s
+2021-06-07 05:01:45,090 root  INFO     epoch 11-train step 300: loss: 7.261, acc: 0.635 in 29.436s, load 36.257s
+2021-06-07 05:02:51,746 root  INFO     epoch 11-train step 400: loss: 7.262, acc: 0.636 in 29.945s, load 36.689s
+2021-06-07 05:04:01,191 root  INFO     epoch 11-train step 500: loss: 7.262, acc: 0.635 in 28.976s, load 40.446s
+2021-06-07 05:04:01,511 root  INFO     Saved model in epoch 11
+2021-06-07 05:04:01,511 root  INFO     lr: 0.001, min loss: 7.261377103805542
+2021-06-07 05:04:10,355 root  INFO     start train phase
+2021-06-07 05:04:10,356 root  INFO     train iterations: 500
+2021-06-07 05:05:44,239 root  INFO     epoch 12-train step 100: loss: 7.260, acc: 0.636 in 32.657s, load 61.204s
+2021-06-07 05:06:57,036 root  INFO     epoch 12-train step 200: loss: 7.261, acc: 0.636 in 28.700s, load 44.076s
+2021-06-07 05:08:02,989 root  INFO     epoch 12-train step 300: loss: 7.260, acc: 0.637 in 28.578s, load 37.353s
+2021-06-07 05:09:10,910 root  INFO     epoch 12-train step 400: loss: 7.261, acc: 0.637 in 28.641s, load 39.258s
+2021-06-07 05:10:20,736 root  INFO     epoch 12-train step 500: loss: 7.260, acc: 0.637 in 28.628s, load 41.177s
+2021-06-07 05:10:21,058 root  INFO     Saved model in epoch 12
+2021-06-07 05:10:21,059 root  INFO     lr: 0.001, min loss: 7.26052543258667
+2021-06-07 05:10:29,633 root  INFO     start train phase
+2021-06-07 05:10:29,634 root  INFO     train iterations: 500
+2021-06-07 05:11:58,413 root  INFO     epoch 13-train step 100: loss: 7.260, acc: 0.636 in 31.161s, load 57.596s
+2021-06-07 05:13:03,452 root  INFO     epoch 13-train step 200: loss: 7.259, acc: 0.637 in 28.891s, load 36.126s
+2021-06-07 05:14:08,436 root  INFO     epoch 13-train step 300: loss: 7.259, acc: 0.638 in 28.898s, load 36.065s
+2021-06-07 05:15:16,359 root  INFO     epoch 13-train step 400: loss: 7.262, acc: 0.634 in 28.683s, load 39.218s
+2021-06-07 05:16:24,775 root  INFO     epoch 13-train step 500: loss: 7.259, acc: 0.637 in 28.717s, load 39.678s
+2021-06-07 05:16:25,102 root  INFO     Saved model in epoch 13
+2021-06-07 05:16:25,103 root  INFO     lr: 0.001, min loss: 7.259704983711242
+2021-06-07 05:16:33,907 root  INFO     start train phase
+2021-06-07 05:16:33,907 root  INFO     train iterations: 500
+2021-06-07 05:18:05,613 root  INFO     epoch 14-train step 100: loss: 7.258, acc: 0.638 in 31.940s, load 59.744s
+2021-06-07 05:19:13,166 root  INFO     epoch 14-train step 200: loss: 7.259, acc: 0.636 in 28.483s, load 39.048s
+2021-06-07 05:20:21,695 root  INFO     epoch 14-train step 300: loss: 7.258, acc: 0.637 in 29.248s, load 39.259s
+2021-06-07 05:21:36,482 root  INFO     epoch 14-train step 400: loss: 7.259, acc: 0.638 in 30.711s, load 44.053s
+2021-06-07 05:22:51,138 root  INFO     epoch 14-train step 500: loss: 7.260, acc: 0.636 in 30.780s, load 43.853s
+2021-06-07 05:22:51,498 root  INFO     Saved model in epoch 14
+2021-06-07 05:22:51,499 root  INFO     lr: 0.001, min loss: 7.258856190681458
+2021-06-07 05:23:01,313 root  INFO     start train phase
+2021-06-07 05:23:01,314 root  INFO     train iterations: 500
+2021-06-07 05:24:38,824 root  INFO     epoch 15-train step 100: loss: 7.258, acc: 0.638 in 33.401s, load 64.086s
+2021-06-07 05:25:50,848 root  INFO     epoch 15-train step 200: loss: 7.258, acc: 0.639 in 30.406s, load 41.595s
+2021-06-07 05:27:02,321 root  INFO     epoch 15-train step 300: loss: 7.258, acc: 0.638 in 30.713s, load 40.737s
+2021-06-07 05:28:11,242 root  INFO     epoch 15-train step 400: loss: 7.258, acc: 0.638 in 30.351s, load 38.547s
+2021-06-07 05:29:20,332 root  INFO     epoch 15-train step 500: loss: 7.259, acc: 0.638 in 30.322s, load 38.744s
+2021-06-07 05:29:20,717 root  INFO     Saved model in epoch 15
+2021-06-07 05:29:20,717 root  INFO     lr: 0.001, min loss: 7.258211296081543
+2021-06-07 05:29:30,443 root  INFO     start train phase
+2021-06-07 05:29:30,444 root  INFO     train iterations: 500
+2021-06-07 05:31:04,757 root  INFO     epoch 16-train step 100: loss: 7.258, acc: 0.637 in 34.081s, load 60.209s
+2021-06-07 05:32:11,750 root  INFO     epoch 16-train step 200: loss: 7.258, acc: 0.637 in 30.391s, load 36.578s
+2021-06-07 05:33:21,783 root  INFO     epoch 16-train step 300: loss: 7.259, acc: 0.637 in 30.548s, load 39.462s
+2021-06-07 05:34:29,175 root  INFO     epoch 16-train step 400: loss: 7.258, acc: 0.638 in 30.956s, load 36.412s
+2021-06-07 05:35:42,079 root  INFO     epoch 16-train step 500: loss: 7.259, acc: 0.637 in 30.479s, load 42.403s
+2021-06-07 05:35:42,080 root  INFO     lr: 0.0005, min loss: 7.258211296081543
+2021-06-07 05:35:51,853 root  INFO     start train phase
+2021-06-07 05:35:51,854 root  INFO     train iterations: 500
+2021-06-07 05:37:23,561 root  INFO     epoch 17-train step 100: loss: 7.259, acc: 0.636 in 33.743s, load 57.941s
+2021-06-07 05:38:27,473 root  INFO     epoch 17-train step 200: loss: 7.256, acc: 0.638 in 29.044s, load 34.846s
+2021-06-07 05:39:33,078 root  INFO     epoch 17-train step 300: loss: 7.257, acc: 0.638 in 29.247s, load 36.335s
+2021-06-07 05:40:37,737 root  INFO     epoch 17-train step 400: loss: 7.255, acc: 0.639 in 28.996s, load 35.641s
+2021-06-07 05:41:40,508 root  INFO     epoch 17-train step 500: loss: 7.256, acc: 0.638 in 28.678s, load 34.071s
+2021-06-07 05:41:40,833 root  INFO     Saved model in epoch 17
+2021-06-07 05:41:40,834 root  INFO     lr: 0.0005, min loss: 7.256397478103637
+2021-06-07 05:41:49,399 root  INFO     start train phase
+2021-06-07 05:41:49,400 root  INFO     train iterations: 500
+2021-06-07 05:43:22,469 root  INFO     epoch 18-train step 100: loss: 7.255, acc: 0.639 in 32.475s, load 60.573s
+2021-06-07 05:44:30,737 root  INFO     epoch 18-train step 200: loss: 7.255, acc: 0.637 in 28.723s, load 39.523s
+2021-06-07 05:45:37,216 root  INFO     epoch 18-train step 300: loss: 7.257, acc: 0.637 in 29.103s, load 37.353s
+2021-06-07 05:46:47,750 root  INFO     epoch 18-train step 400: loss: 7.254, acc: 0.639 in 29.140s, load 41.371s
+2021-06-07 05:47:56,589 root  INFO     epoch 18-train step 500: loss: 7.254, acc: 0.639 in 29.070s, load 39.747s
+2021-06-07 05:47:56,918 root  INFO     Saved model in epoch 18
+2021-06-07 05:47:56,919 root  INFO     lr: 0.0005, min loss: 7.255225108146668
+2021-06-07 05:48:06,479 root  INFO     start train phase
+2021-06-07 05:48:06,479 root  INFO     train iterations: 500
+2021-06-07 05:49:33,544 root  INFO     epoch 19-train step 100: loss: 7.254, acc: 0.638 in 32.766s, load 54.277s
+2021-06-07 05:50:38,225 root  INFO     epoch 19-train step 200: loss: 7.256, acc: 0.638 in 28.616s, load 36.044s
+2021-06-07 05:51:42,013 root  INFO     epoch 19-train step 300: loss: 7.254, acc: 0.639 in 28.539s, load 35.227s
+2021-06-07 05:52:46,978 root  INFO     epoch 19-train step 400: loss: 7.255, acc: 0.640 in 28.682s, load 36.260s
+2021-06-07 05:53:52,848 root  INFO     epoch 19-train step 500: loss: 7.254, acc: 0.639 in 28.812s, load 37.037s
+2021-06-07 05:53:53,171 root  INFO     Saved model in epoch 19
+2021-06-07 05:53:53,172 root  INFO     lr: 0.0005, min loss: 7.254523797035217
+2021-06-07 05:54:01,765 root  INFO     start train phase
+2021-06-07 05:54:01,766 root  INFO     train iterations: 500
+2021-06-07 05:55:32,317 root  INFO     epoch 20-train step 100: loss: 7.254, acc: 0.638 in 32.286s, load 58.243s
+2021-06-07 05:56:42,343 root  INFO     epoch 20-train step 200: loss: 7.253, acc: 0.640 in 28.478s, load 41.525s
+2021-06-07 05:57:52,242 root  INFO     epoch 20-train step 300: loss: 7.254, acc: 0.638 in 28.800s, load 41.078s
+2021-06-07 05:59:03,297 root  INFO     epoch 20-train step 400: loss: 7.254, acc: 0.639 in 28.487s, load 42.547s
+2021-06-07 06:00:11,352 root  INFO     epoch 20-train step 500: loss: 7.254, acc: 0.638 in 28.826s, load 39.207s
+2021-06-07 06:00:11,695 root  INFO     Saved model in epoch 20
+2021-06-07 06:00:11,696 root  INFO     lr: 0.0005, min loss: 7.253827767372131
+2021-06-07 06:00:20,524 root  INFO     start train phase
+2021-06-07 06:00:20,525 root  INFO     train iterations: 500
+2021-06-07 06:01:54,774 root  INFO     epoch 21-train step 100: loss: 7.254, acc: 0.639 in 32.296s, load 61.932s
+2021-06-07 06:03:07,003 root  INFO     epoch 21-train step 200: loss: 7.255, acc: 0.638 in 28.597s, load 43.610s
+2021-06-07 06:04:18,116 root  INFO     epoch 21-train step 300: loss: 7.253, acc: 0.641 in 28.556s, load 42.536s
+2021-06-07 06:05:28,665 root  INFO     epoch 21-train step 400: loss: 7.253, acc: 0.640 in 28.403s, load 42.124s
+2021-06-07 06:06:35,539 root  INFO     epoch 21-train step 500: loss: 7.255, acc: 0.638 in 28.850s, load 38.003s
+2021-06-07 06:06:35,540 root  INFO     lr: 0.00025, min loss: 7.253827767372131
+2021-06-07 06:06:44,138 root  INFO     start train phase
+2021-06-07 06:06:44,139 root  INFO     train iterations: 500
+2021-06-07 06:08:17,687 root  INFO     epoch 22-train step 100: loss: 7.254, acc: 0.638 in 31.728s, load 61.799s
+2021-06-07 06:09:23,541 root  INFO     epoch 22-train step 200: loss: 7.252, acc: 0.640 in 28.589s, load 37.243s
+2021-06-07 06:10:33,868 root  INFO     epoch 22-train step 300: loss: 7.251, acc: 0.639 in 28.594s, load 41.712s
+2021-06-07 06:11:42,261 root  INFO     epoch 22-train step 400: loss: 7.251, acc: 0.640 in 28.508s, load 39.863s
+2021-06-07 06:12:50,137 root  INFO     epoch 22-train step 500: loss: 7.253, acc: 0.638 in 28.533s, load 39.321s
+2021-06-07 06:12:50,491 root  INFO     Saved model in epoch 22
+2021-06-07 06:12:50,491 root  INFO     lr: 0.00025, min loss: 7.252175998687744
+2021-06-07 06:12:59,081 root  INFO     start train phase
+2021-06-07 06:12:59,082 root  INFO     train iterations: 500
+2021-06-07 06:14:30,441 root  INFO     epoch 23-train step 100: loss: 7.250, acc: 0.642 in 32.199s, load 59.139s
+2021-06-07 06:15:36,724 root  INFO     epoch 23-train step 200: loss: 7.251, acc: 0.640 in 28.480s, load 37.782s
+2021-06-07 06:16:41,278 root  INFO     epoch 23-train step 300: loss: 7.252, acc: 0.639 in 28.639s, load 35.893s
+2021-06-07 06:17:47,704 root  INFO     epoch 23-train step 400: loss: 7.253, acc: 0.637 in 28.648s, load 37.756s
+2021-06-07 06:18:52,903 root  INFO     epoch 23-train step 500: loss: 7.251, acc: 0.641 in 28.648s, load 36.529s
+2021-06-07 06:18:53,231 root  INFO     Saved model in epoch 23
+2021-06-07 06:18:53,231 root  INFO     lr: 0.00025, min loss: 7.2512872514724735
+2021-06-07 06:19:01,923 root  INFO     start train phase
+2021-06-07 06:19:01,924 root  INFO     train iterations: 500
+2021-06-07 06:20:32,911 root  INFO     epoch 24-train step 100: loss: 7.250, acc: 0.640 in 33.338s, load 57.627s
+2021-06-07 06:21:43,071 root  INFO     epoch 24-train step 200: loss: 7.251, acc: 0.639 in 28.582s, load 41.557s
+2021-06-07 06:22:52,416 root  INFO     epoch 24-train step 300: loss: 7.250, acc: 0.642 in 28.674s, load 40.650s
+2021-06-07 06:24:02,477 root  INFO     epoch 24-train step 400: loss: 7.254, acc: 0.638 in 28.564s, load 41.475s
+2021-06-07 06:25:14,597 root  INFO     epoch 24-train step 500: loss: 7.251, acc: 0.641 in 28.523s, load 43.576s
+2021-06-07 06:25:14,909 root  INFO     Saved model in epoch 24
+2021-06-07 06:25:14,909 root  INFO     lr: 0.00025, min loss: 7.251056092262268
+2021-06-07 06:25:23,477 root  INFO     start train phase
+2021-06-07 06:25:23,477 root  INFO     train iterations: 500
+2021-06-07 06:26:51,246 root  INFO     epoch 25-train step 100: loss: 7.250, acc: 0.642 in 32.707s, load 55.040s
+2021-06-07 06:27:55,995 root  INFO     epoch 25-train step 200: loss: 7.250, acc: 0.641 in 28.765s, load 35.961s
+2021-06-07 06:29:01,647 root  INFO     epoch 25-train step 300: loss: 7.252, acc: 0.639 in 28.607s, load 37.023s
+2021-06-07 06:30:08,561 root  INFO     epoch 25-train step 400: loss: 7.251, acc: 0.639 in 28.783s, load 38.109s
+2021-06-07 06:31:14,679 root  INFO     epoch 25-train step 500: loss: 7.252, acc: 0.640 in 28.736s, load 37.360s
+2021-06-07 06:31:14,679 root  INFO     lr: 0.000125, min loss: 7.251056092262268
+2021-06-07 06:31:23,292 root  INFO     start train phase
+2021-06-07 06:31:23,293 root  INFO     train iterations: 500
+2021-06-07 06:32:54,657 root  INFO     epoch 26-train step 100: loss: 7.251, acc: 0.639 in 32.892s, load 58.450s
+2021-06-07 06:34:03,935 root  INFO     epoch 26-train step 200: loss: 7.251, acc: 0.641 in 28.592s, load 40.666s
+2021-06-07 06:35:10,604 root  INFO     epoch 26-train step 300: loss: 7.250, acc: 0.641 in 28.726s, load 37.922s
+2021-06-07 06:36:17,120 root  INFO     epoch 26-train step 400: loss: 7.249, acc: 0.642 in 28.664s, load 37.831s
+2021-06-07 06:37:23,361 root  INFO     epoch 26-train step 500: loss: 7.251, acc: 0.639 in 28.735s, load 37.484s
+2021-06-07 06:37:23,680 root  INFO     Saved model in epoch 26
+2021-06-07 06:37:23,681 root  INFO     lr: 0.000125, min loss: 7.25029442024231
+2021-06-07 06:37:32,225 root  INFO     start train phase
+2021-06-07 06:37:32,226 root  INFO     train iterations: 500
+2021-06-07 06:39:03,933 root  INFO     epoch 27-train step 100: loss: 7.249, acc: 0.640 in 32.847s, load 58.838s
+2021-06-07 06:40:12,174 root  INFO     epoch 27-train step 200: loss: 7.250, acc: 0.640 in 28.900s, load 39.318s
+2021-06-07 06:41:19,364 root  INFO     epoch 27-train step 300: loss: 7.249, acc: 0.641 in 29.253s, load 37.915s
+2021-06-07 06:42:31,996 root  INFO     epoch 27-train step 400: loss: 7.250, acc: 0.640 in 28.882s, load 43.728s
+2021-06-07 06:43:42,806 root  INFO     epoch 27-train step 500: loss: 7.250, acc: 0.639 in 29.257s, load 41.532s
+2021-06-07 06:43:43,128 root  INFO     Saved model in epoch 27
+2021-06-07 06:43:43,129 root  INFO     lr: 0.000125, min loss: 7.24974372291565
+2021-06-07 06:43:53,103 root  INFO     start train phase
+2021-06-07 06:43:53,104 root  INFO     train iterations: 500
+2021-06-07 06:45:20,854 root  INFO     epoch 28-train step 100: loss: 7.250, acc: 0.641 in 32.108s, load 55.620s
+2021-06-07 06:46:25,027 root  INFO     epoch 28-train step 200: loss: 7.249, acc: 0.641 in 28.755s, load 35.396s
+2021-06-07 06:47:32,645 root  INFO     epoch 28-train step 300: loss: 7.248, acc: 0.641 in 28.886s, load 38.710s
+2021-06-07 06:48:37,792 root  INFO     epoch 28-train step 400: loss: 7.251, acc: 0.640 in 28.708s, load 36.418s
+2021-06-07 06:49:44,458 root  INFO     epoch 28-train step 500: loss: 7.250, acc: 0.640 in 28.716s, load 37.929s
+2021-06-07 06:49:44,787 root  INFO     Saved model in epoch 28
+2021-06-07 06:49:44,788 root  INFO     lr: 0.000125, min loss: 7.2494925031661985
+2021-06-07 06:49:53,369 root  INFO     start train phase
+2021-06-07 06:49:53,369 root  INFO     train iterations: 500
+2021-06-07 06:51:22,453 root  INFO     epoch 29-train step 100: loss: 7.248, acc: 0.641 in 31.819s, load 57.242s
+2021-06-07 06:52:26,278 root  INFO     epoch 29-train step 200: loss: 7.249, acc: 0.641 in 28.743s, load 35.060s
+2021-06-07 06:53:30,977 root  INFO     epoch 29-train step 300: loss: 7.251, acc: 0.639 in 28.802s, load 35.876s
+2021-06-07 06:54:36,073 root  INFO     epoch 29-train step 400: loss: 7.251, acc: 0.640 in 28.811s, load 36.263s
+2021-06-07 06:55:42,215 root  INFO     epoch 29-train step 500: loss: 7.249, acc: 0.641 in 29.593s, load 36.526s
+2021-06-07 06:55:42,215 root  INFO     lr: 6.25e-05, min loss: 7.2494925031661985
+2021-06-07 06:55:50,921 root  INFO     start train phase
+2021-06-07 06:55:50,922 root  INFO     train iterations: 500
+2021-06-07 06:57:22,790 root  INFO     epoch 30-train step 100: loss: 7.248, acc: 0.642 in 32.537s, load 59.309s
+2021-06-07 06:58:32,084 root  INFO     epoch 30-train step 200: loss: 7.247, acc: 0.642 in 29.182s, load 40.091s
+2021-06-07 06:59:39,983 root  INFO     epoch 30-train step 300: loss: 7.250, acc: 0.640 in 29.465s, load 38.412s
+2021-06-07 07:00:47,637 root  INFO     epoch 30-train step 400: loss: 7.249, acc: 0.640 in 29.566s, load 38.065s
+2021-06-07 07:01:54,484 root  INFO     epoch 30-train step 500: loss: 7.249, acc: 0.640 in 29.260s, load 37.564s
+2021-06-07 07:01:54,835 root  INFO     Saved model in epoch 30
+2021-06-07 07:01:54,835 root  INFO     lr: 6.25e-05, min loss: 7.248548045158386
+2021-06-07 07:02:03,769 root  INFO     start train phase
+2021-06-07 07:02:03,770 root  INFO     train iterations: 500
+2021-06-07 07:03:36,486 root  INFO     epoch 31-train step 100: loss: 7.250, acc: 0.640 in 31.611s, load 61.083s
+2021-06-07 07:04:50,299 root  INFO     epoch 31-train step 200: loss: 7.250, acc: 0.639 in 28.892s, load 44.900s
+2021-06-07 07:05:59,508 root  INFO     epoch 31-train step 300: loss: 7.249, acc: 0.642 in 28.739s, load 40.448s
+2021-06-07 07:07:10,009 root  INFO     epoch 31-train step 400: loss: 7.250, acc: 0.639 in 28.716s, load 41.765s
+2021-06-07 07:08:18,675 root  INFO     epoch 31-train step 500: loss: 7.248, acc: 0.642 in 28.723s, load 39.921s
+2021-06-07 07:08:18,676 root  INFO     lr: 3.125e-05, min loss: 7.248548045158386
+2021-06-07 07:08:27,281 root  INFO     start train phase
+2021-06-07 07:08:27,281 root  INFO     train iterations: 500
+2021-06-07 07:09:54,003 root  INFO     epoch 32-train step 100: loss: 7.249, acc: 0.640 in 33.121s, load 53.579s
+2021-06-07 07:10:55,084 root  INFO     epoch 32-train step 200: loss: 7.250, acc: 0.639 in 28.891s, load 32.170s
+2021-06-07 07:11:56,283 root  INFO     epoch 32-train step 300: loss: 7.248, acc: 0.641 in 28.896s, load 32.282s
+2021-06-07 07:12:59,255 root  INFO     epoch 32-train step 400: loss: 7.249, acc: 0.642 in 29.027s, load 33.924s
+2021-06-07 07:14:02,241 root  INFO     epoch 32-train step 500: loss: 7.248, acc: 0.642 in 28.983s, load 33.982s
+2021-06-07 07:14:02,242 root  INFO     lr: 1.5625e-05, min loss: 7.248548045158386
+2021-06-07 07:14:10,809 root  INFO     start train phase
+2021-06-07 07:14:10,810 root  INFO     train iterations: 500
+2021-06-07 07:15:38,060 root  INFO     epoch 33-train step 100: loss: 7.249, acc: 0.641 in 32.716s, load 54.513s
+2021-06-07 07:16:40,550 root  INFO     epoch 33-train step 200: loss: 7.247, acc: 0.643 in 28.891s, load 33.578s
+2021-06-07 07:17:42,482 root  INFO     epoch 33-train step 300: loss: 7.250, acc: 0.641 in 29.027s, load 32.885s
+2021-06-07 07:19:30,728 root  INFO     epoch 33-train step 400: loss: 7.250, acc: 0.640 in 67.662s, load 40.483s
+2021-06-07 07:20:36,228 root  INFO     epoch 33-train step 500: loss: 7.248, acc: 0.641 in 28.833s, load 36.596s
+2021-06-07 07:20:36,230 root  INFO     lr: 7.8125e-06, min loss: 7.248548045158386
+2021-06-07 07:20:49,350 root  INFO     start test phase
+2021-06-07 07:20:49,350 root  INFO     test iterations: 1824
+Traceback (most recent call last):
+  File "launcher.py", line 121, in <module>
+    main(sys.argv[1:], config.Config)
+  File "launcher.py", line 113, in main
+    solver.train()
+  File "/mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py", line 142, in train
+    loss, logits, acc, summaries = self.model.test(sess, batch_data)
+  File "/mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py", line 300, in test
+    loss, logits, acc, summaries = sess.run(test_run_op, feed_dicts)
+  File "/home/ubuntu/anaconda3/envs/py36-tfgpu/lib/python3.6/site-packages/tensorflow_core/python/client/session.py", line 956, in run
+    run_metadata_ptr)
+  File "/home/ubuntu/anaconda3/envs/py36-tfgpu/lib/python3.6/site-packages/tensorflow_core/python/client/session.py", line 1156, in _run
+    (np_val.shape, subfeed_t.name, str(subfeed_t.get_shape())))
+ValueError: Cannot feed value of shape (2048, 8) for Tensor 'Placeholder_17:0', which has shape '(2048, 160)'
+2021-06-07 07:20:56.155983: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+WARNING:tensorflow:Deprecation warnings have been disabled. Set TF_ENABLE_DEPRECATION_WARNINGS=1 to re-enable them.
+WARNING:tensorflow:
+The TensorFlow contrib module will not be included in TensorFlow 2.0.
+For more information, please see:
+  * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+  * https://github.com/tensorflow/addons
+  * https://github.com/tensorflow/io (for I/O related ops)
+If you depend on functionality not listed there, please file an issue.
+
+2021-06-07 07:21:00,103 root  INFO     phase: test
+2021-06-07 07:21:00,104 root  INFO     batch_size: 2048
+2021-06-07 07:21:00,104 root  INFO     max_epoch: 40
+2021-06-07 07:21:00,104 root  INFO     initial_learning_rate: 0.001
+2021-06-07 07:21:00,104 root  INFO     reg: 0.00005000
+2021-06-07 07:21:00,105 root  INFO     optimizer: adam
+2021-06-07 07:21:00,105 root  INFO     dropout: 0.80
+2021-06-07 07:21:00,105 root  INFO     data_dir: ../data/input
+2021-06-07 07:21:00,105 root  INFO     out_dir: ../data/output2/THACIL
+2021-06-07 07:21:00,106 root  INFO     optimizer: adam
+2021-06-07 07:21:00,106 root  INFO     restore_model_dir: ../data/input
+2021-06-07 07:21:00,106 root  INFO     neg_ratio: 1.0
+2021-06-07 07:21:00,107 root  INFO     max_length: 160
+2021-06-07 07:21:00,107 root  INFO     user_dim: 128
+2021-06-07 07:21:00,107 root  INFO     item_dim: 64
+2021-06-07 07:21:00,107 root  INFO     cate_dim: 64
+2021-06-07 07:21:00,108 root  INFO     num_heads: 8
+2021-06-07 07:21:00,108 root  INFO     fusion_layers: 128
+2021-06-07 07:21:00,108 root  INFO     --------------------
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:17: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+2021-06-07 07:21:00,121 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:17: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:23: The name tf.get_variable_scope is deprecated. Please use tf.compat.v1.get_variable_scope instead.
+
+2021-06-07 07:21:00,133 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:23: The name tf.get_variable_scope is deprecated. Please use tf.compat.v1.get_variable_scope instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:24: The name tf.add_to_collection is deprecated. Please use tf.compat.v1.add_to_collection instead.
+
+2021-06-07 07:21:00,134 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/nets.py:24: The name tf.add_to_collection is deprecated. Please use tf.compat.v1.add_to_collection instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:314: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+2021-06-07 07:21:00,139 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:314: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:356: The name tf.train.AdamOptimizer is deprecated. Please use tf.compat.v1.train.AdamOptimizer instead.
+
+2021-06-07 07:21:00,147 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:356: The name tf.train.AdamOptimizer is deprecated. Please use tf.compat.v1.train.AdamOptimizer instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:44: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+2021-06-07 07:21:00,148 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:44: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:205: The name tf.AUTO_REUSE is deprecated. Please use tf.compat.v1.AUTO_REUSE instead.
+
+2021-06-07 07:21:00,181 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:205: The name tf.AUTO_REUSE is deprecated. Please use tf.compat.v1.AUTO_REUSE instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:158: The name tf.log is deprecated. Please use tf.math.log instead.
+
+2021-06-07 07:21:00,837 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:158: The name tf.log is deprecated. Please use tf.math.log instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:240: The name tf.trainable_variables is deprecated. Please use tf.compat.v1.trainable_variables instead.
+
+2021-06-07 07:21:00,868 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:240: The name tf.trainable_variables is deprecated. Please use tf.compat.v1.trainable_variables instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:76: The name tf.summary.merge is deprecated. Please use tf.compat.v1.summary.merge instead.
+
+2021-06-07 07:21:01,810 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:76: The name tf.summary.merge is deprecated. Please use tf.compat.v1.summary.merge instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:76: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.scalar instead.
+
+2021-06-07 07:21:01,811 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:76: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.scalar instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:82: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+
+2021-06-07 07:21:01,813 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py:82: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+
+2021-06-07 07:21:02,281 root  INFO     load train visual feature
+2021-06-07 07:21:28,291 root  INFO     load test visual feature
+2021-06-07 07:21:52,985 root  INFO     3767308 test samples
+Namespace(batch_size=2048, cate_dim=64, data_dir='../data/input', display=100, dropout=0.8, fusion_layers=[128], initial_lr=0.001, item_dim=64, max_epoch=40, max_gradient_norm=5.0, max_length=160, n_block=8, n_cl_neg=256, neg_flag=1, neg_ratio=1.0, num_heads=8, optimizer='adam', out_dir='../data/output2', phase='test', pos_flag=1, reg=5e-05, restore_model_dir='../data/input', user_dim=128)
+(2048, 128) (2048, 128)
+(2048, 128) (2048, 128)
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:172: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+2021-06-07 07:21:53,573 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:172: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:177: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2021-06-07 07:21:53,574 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:177: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2021-06-07 07:21:53.904485: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2300000000 Hz
+2021-06-07 07:21:53.905836: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55e8fc80dfa0 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2021-06-07 07:21:53.905975: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2021-06-07 07:21:53.914684: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcuda.so.1
+2021-06-07 07:21:54.096394: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55e9034fb8e0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2021-06-07 07:21:54.150836: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): GeForce RTX 3090, Compute Capability 8.6
+2021-06-07 07:21:54.152743: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1665] Found device 0 with properties: 
+name: GeForce RTX 3090 major: 8 minor: 6 memoryClockRate(GHz): 1.695
+pciBusID: 0000:b3:00.0
+2021-06-07 07:21:54.152878: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-06-07 07:21:54.180712: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2021-06-07 07:21:54.191742: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2021-06-07 07:21:54.196946: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2021-06-07 07:21:54.219619: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusolver.so.11
+2021-06-07 07:21:54.225428: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2021-06-07 07:21:54.226880: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2021-06-07 07:21:54.230087: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1793] Adding visible gpu devices: 0
+2021-06-07 07:21:54.230846: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-06-07 07:21:55.924860: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1206] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-06-07 07:21:55.925021: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1212]      0 
+2021-06-07 07:21:55.925064: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1225] 0:   N 
+2021-06-07 07:21:55.929550: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1351] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 22365 MB memory) -> physical GPU (device: 0, name: GeForce RTX 3090, pci bus id: 0000:b3:00.0, compute capability: 8.6)
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:41: The name tf.global_variables_initializer is deprecated. Please use tf.compat.v1.global_variables_initializer instead.
+
+2021-06-07 07:21:55,931 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:41: The name tf.global_variables_initializer is deprecated. Please use tf.compat.v1.global_variables_initializer instead.
+
+2021-06-07 07:22:11,378 root  INFO     load train visual feature into GPU memory successfully
+INFO:tensorflow:Restoring parameters from ../data/output2/THACIL/ckpt/model-7.2485.ckpt-30
+2021-06-07 07:22:11,434 tensorflow INFO     Restoring parameters from ../data/output2/THACIL/ckpt/model-7.2485.ckpt-30
+2021-06-07 07:22:11,851 root  INFO     Load model from ../data/output2/THACIL/ckpt/model-7.2485.ckpt-30
+WARNING:tensorflow:From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:64: The name tf.summary.FileWriter is deprecated. Please use tf.compat.v1.summary.FileWriter instead.
+
+2021-06-07 07:22:11,852 tensorflow WARNING  From /mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py:64: The name tf.summary.FileWriter is deprecated. Please use tf.compat.v1.summary.FileWriter instead.
+
+2021-06-07 07:22:13,442 root  INFO     create summary writer successfully
+2021-06-07 07:22:13,443 root  INFO     start test phase
+2021-06-07 07:22:13,443 root  INFO     test iterations: 1824
+Traceback (most recent call last):
+  File "launcher.py", line 121, in <module>
+    main(sys.argv[1:], config.Config)
+  File "launcher.py", line 115, in main
+    solver.test()
+  File "/mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/solver.py", line 188, in test
+    _, logits, _, _ = self.model.test(sess, batch_data)
+  File "/mnt/52547AC5547AAAFD/workspace/libeibei/THACIL/src/model.py", line 300, in test
+    loss, logits, acc, summaries = sess.run(test_run_op, feed_dicts)
+  File "/home/ubuntu/anaconda3/envs/py36-tfgpu/lib/python3.6/site-packages/tensorflow_core/python/client/session.py", line 956, in run
+    run_metadata_ptr)
+  File "/home/ubuntu/anaconda3/envs/py36-tfgpu/lib/python3.6/site-packages/tensorflow_core/python/client/session.py", line 1156, in _run
+    (np_val.shape, subfeed_t.name, str(subfeed_t.get_shape())))
+ValueError: Cannot feed value of shape (2048, 8) for Tensor 'Placeholder_17:0', which has shape '(2048, 160)'

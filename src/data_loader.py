@@ -209,10 +209,10 @@ class DataLoader(object):
         length = len(item_ids)
         padding_num = self.max_length - length
 
-        if padding_num > 0:
+        if padding_num >= 0:
             indices = list(range(length))
             if istrain:
-                indices = indices[random.choice(list(range(0.1 * length))):]
+                indices = indices[random.choice(list(range(int(0.1 * length)))):]
             else:
                 pass
             length = len(indices)

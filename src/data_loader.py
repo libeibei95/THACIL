@@ -185,6 +185,7 @@ class DataLoader(object):
         if padding_num > 0:
             if istrain:
                 indices = random.sample(list(range(length)), int(len(item_ids) * 0.9))
+                indices.sort()
             else:
                 indices = list(range(length))
             length = len(indices)
